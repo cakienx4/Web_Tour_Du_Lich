@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách tour</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/index.css">
+    <style>
+        body {
+            background-color: #EBF0F2;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="breadcrumb-box">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb tour-breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="#" class="breadcrumb-link ">Trang chủ</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#" class="breadcrumb-link">Danh sách tour</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+
+    <div class="container my-4">
+        <div class="row">
+            <!-- SIDEBAR FILTER -->
+            <div class="col-lg-3 col-md-4">
+                <form action="#" method="get">
+                    <div class="filter-sidebar">
+
+                        <h5 class="filter-title">Bộ lọc tìm kiếm</h5>
+
+                        <!-- Điểm đến -->
+                        <div class="filter-group">
+                            <h6 class="filter-heading">Điểm đến</h6>
+
+                            <div class="filter-options">
+
+                                <input type="radio" name="diemden" id="danang" class="filter-checkbox">
+                                <label for="danang" class="filter-box">
+                                    Đà Nẵng
+                                </label>
+
+                                <input type="radio" name="diemden" id="nhatrang" class="filter-checkbox">
+                                <label for="nhatrang" class="filter-box">
+                                    Nha Trang
+                                </label>
+
+                                <input type="radio" name="diemden" id="phuquoc" class="filter-checkbox">
+                                <label for="phuquoc" class="filter-box">
+                                    Phú Quốc
+                                </label>
+
+                                <input type="radio" name="diemden" id="sapa" class="filter-checkbox">
+                                <label for="sapa" class="filter-box">
+                                    Sapa
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <!-- Khoảng giá -->
+                        <div class="filter-group">
+                            <h6 class="filter-heading">Giá tour/khách</h6>
+
+                            <div class="filter-options">
+
+                                <input type="radio" name="gia" id="duoi10tr" class="filter-checkbox">
+                                <label for="duoi10tr" class="filter-box">
+                                    Dưới 10 triệu
+                                </label>
+
+                                <input type="radio" name="gia" id="tu10den20" class="filter-checkbox">
+                                <label for="tu10den20" class="filter-box">
+                                    Từ 10-20 triệu
+                                </label>
+
+                                <input type="radio" name="gia" id="tu20den40" class="filter-checkbox">
+                                <label for="tu20den40" class="filter-box">
+                                    Từ 20-40 triệu
+                                </label>
+
+                                <input type="radio" name="gia" id="tren40tr" class="filter-checkbox">
+                                <label for="tren40tr" class="filter-box">
+                                    Trên 40 triệu
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <!-- Thời gian -->
+                        <div class="filter-group">
+                            <h6 class="filter-heading">Thời gian</h6>
+
+                            <div class="filter-options">
+
+                                <input type="radio" name="thoigian" id="1den2ngay" class="filter-checkbox">
+                                <label for="1den2ngay" class="filter-box">
+                                    1-2 ngày
+                                </label>
+
+                                <input type="radio" name="thoigian" id="3den4ngay" class="filter-checkbox">
+                                <label for="3den4ngay" class="filter-box">
+                                    3-4 ngày
+                                </label>
+
+                                <input type="radio" name="thoigian" id="5den7ngay" class="filter-checkbox">
+                                <label for="5den7ngay" class="filter-box">
+                                    5-7 ngày
+                                </label>
+
+                            </div>
+
+                            <!-- Button -->
+                            <button class="btn btn-primary w-100 mt-3">
+                                Áp dụng bộ lọc
+                            </button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- DANH SÁCH TOUR (bên phải) -->
+            <div class="col-lg-9">
+                <div class="tour-list">
+
+                    <a href="#" class="destination-item">
+                        <div class="card-image">
+                            <img src="images/sapa.jpg" alt="Sapa">
+                        </div>
+                        <div class="card-content">
+                            <h3>Tour Sapa – Fansipan – Bản Cát Cát</h3>
+                            <p class="duration">3 ngày 2 đêm</p>
+                            <p class="price">Từ 3.990.000đ</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="destination-item">
+                        <div class="card-image">
+                            <img src="images/halong.jpg" alt="Hạ Long">
+                        </div>
+                        <div class="card-content">
+                            <h3>Tour Hạ Long – Du thuyền 5 sao</h3>
+                            <p class="duration">2 ngày 1 đêm</p>
+                            <p class="price">Từ 2.790.000đ</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="destination-item">
+                        <div class="card-image">
+                            <img src="images/danang.jpg" alt="Đà Nẵng">
+                        </div>
+                        <div class="card-content">
+                            <h3>Tour Đà Nẵng – Bà Nà – Hội An</h3>
+                            <p class="duration">4 ngày 3 đêm</p>
+                            <p class="price">Từ 5.490.000đ</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="destination-item">
+                        <div class="card-image">
+                            <img src="images/phuquoc.jpg" alt="Phú Quốc">
+                        </div>
+                        <div class="card-content">
+                            <h3>Tour Phú Quốc – Resort 4 sao</h3>
+                            <p class="duration">3 ngày 2 đêm</p>
+                            <p class="price">Từ 4.590.000đ</p>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

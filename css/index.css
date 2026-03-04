@@ -248,7 +248,6 @@ body {
   display: flex;
   flex-direction: column;
   height: 340px;
-  /* QUAN TRỌNG */
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
@@ -382,4 +381,108 @@ body {
   padding: 15px 0;
   font-size: 13px;
   color: #aaa;
+}
+
+
+/* ------------------------------------------------------ BREADCRUMB ------------------------------------------------------ */
+/* ------------------------------------------------------ BREADCRUMB ------------------------------------------------------ */
+/* ------------------------------------------------------ BREADCRUMB ------------------------------------------------------ */
+
+/* ===== Breadcrumb Wrapper ===== */
+.breadcrumb-box {
+  background-color: #f8f9fa;
+  padding: 15px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* ===== Breadcrumb Style ===== */
+.tour-breadcrumb {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.breadcrumb-link {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.breadcrumb-link:hover {
+  color: #003c95;
+}
+
+
+/* ------------------------------------------------------ SIDEBAR ------------------------------------------------------ */
+/* ------------------------------------------------------ SIDEBAR ------------------------------------------------------ */
+/* ------------------------------------------------------ SIDEBAR ------------------------------------------------------ */
+
+
+/* Sidebar */
+.filter-sidebar {
+  background: white;
+  padding: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Tiêu đề chính */
+.filter-title {
+  font-weight: 600;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #0d6efd;
+  padding-bottom: 8px;
+}
+
+/* Nhóm filter */
+.filter-checkbox {
+  display: none;
+}
+
+/* Container */
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Ô lựa chọn */
+.filter-box {
+  padding: 8px 14px;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #ffffff;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+/* Hover */
+.filter-box:hover {
+  border-color: #0d6efd;
+  color: #0d6efd;
+}
+
+/* Tiêu đề nhóm */
+.filter-heading {
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+/* Giá */
+.price-range-text {
+  font-size: 14px;
+  color: #6c757d;
+  margin-top: 5px;
+}
+.form-check-input {
+  cursor: pointer;
+}
+
+/* Tour list grid */
+.tour-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
 }
