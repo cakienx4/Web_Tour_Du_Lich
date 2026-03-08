@@ -166,7 +166,7 @@ body {
   background-color: #fff6ec;
 }
 
-.section-title{
+.section-title {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -400,7 +400,7 @@ body {
   padding: 20px;
   border: 1px solid rgba(0, 0, 0, 0.16);
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Tiêu đề chính */
@@ -459,86 +459,86 @@ body {
 /* -------------------------------------------------------- Trang chi tiết tour -------------------------------------------------------- */
 /* -------------------------------------------------------- Trang chi tiết tour -------------------------------------------------------- */
 
-.tour-title{
-  font-size:28px;
-  font-weight:700;
+.tour-title {
+  font-size: 28px;
+  font-weight: 700;
 
 }
 
-.main-image img{
-  width:100%;
-  border-radius:8px;
+.main-image img {
+  width: 100%;
+  border-radius: 8px;
 }
 
-.image-gallery{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-top:10px;
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.image-gallery img{
-  width:100%;
-  height:80px;
-  object-fit:cover;
-  border-radius:6px;
+.image-gallery img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
 }
 
-.box{
-  background:#fff;
+.box {
+  background: #fff;
   padding: 20px 24px;
-  border-radius:10px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.3);
-  margin-bottom:24px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-bottom: 24px;
 }
 
-.tour-info p{
-  margin-bottom:8px;
+.tour-info p {
+  margin-bottom: 8px;
 }
 
-.price-box{
-  margin:20px 0;
+.price-box {
+  margin: 20px 0;
 }
 
-.old-price{
-  text-decoration:line-through;
-  color:#888;
-  margin-right:10px;
+.old-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 10px;
 }
 
-.price{
-  font-size:24px;
-  font-weight:700;
-  color:#e53935;
+.price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e53935;
 }
 
-.btn-book{
-  width:100%;
-  padding:12px;
-  border:none;
-  background:#e53935;
-  color:white;
-  font-weight:600;
-  border-radius:6px;
+.btn-book {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #e53935;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
 }
 
-.tour-section{
-  margin-top:40px;
+.tour-section {
+  margin-top: 40px;
 }
 
-.tour-section h1{
-  margin-bottom:20px;
+.tour-section h1 {
+  margin-bottom: 20px;
 }
 
-.itinerary-item{
-  margin-bottom:20px;
+.itinerary-item {
+  margin-bottom: 20px;
 }
 
-.booking-box{
-  background:#fff;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+.booking-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   position: sticky;
   top: 100px;
 }
@@ -549,81 +549,122 @@ body {
 
 
 /* Title */
-.page-title{
-  font-size:28px;
-  font-weight:700;
-  margin-bottom:30px;
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
 }
 
 /* Grid */
-.destination-list{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:24px;
+.destination-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
 }
 
 /* Card */
-.destination-card{
-  display:flex;
-  background:#fff;
-  border-radius:10px;
-  overflow:hidden;
-  text-decoration:none;
-  color:#222;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  transition:all 0.3s;
+.destination-card {
+  display: flex;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #222;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
 }
 
-.destination-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 10px 24px rgba(0,0,0,0.15);
+.destination-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* Image */
-.destination-image{
-  width:40%;
+.destination-image {
+  width: 40%;
 }
 
-.destination-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.destination-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Content */
-.destination-content{
-  padding:16px;
-  width:60%;
+.destination-content {
+  padding: 16px;
+  width: 60%;
 }
 
-.destination-name{
-  font-size:20px;
-  font-weight:600;
-  margin-bottom:10px;
+.destination-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
-.destination-desc{
-  font-size:14px;
-  color:#555;
-  line-height:1.5;
+.destination-desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
 }
 
-/* Responsive */
-@media (max-width:768px){
-  .destination-list{
-    grid-template-columns:1fr;
-  }
+/* -------------------------------------------------------- Trang đăng nhập / đăng ký -------------------------------------------------------- */
+/* -------------------------------------------------------- Trang đăng nhập / đăng ký -------------------------------------------------------- */
 
-  .destination-card{
-    flex-direction:column;
-  }
 
-  .destination-image{
-    width:100%;
-    height:200px;
-  }
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+}
 
-  .destination-content{
-    width:100%;
-  }
+.login-card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+}
+
+.login-title {
+  color: #003c71;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.form-label {
+  color: #4a4a4a;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  border: 1px solid #ced4da;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #003c71;
+}
+
+.btn-login {
+  background-color: #ff9822;
+  border: none;
+  color: white;
+  font-weight: 700;
+  padding: 12px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.btn-login:hover {
+  background-color: #e6891f;
+}
+
+.register-login-link{
+  text-decoration: none;
+  color: #007bff;
+}
+
+.register-login-link:hover {
+  text-decoration: underline;
 }
