@@ -29,12 +29,8 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
-  gap: 40px;
-}
-
-
-.logo {
-  text-decoration: none;
+  gap: 100px;
+  font-size: 18px;
 }
 
 .logo img {
@@ -462,7 +458,6 @@ body {
 .tour-title {
   font-size: 28px;
   font-weight: 700;
-
 }
 
 .main-image img {
@@ -667,4 +662,47 @@ body {
 
 .register-login-link:hover {
   text-decoration: underline;
+}
+
+/* -------------------------------------------------------- Trang thanh toán -------------------------------------------------------- */
+/* -------------------------------------------------------- Trang thanh toán -------------------------------------------------------- */
+
+.payment-option{
+width:100%;
+border:1px solid #ddd;
+padding:12px;
+border-radius:8px;
+margin-bottom:10px;
+background:white;
+display:flex;
+align-items:center;
+gap:10px;
+cursor:pointer;
+}
+
+.payment-option:hover{
+border-color:#ff5b00;
+}
+
+.payment-option img{
+width:40px;
+}
+
+.qr-box{
+text-align:center;
+margin-top:20px;
+}
+
+.qr-box img{
+width:200px;
+}
+
+.btn-pay{
+width:100%;
+background:#ff5b00;
+border:none;
+}
+
+.btn-pay:hover{
+background:#e14f00;
 }
