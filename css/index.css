@@ -6,6 +6,7 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, sans-serif;
+  background-color: #ECF0F5;
 }
 
 
@@ -489,6 +490,7 @@ body {
 
 .tour-info p {
   margin-bottom: 8px;
+  color: #555;
 }
 
 .price-box {
@@ -528,16 +530,6 @@ body {
 .itinerary-item {
   margin-bottom: 20px;
 }
-
-.booking-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  position: sticky;
-  top: 100px;
-}
-
 
 /* -------------------------------------------------------- Trang danh sách điểm đến -------------------------------------------------------- */
 /* -------------------------------------------------------- Trang danh sách điểm đến -------------------------------------------------------- */
@@ -655,7 +647,7 @@ body {
   background-color: #e6891f;
 }
 
-.register-login-link{
+.register-login-link {
   text-decoration: none;
   color: #007bff;
 }
@@ -667,42 +659,100 @@ body {
 /* -------------------------------------------------------- Trang thanh toán -------------------------------------------------------- */
 /* -------------------------------------------------------- Trang thanh toán -------------------------------------------------------- */
 
-.payment-option{
-width:100%;
-border:1px solid #ddd;
-padding:12px;
-border-radius:8px;
-margin-bottom:10px;
-background:white;
-display:flex;
-align-items:center;
-gap:10px;
-cursor:pointer;
+.payment-option {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
-.payment-option:hover{
-border-color:#ff5b00;
+.payment-option:hover {
+  border-color: #ff5b00;
 }
 
-.payment-option img{
-width:40px;
+.payment-option img {
+  width: 40px;
 }
 
-.qr-box{
-text-align:center;
-margin-top:20px;
+.qr-box {
+  text-align: center;
+  margin-top: 20px;
 }
 
-.qr-box img{
-width:200px;
+.qr-box img {
+  width: 200px;
 }
 
-.btn-pay{
-width:100%;
-background:#ff5b00;
-border:none;
+.btn-pay {
+  width: 100%;
+  background: #ff5b00;
+  border: none;
 }
 
-.btn-pay:hover{
-background:#e14f00;
+.btn-pay:hover {
+  background: #e14f00;
+}
+
+/* -------------------------------------------------------- Trang Lịch sử đặt tour -------------------------------------------------------- */
+/* -------------------------------------------------------- Trang Lịch sử đặt tour -------------------------------------------------------- */
+
+.status-upcoming {
+  color: #ff9800;
+}
+
+.status-finished {
+  color: #4caf50;
+}
+
+.status-cancelled {
+  color: #e53935;
+}
+
+.cancel-btn {
+  width: 120px;
+}
+
+/* -------------------------------------------------------- Trang Hồ sơ khách hàng -------------------------------------------------------- */
+/* -------------------------------------------------------- Trang Hồ sơ khách hàng -------------------------------------------------------- */
+
+.profile-box {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  margin: auto;
+}
+
+.profile-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-label {
+  font-weight: 600;
+  color: #555;
+}
+
+.profile-value {
+  color: #333;
+}
+
+.btn-edit {
+  margin-top: 20px;
+  width: 30%;
 }
