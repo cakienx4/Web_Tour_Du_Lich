@@ -1,0 +1,50 @@
+body {
+    background-color: #ECF0F5;
+}
+
+.sidebar {
+    height: 100vh;
+    padding: 0;
+    background-color: #343a40;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar a {
+    color: black;
+    padding: 18px 25px;
+    width: 100%;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.sidebar a:hover {
+    background-color: #495057;
+    color: white;
+}
+
+.sidebar .row-odd{
+    background-color: rgb(138, 138, 138);
+    
+}
+
+.sidebar .row-even{
+    background-color: rgb(187, 187, 187);
+}
+
+.sidebar a:last-child {
+    margin-top: auto;
+}
+
+.center-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-title {
+    font-weight: bold;
+    font-size: 24px;
+}
