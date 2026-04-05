@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Form báo cáo vi phạm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../../css/khachHang.css">
+
+
+    <style>
+        .box {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container my-5">
+
+        <div class="box">
+
+            <h3 class="mb-4">
+                Báo cáo vi phạm tour
+            </h3>
+
+            <p>
+                Nếu bạn phát hiện tour có dấu hiệu sai lệch thông tin hoặc lừa đảo, vui lòng gửi báo cáo để chúng tôi
+                kiểm tra và xử lý kịp thời.
+            </p>
+
+            <form method="post">
+
+                <!-- MÃ TOUR -->
+
+                <div class="mb-3">
+                    <label class="form-label">Mã tour</label>
+                    <input type="text" class="form-control" value="TOUR123" readonly>
+                </div>
+
+                <!-- LÝ DO -->
+
+                <div class="mb-3">
+                    <label class="form-label">Lý do báo cáo</label>
+
+                    <select class="form-select" required>
+                        <option value="">-- Chọn lý do --</option>
+                        <option>Thông tin không chính xác</option>
+                        <option>Giá không minh bạch</option>
+                        <option>Dấu hiệu lừa đảo</option>
+                        <option>Dịch vụ không đúng cam kết</option>
+                        <option>Khác</option>
+                    </select>
+
+                </div>
+
+                <!-- MÔ TẢ -->
+
+                <div class="mb-3">
+                    <label class="form-label">Mô tả chi tiết</label>
+
+                    <textarea class="form-control" rows="4" placeholder="Nhập mô tả chi tiết..." required></textarea>
+
+                </div>
+
+                <!-- BUTTON -->
+
+                <button class="btn btn-danger w-100">
+                    Gửi báo cáo
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

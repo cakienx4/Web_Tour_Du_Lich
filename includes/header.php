@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <link rel="stylesheet" href="../../css/khachHang.css">
+
+</head>
+<body>
+    <header class="header">
+        <div class="container_header">
+            <div class="logo">
+                <a href="#"><img src="../img/TAVIVU_Logo.png"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Tours</a></li> <!-- Tour trong nước là sản phẩm du lịch hoàn chỉnh để bán -->
+                    <li><a href="#">Điểm đến</a></li>
+                    <!-- Điểm đến là địa danh / nơi du lịch, mang tính tham khảo – định hướng -->
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+            </nav>
+            <div class="login">
+                <a href="#" class="login-btn">Đăng nhập</a>
+                <a href="#" class="login-btn">Đăng kí</a>
+            </div>
+            <div class="phone-num"> <p>📞 0123 456 789</p> </div>
+        </div>
+    </header>
+</body>
+</html>

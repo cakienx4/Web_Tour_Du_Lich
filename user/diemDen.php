@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <title>Danh sách điểm đến</title>
+    <link rel="stylesheet" href="../../css/khachHang.css">
+
+</head>
+
+<body>
+
+    <!-- ------------------------------------- BREADCRUMB ------------------------------------- -->
+    <div class="breadcrumb-box">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb tour-breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="#" class="breadcrumb-link ">Trang chủ</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#" class="breadcrumb-link">Danh sách điểm đến</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container my-4">
+
+        <h1 class="page-title">
+            Danh sách điểm đến
+        </h1>
+
+        <div class="destination-list">
+
+            <!-- DESTINATION ITEM -->
+            <a href="#" class="destination-card">
+
+                <div class="destination-image">
+                    <img src="#" alt="Sapa">
+                </div>
+
+                <div class="destination-content">
+                    <h3 class="destination-name">
+                        Sapa
+                    </h3>
+
+                    <p class="destination-desc">
+                        Sapa nổi tiếng với cảnh núi non hùng vĩ, ruộng bậc thang tuyệt đẹp
+                        và nền văn hóa đa dạng của các dân tộc vùng cao.
+                    </p>
+                </div>
+
+            </a>
+
+            <!-- DESTINATION ITEM -->
+            <a href="#" class="destination-card">
+
+                <div class="destination-image">
+                    <img src="#" alt="Đà Nẵng">
+                </div>
+
+                <div class="destination-content">
+                    <h3 class="destination-name">
+                        Đà Nẵng
+                    </h3>
+
+                    <p class="destination-desc">
+                        Thành phố biển hiện đại nổi tiếng với Bà Nà Hills, cầu Rồng
+                        và những bãi biển đẹp nhất Việt Nam.
+                    </p>
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+</body>
+
+</html>
