@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hồ sơ của tôi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../../assets/css/khachHang.css">
+
+</head>
+<body>
+    <div class="breadcrumb-box">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb tour-breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="#" class="breadcrumb-link ">Trang chủ</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#" class="breadcrumb-link">Trang hồ sơ</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="container my-5">
+        <div class="profile-box">
+            <div class="profile-title">
+                Hồ sơ của tôi
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Họ tên</span>
+                <span class="profile-value">Nguyễn Văn A</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Email</span>
+                <span class="profile-value">nguyenvana@gmail.com</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Số điện thoại</span>
+                <span class="profile-value">0988888888</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Mật khẩu</span>
+                <span class="profile-value">******</span>
+            </div>
+            <div class="text-end">
+                <button class="btn btn-primary btn-edit">
+                    Chỉnh sửa
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

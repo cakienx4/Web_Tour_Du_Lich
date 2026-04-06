@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <title>Chi tiết Tour</title>
+    <link rel="stylesheet" href="../../assets/css/khachHang.css">
+
+</head>
+
+<body>
+    <!-- ------------------------------------- BREADCRUMB ------------------------------------- -->
+    <div class="breadcrumb-box">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb tour-breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="#" class="breadcrumb-link ">Trang chủ</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#" class="breadcrumb-link">Tên tour</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container my-4">
+    <!-- ------------------------------------- TITLE ------------------------------------- -->
+
+        <h1 class="tour-title">
+            Tour Sapa – Fansipan – Bản Cát Cát 3 ngày 2 đêm
+        </h1>
+
+        <div class="row mt-4">
+
+            <!-- ------------------------------------- NỬA TRÁI ------------------------------------- -->
+            <!-- ------------------------------------- NỬA TRÁI ------------------------------------- -->
+
+            <div class="col-lg-7">
+
+    <!-- ------------------------------------- IMAGE ------------------------------------- -->
+
+                <div class="main-image">
+                    <img src="images/sapa.jpg">
+                </div>
+                <div class="image-gallery">
+                    <img src="images/sapa1.jpg">
+                    <img src="images/sapa2.jpg">
+                    <img src="images/sapa3.jpg">
+                    <img src="images/sapa4.jpg">
+                </div>
+
+    <!-- ------------------------------------- MÔ TẢ TOUR ------------------------------------- -->
+
+                <div class="box tour-section">
+                    <h1>Giới thiệu tour</h1>
+                    <p>Khám phá vẻ đẹp của Sapa...</p>
+                </div>
+
+    <!-- ------------------------------------- LỊCH TRÌNH TOUR ------------------------------------- -->
+
+                <div class="box tour-section">
+                    <h1>Lịch trình tour</h1>
+                    <div class="itinerary-item">
+                        <h4>Ngày 1: Hà Nội – Sapa</h4>
+                        <p>Khởi hành từ Hà Nội...</p>
+                    </div>
+                    <div class="itinerary-item">
+                        <h4>Ngày 2: Fansipan – Bản Cát Cát</h4>
+                        <p>Tham quan đỉnh Fansipan...</p>
+                    </div>
+                    <div class="itinerary-item">
+                        <h4>Ngày 3: Sapa – Hà Nội</h4>
+                        <p>Tự do tham quan...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ------------------------------------- NỬA PHẢI ------------------------------------- -->
+            <!-- ------------------------------------- NỬA PHẢI ------------------------------------- -->
+
+            <div class="col-lg-5">
+
+    <!-- ------------------------------------- BẢNG ĐẶT TOUR ------------------------------------- -->
+
+                <div class="box">
+                    <div class="tour-info">
+                        <p><strong>Thời gian:</strong> 3 ngày 2 đêm</p>
+                        <p><strong>Khởi hành:</strong> Hà Nội</p>
+                        <p><strong>Phương tiện:</strong> Xe du lịch</p>
+                        <p><strong>Số suất vé còn lại:</strong> 12/34</p>
+                    </div>
+                    <div class="price-box">
+                        <span class="price">3.990.000đ</span>
+                    </div>
+                    <button class="btn-book">
+                        Đặt tour ngay
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
