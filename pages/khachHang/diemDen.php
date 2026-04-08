@@ -16,6 +16,8 @@
 
 <body>
 
+    <?php include '../../includes/header.php'; ?>
+    
     <!-- ------------------------------------- BREADCRUMB ------------------------------------- -->
     <div class="breadcrumb-box">
         <div class="container">

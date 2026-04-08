@@ -1,33 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header</title>
-    <link rel="stylesheet" href="../../css/khachHang.css">
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 
-</head>
-<body>
-    <header class="header">
-        <div class="container_header">
-            <div class="logo">
-                <a href="#"><img src="../img/TAVIVU_Logo.png"></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#">Tours</a></li> <!-- Tour trong nước là sản phẩm du lịch hoàn chỉnh để bán -->
-                    <li><a href="#">Điểm đến</a></li>
-                    <!-- Điểm đến là địa danh / nơi du lịch, mang tính tham khảo – định hướng -->
-                    <li><a href="#">Giới thiệu</a></li>
-                    <li><a href="#">Liên hệ</a></li>
-                </ul>
-            </nav>
-            <div class="login">
-                <a href="#" class="login-btn">Đăng nhập</a>
-                <a href="#" class="login-btn">Đăng kí</a>
-            </div>
-            <div class="phone-num"> <p>📞 0123 456 789</p> </div>
+<header class="header">
+    <div class="container_header">
+
+        <div class="logo">
+            <a href="../../pages/khachHang/trangChu.php">
+                <img src="../../assets/img/TAVIVU_Logo.png">
+            </a>
         </div>
-    </header>
-</body>
-</html>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="../../pages/khachHang/tour.php">Tours</a></li>
+                <li><a href="../../pages/khachHang/diemDen.php">Điểm đến</a></li>
+                <li><a href="../../pages/khachHang/gioiThieu.php">Giới thiệu</a></li>
+                <li><a href="#">Liên hệ</a></li>
+            </ul>
+        </nav>
+
+        <div class="login">
+
+            <?php if (isset($_SESSION['maND'])): ?>
+
+                <span style="color:white;">
+                    Xin chào, <?php echo $_SESSION['hoTen']; ?>
+                </span>
+
+                <a href="../../pages/khachHang/hoSo-xem.php" class="login-btn">Hồ sơ</a>
+                <a href="../../actions/logout.php" class="login-btn">Đăng xuất</a>
+
+            <?php else: ?>
+
+                <a href="../../pages/auth/dangNhap.php" class="login-btn">Đăng nhập</a>
+                <a href="../../pages/auth/dangKy.php" class="login-btn">Đăng ký</a>
+
+            <?php endif; ?>
+
+        </div>
+
+        <div class="phone-num">
+            <p>📞 0123 456 789</p>
+        </div>
+
+    </div>
+</header>

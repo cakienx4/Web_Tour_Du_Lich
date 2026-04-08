@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    <?php include '../../includes/header.php'; ?>
 
     <div class="container login-container">
         <div class="card login-card">
@@ -23,15 +24,16 @@
                 <h2 class="login-title">Đăng nhập</h2>
             </div>
 
-            <form>
+            <form action="../../actions/login.php" method="post">
+
                 <div class="mb-3">
-                    <label for="username" class="form-label">Email</label>
-                    <input type="text" class="form-control" id="username" placeholder="">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Mật khẩu</label>
-                    <input type="password" class="form-control" id="password" placeholder="">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" name="matKhau" class="form-control" required>
                 </div>
 
                 <div class="d-flex mb-4">
@@ -41,7 +43,11 @@
                 <div class="d-grid">
                     <button type="submit" class="btn btn-login">Đăng nhập</button>
                 </div>
+
             </form>
+            <?php if (!empty($error)): ?>
+                <p style="color:red;"><?php echo $error; ?></p>
+            <?php endif; ?>
         </div>
     </div>
 

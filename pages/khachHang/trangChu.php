@@ -5,32 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang chủ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="../../assets/css/khachHang.css">
 </head>
 
 <body>
 
-    <!-- ------------------------------------- HEADER ------------------------------------- -->
-
-    <header class="header">
-        <div class="container_header">
-            <div class="logo">
-                <a href="#"><img src="../../assets/img/TAVIVU_Logo.png"></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#">Tours</a></li> <!-- Tour trong nước là sản phẩm du lịch hoàn chỉnh để bán -->
-                    <li><a href="#">Điểm đến</a></li> <!-- Điểm đến là địa danh / nơi du lịch, mang tính tham khảo – định hướng -->
-                    <li><a href="#">Giới thiệu</a></li>
-                </ul>
-            </nav>
-            <div class="login">
-                <a href="#" class="login-btn">Đăng nhập</a>
-                <a href="#" class="login-btn">Đăng kí</a>
-            </div>
-            <div class="phone-num"> <p>📞 0123 456 789</p> </div>
-        </div>
-    </header>
+    <?php include '../../includes/header.php'; ?>
 
     <!-- ------------------------------------- BANNER - THANH TÌM KIẾM ------------------------------------- -->
 
@@ -95,7 +77,7 @@
     <!-- ------------------------------------- DANH SÁCH TOUR NỔI BẬT ------------------------------------- -->
 
     <section class="destinations">
-        <div class="container">
+        <div class="container-fluid p-0">
             <!-- MIỀN BẮC -->
             <div class="region" style="background-color: #FFF3E0;">
                 <h2>Tour Miền Bắc</h2>

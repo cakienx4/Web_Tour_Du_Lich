@@ -12,13 +12,15 @@
     <link rel="stylesheet" href="../../assets/css/khachHang.css">
 
     <style>
-        .btn:hover{
+        .btn:hover {
             background-color: crimson;
         }
     </style>
 </head>
 
 <body>
+
+    <?php include '../../includes/header.php'; ?>
 
     <div class="breadcrumb-box">
         <div class="container">

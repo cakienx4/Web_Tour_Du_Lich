@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <title>Hồ sơ của tôi</title>
@@ -11,7 +12,9 @@
     <link rel="stylesheet" href="../../assets/css/khachHang.css">
 
 </head>
+
 <body>
+    <?php include '../../includes/header.php'; ?>
     <div class="breadcrumb-box">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -59,4 +62,5 @@
     </div>
     </div>
 </body>
+
 </html>
