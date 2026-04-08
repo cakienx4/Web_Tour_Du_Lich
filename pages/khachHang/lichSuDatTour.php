@@ -84,51 +84,7 @@
             </div>
         </div>
     </div>
-    <!-- POPUP XÁC NHẬN HỦY TOUR
-        <div id="cancel1" class="modal-css">
-            <div class="modal-box">
-                <h5 class="mb-3">
-                    Xác nhận hủy tour
-                </h5>
-                <p>
-                    Bạn có chắc rằng bạn muốn hủy tour này chứ?
-                </p>
-                <div class="d-flex justify-content-end gap-2 mt-4">
-                    <a href="#" class="btn btn-secondary">
-                        Hủy thao tác
-                    </a>
-                    <a href="#" class="btn btn-danger">
-                        Tôi chắc chắn
-                    </a>
-                </div>
-            </div>
-        </div>
-        <style>
-            .modal-css {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: none;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .modal-css:target {
-                display: flex;
-            }
-
-            .modal-box {
-                background: #fff;
-                padding: 25px;
-                border-radius: 8px;
-                width: 400px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            }
-        </style> -->
-    </div>
+    <?php include '../../includes/footer.php'; ?>
 </body>
 
 </html>
