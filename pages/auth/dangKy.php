@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿<?php 
+    session_start()
+?>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -61,9 +64,13 @@
                 </div>
 
             </form>
-            <?php if (!empty($error)): ?>
+            <?php 
+            if (isset($_SESSION['error'])): ?>
                 <p style="color:red;">
-                    <?php echo $error; ?>
+                    <?php 
+                    echo $_SESSION['error']; 
+                    unset($_SESSION['error']);
+                    ?>
                 </p>
             <?php endif; ?>
         </div>

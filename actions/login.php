@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../../config/database.php";
+require_once "../config/database.php";
 
 $error = "";
 
@@ -27,17 +27,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['vaiTro'] = $user['vaiTro'];
 
             if ($user['vaiTro'] == 'Quản trị viên') {
-                header("Location: ../admin/main.php");
+                header("Location: ../pages/admin/main.php");
             } elseif ($user['vaiTro'] == 'Nhà phân phối tour') {
-                header("Location: ../npp/main.php");
+                header("Location: ../pages/npp/main.php");
             } else {
-                header("Location: ../khachHang/trangChu.php");
+                header("Location: ../pages/khachHang/trangChu.php");
             }
             exit();
 
         } else {
             $error = "Sai email hoặc mật khẩu!";
         }
+    }
+
+    if (!empty($error)) {
+        $_SESSION['error'] = $error;
+        header("Location: ../pages/auth/dangNhap.php");
+        exit();
+    } else {
+        $_SESSION['error'] = "Sai email hoặc mật khẩu!";
+        header("Location: ../pages/auth/dangNhap.php");
+        exit();
     }
 }
 ?>

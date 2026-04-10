@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="d-flex mb-4">
-                    <a href="#" class="register-login-link">Chưa có tài khoản? Đăng ký ngay!</a>
+                    <a href="dangKy.php" class="register-login-link">Chưa có tài khoản? Đăng ký ngay!</a>
                 </div>
 
                 <div class="d-grid">
@@ -45,8 +45,13 @@
                 </div>
 
             </form>
-            <?php if (!empty($error)): ?>
-                <p style="color:red;"><?php echo $error; ?></p>
+            <?php if (isset($_SESSION['error'])): ?>
+                <p style="color:red;">
+                    <?php
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    ?>
+                </p>
             <?php endif; ?>
         </div>
     </div>

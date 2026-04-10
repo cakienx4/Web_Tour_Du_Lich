@@ -1,4 +1,33 @@
-﻿<!DOCTYPE html>
+﻿<?php
+session_start();
+require_once '../../config/database.php';
+
+// Lấy tour theo từng vùng miền (chỉ lấy tour đang hoạt động)
+function getTourByVung($mysqli, $vung, $limit = 4)
+{
+    $stmt = $mysqli->prepare("
+        SELECT t.maTour, t.tenTour, t.giaTour, t.ngayKhoiHanh, t.soChoTrong, t.anhTour
+        FROM tour t
+        JOIN tour_diemden td ON t.maTour = td.maTour
+        JOIN diemden d ON td.maDiemDen = d.maDiemDen
+        WHERE d.vungMien = ? AND t.trangThai = 'Đang bán'
+        GROUP BY t.maTour
+        LIMIT ?
+    ");
+    $stmt->bind_param("si", $vung, $limit);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+$tourBac = getTourByVung($mysqli, 'Bắc');
+$tourTrung = getTourByVung($mysqli, 'Trung');
+$tourNam = getTourByVung($mysqli, 'Nam');
+
+// Lấy danh sách điểm đến cho dropdown tìm kiếm
+$diemDenList = $mysqli->query("SELECT maDiemDen, tenDiemDen FROM diemden ORDER BY vungMien");
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -22,13 +51,14 @@
                 <h1>Khám phá Tour Du Lịch Việt Nam</h1>
                 <p>Muôn vàn tour trong nước – Giá tốt – Khởi hành mỗi ngày</p>
 
-                <form class="search-box">
-                    <select>
-                        <option>Chọn điểm đến</option>
-                        <option>Đà Nẵng</option>
-                        <option>Phú Quốc</option>
-                        <option>Hà Nội</option>
-                        <option>Đà Lạt</option>
+                <form class="search-box" action="tour.php" method="GET">
+                    <select name="diemDen">
+                        <option value="">Chọn điểm đến</option>
+                        <?php while ($dd = $diemDenList->fetch_assoc()): ?>
+                            <option value="<?= $dd['maDiemDen'] ?>">
+                                <?= htmlspecialchars($dd['tenDiemDen']) ?>
+                            </option>
+                        <?php endwhile; ?>
                     </select>
 
                     <input type="date">
@@ -83,55 +113,27 @@
                 <h2>Tour Miền Bắc</h2>
 
                 <div class="destination-list">
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
+                    <?php while ($tour = $tourBac->fetch_assoc()): ?>
+                        <a href="tour_ChiTiet.php?id=<?= $tour['maTour'] ?>" class="destination-item">
+                            <div class="card-image">
+                                <img src="../../<?= htmlspecialchars($tour['anhTour']) ?>"
+                                    alt="<?= htmlspecialchars($tour['tenTour']) ?>">
+                            </div>
+                            <div class="card-content">
+                                <h3><?= htmlspecialchars($tour['tenTour']) ?></h3>
+                                <p class="duration">Khởi hành: <?= date('d/m/Y', strtotime($tour['ngayKhoiHanh'])) ?></p>
+                                <p class="price">Từ <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ</p>
+                            </div>
+                        </a>
+                    <?php endwhile; ?>
 
-                        <div class="card-content">
-                            <h3>Tour Sapa</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
-
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="Hà Nội">
-                        </div>
-
-                        <div class="card-content">
-                            <h3>Tour Hà Nội</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
-
-                        <div class="card-content">
-                            <h3>Tour Hạ Long</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
-
-                        <div class="card-content">
-                            <h3>Tour Ninh Bình</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
+                    <?php if ($tourBac->num_rows === 0): ?>
+                        <p>Chưa có tour nào.</p>
+                    <?php endif; ?>
                 </div>
 
                 <div class="view-more">
-                    <a href="#">Xem thêm tour</a>
+                    <a href="tour.php?vung=Bắc">Xem thêm tour</a>
                 </div>
             </div>
 
@@ -140,51 +142,29 @@
                 <h2>Tour Miền Trung</h2>
 
                 <div class="destination-list">
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
+                    <?php while ($tour = $tourTrung->fetch_assoc()): ?>
+                        <a href="tour_ChiTiet.php?id=<?= $tour['maTour'] ?>" class="destination-item">
+                            <div class="card-image">
+                                <img src="../../<?= htmlspecialchars($tour['anhTour']) ?>"
+                                    alt="<?= htmlspecialchars($tour['tenTour']) ?>">
+                            </div>
+                            <div class="card-content">
+                                <h3>
+                                    <?= htmlspecialchars($tour['tenTour']) ?>
+                                </h3>
+                                <p class="duration">Khởi hành:
+                                    <?= date('d/m/Y', strtotime($tour['ngayKhoiHanh'])) ?>
+                                </p>
+                                <p class="price">Từ
+                                    <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ
+                                </p>
+                            </div>
+                        </a>
+                    <?php endwhile; ?>
 
-                        <div class="card-content">
-                            <h3>Tour Đà Nẵng</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
-
-                        <div class="card-content">
-                            <h3>Tour Hội An</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
-
-                        <div class="card-content">
-                            <h3>Tour Huế </h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
-
-                        <div class="card-content">
-                            <h3>Tour Nha Trang </h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-
-                    </a>
+                    <?php if ($tourTrung->num_rows === 0): ?>
+                        <a href="tour.php?vung=Trung">Xem thêm tour</a>
+                    <?php endif; ?>
                 </div>
 
                 <div class="view-more">
@@ -197,55 +177,33 @@
                 <h2>Tour Miền Nam</h2>
 
                 <div class="destination-list">
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
+                    <?php while ($tour = $tourNam->fetch_assoc()): ?>
+                        <a href="tour_ChiTiet.php?id=<?= $tour['maTour'] ?>" class="destination-item">
+                            <div class="card-image">
+                                <img src="../../<?= htmlspecialchars($tour['anhTour']) ?>"
+                                    alt="<?= htmlspecialchars($tour['tenTour']) ?>">
+                            </div>
+                            <div class="card-content">
+                                <h3>
+                                    <?= htmlspecialchars($tour['tenTour']) ?>
+                                </h3>
+                                <p class="duration">Khởi hành:
+                                    <?= date('d/m/Y', strtotime($tour['ngayKhoiHanh'])) ?>
+                                </p>
+                                <p class="price">Từ
+                                    <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ
+                                </p>
+                            </div>
+                        </a>
+                    <?php endwhile; ?>
 
-                        <div class="card-content">
-                            <h3>Tour Phú Quốc</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
-
-                        <div class="card-content">
-                            <h3>Tour TP. Hồ Chí Minh</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-
-                    </a>
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
-
-                        <div class="card-content">
-                            <h3>Tour Cần Thơ</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="?">
-                        </div>
-
-                        <div class="card-content">
-                            <h3>Tour Vũng Tàu</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
+                    <?php if ($tourNam->num_rows === 0): ?>
+                        <p>Chưa có tour nào.</p>
+                    <?php endif; ?>
                 </div>
 
                 <div class="view-more">
-                    <a href="#">Xem thêm tour</a>
+                    <a href="tour.php?vung=Nam">Xem thêm tour</a>
                 </div>
             </div>
 

@@ -1,4 +1,115 @@
-﻿<!DOCTYPE html>
+﻿<?php
+session_start();
+require_once '../../config/database.php';
+
+// Nhận tham số filter từ GET
+$vung = $_GET['vung'] ?? '';
+$diemDen = $_GET['diemDen'] ?? '';
+$giaMin = null;
+$giaMax = null;
+$ngayMin = null;
+$ngayMax = null;
+
+// Xử lý filter giá
+if (!empty($_GET['gia'])) {
+    switch ($_GET['gia']) {
+        case 'duoi10tr':
+            $giaMax = 10000000;
+            break;
+        case 'tu10den20':
+            $giaMin = 10000000;
+            $giaMax = 20000000;
+            break;
+        case 'tu20den40':
+            $giaMin = 20000000;
+            $giaMax = 40000000;
+            break;
+        case 'tren40tr':
+            $giaMin = 40000000;
+            break;
+    }
+}
+
+// Xử lý filter thời gian
+if (!empty($_GET['thoigian'])) {
+    switch ($_GET['thoigian']) {
+        case '1den2ngay':
+            $ngayMin = 1;
+            $ngayMax = 2;
+            break;
+        case '3den4ngay':
+            $ngayMin = 3;
+            $ngayMax = 4;
+            break;
+        case '5den7ngay':
+            $ngayMin = 5;
+            $ngayMax = 7;
+            break;
+    }
+}
+
+// Build query động
+$sql = "
+    SELECT DISTINCT t.maTour, t.tenTour, t.giaTour, t.ngayKhoiHanh, t.soNgay, t.anhTour
+    FROM tour t
+    JOIN tour_diemden td ON t.maTour = td.maTour
+    JOIN diemden d ON td.maDiemDen = d.maDiemDen
+    WHERE t.trangThai = 'Đang bán'
+";
+
+$params = [];
+$types = '';
+
+if (!empty($vung)) {
+    $sql .= " AND d.vungMien = ?";
+    $params[] = $vung;
+    $types .= 's';
+}
+
+if (!empty($diemDen)) {
+    $sql .= " AND d.maDiemDen = ?";
+    $params[] = $diemDen;
+    $types .= 'i';
+}
+
+if ($giaMin !== null) {
+    $sql .= " AND t.giaTour >= ?";
+    $params[] = $giaMin;
+    $types .= 'd';
+}
+
+if ($giaMax !== null) {
+    $sql .= " AND t.giaTour <= ?";
+    $params[] = $giaMax;
+    $types .= 'd';
+}
+
+if ($ngayMin !== null) {
+    $sql .= " AND t.soNgay >= ?";
+    $params[] = $ngayMin;
+    $types .= 'i';
+}
+
+if ($ngayMax !== null) {
+    $sql .= " AND t.soNgay <= ?";
+    $params[] = $ngayMax;
+    $types .= 'i';
+}
+
+$sql .= " ORDER BY t.maTour DESC";
+
+$stmt = $mysqli->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$tours = $stmt->get_result();
+
+// Lấy điểm đến cho filter sidebar
+$diemDenList = $mysqli->query("SELECT maDiemDen, tenDiemDen FROM diemden ORDER BY tenDiemDen");
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -23,10 +134,10 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb tour-breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="#" class="breadcrumb-link ">Trang chủ</a>
+                        <a href="trangChu.php" class="breadcrumb-link ">Trang chủ</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="#" class="breadcrumb-link">Danh sách tour</a>
+                        <a href="tour.php" class="breadcrumb-link">Danh sách tour</a>
                     </li>
                 </ol>
             </nav>
@@ -40,7 +151,7 @@
         <div class="row">
             <!-- SIDEBAR FILTER -->
             <div class="col-lg-3 col-md-4">
-                <form action="#" method="get">
+                <form action="tour.php" method="GET">
                     <div class="filter-sidebar">
 
                         <h5 class="filter-title">Bộ lọc tìm kiếm</h5>
@@ -50,22 +161,17 @@
                             <h6 class="filter-heading">Miền</h6>
 
                             <div class="filter-options">
+                                <input type="radio" name="vung" id="bac" value="Bắc" class="filter-checkbox"
+                                    <?= ($_GET['vung'] ?? '') === 'Bắc' ? 'checked' : '' ?>>
+                                <label for="bac" class="filter-box">Bắc</label>
 
-                                <input type="radio" name="mien" id="bac" class="filter-checkbox">
-                                <label for="bac" class="filter-box">
-                                    Bắc
-                                </label>
+                                <input type="radio" name="vung" id="trung" value="Trung" class="filter-checkbox"
+                                    <?= ($_GET['vung'] ?? '') === 'Trung' ? 'checked' : '' ?>>
+                                <label for="trung" class="filter-box">Trung</label>
 
-                                <input type="radio" name="mien" id="trung" class="filter-checkbox">
-                                <label for="trung" class="filter-box">
-                                    Trung
-                                </label>
-
-                                <input type="radio" name="mien" id="nam" class="filter-checkbox">
-                                <label for="nam" class="filter-box">
-                                    Nam
-                                </label>
-
+                                <input type="radio" name="vung" id="nam" value="Nam" class="filter-checkbox"
+                                    <?= ($_GET['vung'] ?? '') === 'Nam' ? 'checked' : '' ?>>
+                                <label for="nam" class="filter-box">Nam</label>
                             </div>
                         </div>
 
@@ -75,25 +181,13 @@
 
                             <div class="filter-options">
 
-                                <input type="radio" name="diemden" id="danang" class="filter-checkbox">
-                                <label for="danang" class="filter-box">
-                                    Đà Nẵng
-                                </label>
-
-                                <input type="radio" name="diemden" id="nhatrang" class="filter-checkbox">
-                                <label for="nhatrang" class="filter-box">
-                                    Nha Trang
-                                </label>
-
-                                <input type="radio" name="diemden" id="phuquoc" class="filter-checkbox">
-                                <label for="phuquoc" class="filter-box">
-                                    Phú Quốc
-                                </label>
-
-                                <input type="radio" name="diemden" id="sapa" class="filter-checkbox">
-                                <label for="sapa" class="filter-box">
-                                    Sapa
-                                </label>
+                                <?php while ($dd = $diemDenList->fetch_assoc()): ?>
+                                    <input type="radio" name="diemDen" id="dd_<?= $dd['maDiemDen'] ?>"
+                                        value="<?= $dd['maDiemDen'] ?>" class="filter-checkbox" <?= ($_GET['diemDen'] ?? '') == $dd['maDiemDen'] ? 'checked' : '' ?>>
+                                    <label for="dd_<?= $dd['maDiemDen'] ?>" class="filter-box">
+                                        <?= htmlspecialchars($dd['tenDiemDen']) ?>
+                                    </label>
+                                <?php endwhile; ?>
 
                             </div>
                         </div>
@@ -104,25 +198,21 @@
 
                             <div class="filter-options">
 
-                                <input type="radio" name="gia" id="duoi10tr" class="filter-checkbox">
-                                <label for="duoi10tr" class="filter-box">
-                                    Dưới 10 triệu
-                                </label>
+                                <input type="radio" name="gia" id="duoi10tr" value="duoi10tr" class="filter-checkbox"
+                                    <?= ($_GET['gia'] ?? '') === 'duoi10tr' ? 'checked' : '' ?>>
+                                <label for="duoi10tr" class="filter-box">Dưới 10 triệu</label>
 
-                                <input type="radio" name="gia" id="tu10den20" class="filter-checkbox">
-                                <label for="tu10den20" class="filter-box">
-                                    Từ 10-20 triệu
-                                </label>
+                                <input type="radio" name="gia" id="tu10den20" value="tu10den20" class="filter-checkbox"
+                                    <?= ($_GET['gia'] ?? '') === 'tu10den20' ? 'checked' : '' ?>>
+                                <label for="tu10den20" class="filter-box">Từ 10-20 triệu</label>
 
-                                <input type="radio" name="gia" id="tu20den40" class="filter-checkbox">
-                                <label for="tu20den40" class="filter-box">
-                                    Từ 20-40 triệu
-                                </label>
+                                <input type="radio" name="gia" id="tu20den40" value="tu20den40" class="filter-checkbox"
+                                    <?= ($_GET['gia'] ?? '') === 'tu20den40' ? 'checked' : '' ?>>
+                                <label for="tu20den40" class="filter-box">Từ 20-40 triệu</label>
 
-                                <input type="radio" name="gia" id="tren40tr" class="filter-checkbox">
-                                <label for="tren40tr" class="filter-box">
-                                    Trên 40 triệu
-                                </label>
+                                <input type="radio" name="gia" id="tren40tr" value="tren40tr" class="filter-checkbox"
+                                    <?= ($_GET['gia'] ?? '') === 'tren40tr' ? 'checked' : '' ?>>
+                                <label for="tren40tr" class="filter-box">Trên 40 triệu</label>
 
                             </div>
                         </div>
@@ -132,26 +222,24 @@
                             <h6 class="filter-heading">Thời gian</h6>
 
                             <div class="filter-options">
+                                <input type="radio" name="thoigian" id="1den2ngay" value="1den2ngay"
+                                    class="filter-checkbox" <?= ($_GET['thoigian'] ?? '') === '1den2ngay' ? 'checked' : '' ?>>
+                                <label for="1den2ngay" class="filter-box">1-2 ngày</label>
 
-                                <input type="radio" name="thoigian" id="1den2ngay" class="filter-checkbox">
-                                <label for="1den2ngay" class="filter-box">
-                                    1-2 ngày
-                                </label>
+                                <input type="radio" name="thoigian" id="3den4ngay" value="3den4ngay"
+                                    class="filter-checkbox" <?= ($_GET['thoigian'] ?? '') === '3den4ngay' ? 'checked' : '' ?>>
+                                <label for="3den4ngay" class="filter-box">3-4 ngày</label>
 
-                                <input type="radio" name="thoigian" id="3den4ngay" class="filter-checkbox">
-                                <label for="3den4ngay" class="filter-box">
-                                    3-4 ngày
-                                </label>
-
-                                <input type="radio" name="thoigian" id="5den7ngay" class="filter-checkbox">
-                                <label for="5den7ngay" class="filter-box">
-                                    5-7 ngày
-                                </label>
-
+                                <input type="radio" name="thoigian" id="5den7ngay" value="5den7ngay"
+                                    class="filter-checkbox" <?= ($_GET['thoigian'] ?? '') === '5den7ngay' ? 'checked' : '' ?>>
+                                <label for="5den7ngay" class="filter-box">5-7 ngày</label>
                             </div>
 
                             <!-- Button -->
-                            <button class="btn btn-primary w-100 mt-3">
+                            <a href="tour.php" class="btn btn-danger w-100 mt-3">
+                                Xóa bộ lọc
+                            </a>
+                            <button class="btn btn-primary w-100 mt-2">
                                 Áp dụng bộ lọc
                             </button>
 
@@ -164,51 +252,33 @@
 
             <div class="col-lg-9">
                 <div class="tour-list">
+                    <?php while ($tour = $tours->fetch_assoc()): ?>
+                        <a href="tour_ChiTiet.php?id=<?= $tour['maTour'] ?>" class="destination-item">
+                            <div class="card-image">
+                                <img src="../../<?= htmlspecialchars($tour['anhTour']) ?>"
+                                    alt="<?= htmlspecialchars($tour['tenTour']) ?>">
+                            </div>
+                            <div class="card-content">
+                                <h3>
+                                    <?= htmlspecialchars($tour['tenTour']) ?>
+                                </h3>
+                                <p class="duration">
+                                    <?= $tour['soNgay'] ?> ngày
+                                    <?= $tour['soNgay'] - 1 ?> đêm
+                                </p>
+                                <p class="duration">Khởi hành:
+                                    <?= date('d/m/Y', strtotime($tour['ngayKhoiHanh'])) ?>
+                                </p>
+                                <p class="price">Từ
+                                    <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ
+                                </p>
+                            </div>
+                        </a>
+                    <?php endwhile; ?>
 
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="Sapa">
-                        </div>
-                        <div class="card-content">
-                            <h3>Tour Sapa – Fansipan – Bản Cát Cát</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 3.990.000đ</p>
-                        </div>
-                    </a>
-
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="Hạ Long">
-                        </div>
-                        <div class="card-content">
-                            <h3>Tour Hạ Long – Du thuyền 5 sao</h3>
-                            <p class="duration">2 ngày 1 đêm</p>
-                            <p class="price">Từ 2.790.000đ</p>
-                        </div>
-                    </a>
-
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="Đà Nẵng">
-                        </div>
-                        <div class="card-content">
-                            <h3>Tour Đà Nẵng – Bà Nà – Hội An</h3>
-                            <p class="duration">4 ngày 3 đêm</p>
-                            <p class="price">Từ 5.490.000đ</p>
-                        </div>
-                    </a>
-
-                    <a href="#" class="destination-item">
-                        <div class="card-image">
-                            <img src="#" alt="Phú Quốc">
-                        </div>
-                        <div class="card-content">
-                            <h3>Tour Phú Quốc – Resort 4 sao</h3>
-                            <p class="duration">3 ngày 2 đêm</p>
-                            <p class="price">Từ 4.590.000đ</p>
-                        </div>
-                    </a>
-
+                    <?php if ($tours->num_rows === 0): ?>
+                        <p>Không tìm thấy tour nào phù hợp.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

@@ -8,6 +8,6 @@ session_unset();
 session_destroy();
 
 // Điều hướng về trang chủ khách
-header("Location: /pages/khachHang/trangChu.php");
+header("Location: ../pages/khachHang/trangChu.php");
 exit();
 ?>

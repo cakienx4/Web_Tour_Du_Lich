@@ -9,6 +9,9 @@ body {
   background-color: #ECF0F5;
 }
 
+html {
+  scroll-behavior: smooth;
+}
 
 /* -------------------------------------------------------- Trang header  -------------------------------------------------------- */
 /* -------------------------------------------------------- Trang header  -------------------------------------------------------- */
@@ -54,7 +57,7 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 70px;
+  gap: 30px;
 }
 
 .main-nav a {
@@ -68,11 +71,20 @@ body {
   transition: all 0.7s ease;
 }
 
+.user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  color: white;
+  font-weight: 500;
+}
 
 .login {
   margin-left: 100px;
   display: flex;
   gap: 50px;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .login a {
@@ -442,6 +454,13 @@ body {
 .filter-box:hover {
   border-color: #0d6efd;
   color: #0d6efd;
+}
+
+/* Khi được chọn */
+.filter-checkbox:checked+.filter-box {
+  background-color: #0d6efd;
+  color: #ffffff;
+  border-color: #0d6efd;
 }
 
 /* Tiêu đề nhóm */

@@ -1,5 +1,6 @@
 <?php
-require_once "../../config/database.php";
+session_start();
+require_once "../config/database.php";
 
 $error = "";
 
@@ -33,11 +34,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("ssss", $email, $hashedPassword, $hoTen, $soDienThoai);
 
             if ($stmt->execute()) {
-                echo "<p style='color:green;'>Đăng ký thành công!</p>";
+                header("refresh:3;url=dangNhap.php");
+                echo "<p style='color:green;'>Đăng ký thành công! Đang chuyển sang trang đăng nhập...</p>";
+                exit();
             } else {
                 $error = "Lỗi hệ thống!";
             }
         }
+    }
+
+    if (!empty($error)) {
+        $_SESSION['error'] = $error;
+        header("Location: ../pages/auth/dangKy.php");
+        exit();
     }
 }
 ?>

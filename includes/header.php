@@ -18,18 +18,21 @@ if (session_status() === PHP_SESSION_NONE) {
                 <li><a href="../../pages/khachHang/tour.php">Tours</a></li>
                 <li><a href="../../pages/khachHang/diemDen.php">Điểm đến</a></li>
                 <li><a href="../../pages/khachHang/gioiThieu.php">Giới thiệu</a></li>
-                <li><a href="#">Liên hệ</a></li>
+                <li><a href="#  footer-section">Liên hệ</a></li>
             </ul>
         </nav>
 
         <div class="login">
 
             <?php if (isset($_SESSION['maND'])): ?>
-
-                <span style="color:white;">
-                    Xin chào, <?php echo $_SESSION['hoTen']; ?>
-                </span>
-
+                <div class="user-info">
+                    <span style="color:white;">
+                        Xin chào,
+                    </span>
+                    <span style="color:white;">
+                        <?php echo $_SESSION['hoTen']; ?>
+                    </span>
+                </div>
                 <a href="../../pages/khachHang/hoSo-xem.php" class="login-btn">Hồ sơ</a>
                 <a href="../../actions/logout.php" class="login-btn">Đăng xuất</a>
 
