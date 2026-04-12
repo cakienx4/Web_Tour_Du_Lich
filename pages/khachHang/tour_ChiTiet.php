@@ -1,4 +1,66 @@
-﻿<!DOCTYPE html>
+﻿<?php
+session_start();
+require_once '../../config/database.php';
+
+// Lấy maTour từ URL
+$maTour = $_GET['id'] ?? null;
+
+if (!$maTour) {
+    header('Location: tour.php');
+    exit();
+}
+
+// Lấy thông tin tour
+$stmt = $mysqli->prepare("
+    SELECT t.*, u.hoTen AS tenNPP
+    FROM tour t
+    JOIN user u ON t.maND = u.maND
+    WHERE t.maTour = ? AND t.trangThai = 'Đang bán'
+");
+$stmt->bind_param("i", $maTour);
+$stmt->execute();
+$tour = $stmt->get_result()->fetch_assoc();
+
+if (!$tour) {
+    header('Location: tour.php');
+    exit();
+}
+
+// Lấy điểm đến của tour
+$stmtDD = $mysqli->prepare("
+    SELECT d.tenDiemDen, d.vungMien
+    FROM diemden d
+    JOIN tour_diemden td ON d.maDiemDen = td.maDiemDen
+    WHERE td.maTour = ?
+");
+$stmtDD->bind_param("i", $maTour);
+$stmtDD->execute();
+$diemDens = $stmtDD->get_result();
+$tenDiemDen = [];
+while ($dd = $diemDens->fetch_assoc()) {
+    $tenDiemDen[] = $dd['tenDiemDen'];
+}
+// Lấy ảnh chính
+$stmtAnh = $mysqli->prepare("
+    SELECT duongDan FROM tour_anh 
+    WHERE maTour = ? AND laManhChinh = 1 
+    LIMIT 1
+");
+$stmtAnh->bind_param("i", $maTour);
+$stmtAnh->execute();
+$anhChinh = $stmtAnh->get_result()->fetch_assoc();
+
+// Lấy ảnh gallery
+$stmtGallery = $mysqli->prepare("
+    SELECT duongDan FROM tour_anh 
+    WHERE maTour = ? AND laManhChinh = 0
+");
+$stmtGallery->bind_param("i", $maTour);
+$stmtGallery->execute();
+$anhGallery = $stmtGallery->get_result();
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -22,10 +84,13 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb tour-breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="#" class="breadcrumb-link ">Trang chủ</a>
+                        <a href="trangChu.php" class="breadcrumb-link">Trang chủ</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="#" class="breadcrumb-link">Tên tour</a>
+                        <a href="tour.php" class="breadcrumb-link">Danh sách tour</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <?= htmlspecialchars($tour['tenTour']) ?>
                     </li>
                 </ol>
             </nav>
@@ -36,7 +101,7 @@
         <!-- ------------------------------------- TITLE ------------------------------------- -->
 
         <h1 class="tour-title">
-            Tour Sapa – Fansipan – Bản Cát Cát 3 ngày 2 đêm
+            <?= htmlspecialchars($tour['tenTour']) ?>
         </h1>
 
         <div class="row mt-4">
@@ -49,38 +114,41 @@
                 <!-- ------------------------------------- IMAGE ------------------------------------- -->
 
                 <div class="main-image">
-                    <img src="images/sapa.jpg">
+                    <?php if ($anhChinh): ?>
+                        <img src="../../<?= htmlspecialchars($anhChinh['duongDan']) ?>"
+                            alt="<?= htmlspecialchars($tour['tenTour']) ?>">
+                    <?php else: ?>
+                        <img src="../../assets/img/placeholder.jpg" alt="Chưa có ảnh">
+                    <?php endif; ?>
                 </div>
+
                 <div class="image-gallery">
-                    <img src="images/sapa1.jpg">
-                    <img src="images/sapa2.jpg">
-                    <img src="images/sapa3.jpg">
-                    <img src="images/sapa4.jpg">
+                    <?php if ($anhGallery->num_rows > 0): ?>
+                        <?php while ($anh = $anhGallery->fetch_assoc()): ?>
+                            <img src="../../<?= htmlspecialchars($anh['duongDan']) ?>"
+                                alt="<?= htmlspecialchars($tour['tenTour']) ?>">
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <p>Chưa có ảnh gallery.</p>
+                    <?php endif; ?>
                 </div>
 
                 <!-- ------------------------------------- MÔ TẢ TOUR ------------------------------------- -->
 
                 <div class="box tour-section">
                     <h1>Giới thiệu tour</h1>
-                    <p>Khám phá vẻ đẹp của Sapa...</p>
+                    <p>
+                        <?= nl2br(htmlspecialchars($tour['moTa'])) ?>
+                    </p>
                 </div>
 
                 <!-- ------------------------------------- LỊCH TRÌNH TOUR ------------------------------------- -->
 
                 <div class="box tour-section">
                     <h1>Lịch trình tour</h1>
-                    <div class="itinerary-item">
-                        <h4>Ngày 1: Hà Nội – Sapa</h4>
-                        <p>Khởi hành từ Hà Nội...</p>
-                    </div>
-                    <div class="itinerary-item">
-                        <h4>Ngày 2: Fansipan – Bản Cát Cát</h4>
-                        <p>Tham quan đỉnh Fansipan...</p>
-                    </div>
-                    <div class="itinerary-item">
-                        <h4>Ngày 3: Sapa – Hà Nội</h4>
-                        <p>Tự do tham quan...</p>
-                    </div>
+                    <p>
+                        <?= nl2br(htmlspecialchars($tour['lichTrinh'])) ?>
+                    </p>
                 </div>
             </div>
 
@@ -93,17 +161,33 @@
 
                 <div class="box">
                     <div class="tour-info">
-                        <p><strong>Thời gian:</strong> 3 ngày 2 đêm</p>
-                        <p><strong>Khởi hành:</strong> Hà Nội</p>
-                        <p><strong>Phương tiện:</strong> Xe du lịch</p>
-                        <p><strong>Số suất vé còn lại:</strong> 12/34</p>
+                        <p><strong>Thời gian:</strong>
+                            <?= $tour['soNgay'] ?> ngày
+                            <?= $tour['soNgay'] - 1 ?> đêm
+                        </p>
+                        <p><strong>Khởi hành:</strong>
+                            <?= date('d/m/Y', strtotime($tour['ngayKhoiHanh'])) ?>
+                        </p>
+                        <p><strong>Điểm đến:</strong>
+                            <?= htmlspecialchars(implode(', ', $tenDiemDen)) ?>
+                        </p>
+                        <p><strong>Nhà tổ chức:</strong>
+                            <?= htmlspecialchars($tour['tenNPP']) ?>
+                        </p>
+                        <p><strong>Số chỗ còn lại:</strong>
+                            <?= $tour['soChoTrong'] ?>
+                        </p>
                     </div>
                     <div class="price-box">
-                        <span class="price">3.990.000đ</span>
+                        <span class="price">
+                            <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ / người
+                        </span>
                     </div>
-                    <button class="btn-book">
-                        Đặt tour ngay
-                    </button>
+                    <?php if (isset($_SESSION['vaiTro']) && $_SESSION['vaiTro'] === 'Khách hàng'): ?>
+                        <a href="datTour.php?id=<?= $tour['maTour'] ?>" class="btn-book">Đặt tour ngay</a>
+                    <?php else: ?>
+                        <a href="../auth/dangNhap.php" class="btn-book">Đăng nhập để đặt tour</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

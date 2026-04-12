@@ -6,7 +6,8 @@ require_once '../../config/database.php';
 function getTourByVung($mysqli, $vung, $limit = 4)
 {
     $stmt = $mysqli->prepare("
-        SELECT t.maTour, t.tenTour, t.giaTour, t.ngayKhoiHanh, t.soChoTrong, t.anhTour
+        SELECT t.maTour, t.tenTour, t.giaTour, t.ngayKhoiHanh, t.soChoTrong,
+               (SELECT duongDan FROM tour_anh WHERE maTour = t.maTour AND laManhChinh = 1 LIMIT 1) AS anhTour
         FROM tour t
         JOIN tour_diemden td ON t.maTour = td.maTour
         JOIN diemden d ON td.maDiemDen = d.maDiemDen
