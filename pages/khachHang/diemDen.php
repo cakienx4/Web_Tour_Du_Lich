@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿<?php
+session_start();
+require_once '../../config/database.php';
+
+$diemDenList = $mysqli->query("
+    SELECT maDiemDen, tenDiemDen, moTa, anhDiemDen, vungMien 
+    FROM diemden 
+    ORDER BY vungMien, tenDiemDen
+");
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -17,75 +28,58 @@
 <body>
 
     <?php include '../../includes/header.php'; ?>
-    
+
     <!-- ------------------------------------- BREADCRUMB ------------------------------------- -->
     <div class="breadcrumb-box">
         <div class="container">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb tour-breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="#" class="breadcrumb-link ">Trang chủ</a>
+                        <a href="trangChu.php" class="breadcrumb-link">Trang chủ</a>
                     </li>
-                    <li class="breadcrumb-item">
-                        <a href="#" class="breadcrumb-link">Danh sách điểm đến</a>
-                    </li>
+                    <li class="breadcrumb-item active">Danh sách điểm đến</li>
                 </ol>
             </nav>
         </div>
     </div>
 
     <div class="container my-4">
+        <h1 class="page-title">Danh sách điểm đến</h1>
+        <hr>
+        <?php
+        $vungHienTai = '';
+        while ($dd = $diemDenList->fetch_assoc()):
+            if ($dd['vungMien'] !== $vungHienTai):
+                if ($vungHienTai !== '')
+                    echo '</div>'; // đóng destination-list trước
+                $vungHienTai = $dd['vungMien'];
+                ?>
+                <h3 class="mt-4 mb-3">Miền
+                    <?= htmlspecialchars($dd['vungMien']) ?>
+                </h3>
+                <div class="destination-list">
+                <?php endif; ?>
 
-        <h1 class="page-title">
-            Danh sách điểm đến
-        </h1>
+                <a href="tour.php?diemDen=<?= $dd['maDiemDen'] ?>" class="destination-card">
+                    <div class="destination-image">
+                        <img src="../../<?= htmlspecialchars($dd['anhDiemDen'] ?? '') ?>"
+                            alt="<?= htmlspecialchars($dd['tenDiemDen']) ?>">
+                    </div>
+                    <div class="destination-content">
+                        <h3 class="destination-name">
+                            <?= htmlspecialchars($dd['tenDiemDen']) ?>
+                        </h3>
+                        <p class="destination-desc">
+                            <?= htmlspecialchars($dd['moTa']) ?>
+                        </p>
+                    </div>
+                </a>
 
-        <div class="destination-list">
-
-            <!-- DESTINATION ITEM -->
-            <a href="#" class="destination-card">
-
-                <div class="destination-image">
-                    <img src="#" alt="Sapa">
-                </div>
-
-                <div class="destination-content">
-                    <h3 class="destination-name">
-                        Sapa
-                    </h3>
-
-                    <p class="destination-desc">
-                        Sapa nổi tiếng với cảnh núi non hùng vĩ, ruộng bậc thang tuyệt đẹp
-                        và nền văn hóa đa dạng của các dân tộc vùng cao.
-                    </p>
-                </div>
-
-            </a>
-
-            <!-- DESTINATION ITEM -->
-            <a href="#" class="destination-card">
-
-                <div class="destination-image">
-                    <img src="#" alt="Đà Nẵng">
-                </div>
-
-                <div class="destination-content">
-                    <h3 class="destination-name">
-                        Đà Nẵng
-                    </h3>
-
-                    <p class="destination-desc">
-                        Thành phố biển hiện đại nổi tiếng với Bà Nà Hills, cầu Rồng
-                        và những bãi biển đẹp nhất Việt Nam.
-                    </p>
-                </div>
-
-            </a>
-
+            <?php endwhile; ?>
+            <?php if ($vungHienTai !== '')
+                echo '</div>'; // đóng destination-list cuối ?>
         </div>
-
-    </div>
-    <?php include '../../includes/footer.php'; ?>
+        <?php include '../../includes/footer.php'; ?>
 </body>
 
 </html>

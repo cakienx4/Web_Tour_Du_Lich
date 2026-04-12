@@ -621,6 +621,7 @@ html {
 /* Image */
 .destination-image {
   width: 40%;
+  height: 140px;
 }
 
 .destination-image img {
@@ -807,6 +808,5 @@ html {
 }
 
 .btn-edit {
-  margin-top: 20px;
   width: 30%;
 }

@@ -18,7 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <li><a href="../../pages/khachHang/tour.php">Tours</a></li>
                 <li><a href="../../pages/khachHang/diemDen.php">Điểm đến</a></li>
                 <li><a href="../../pages/khachHang/gioiThieu.php">Giới thiệu</a></li>
-                <li><a href="#  footer-section">Liên hệ</a></li>
+                <li><a href="#footer-section">Liên hệ</a></li>
             </ul>
         </nav>
 
@@ -33,7 +33,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php echo $_SESSION['hoTen']; ?>
                     </span>
                 </div>
-                <a href="../../pages/khachHang/hoSo-xem.php" class="login-btn">Hồ sơ</a>
+                <a href="../../pages/khachHang/hoSo.php" class="login-btn">Hồ sơ</a>
                 <a href="../../actions/logout.php" class="login-btn">Đăng xuất</a>
 
             <?php else: ?>

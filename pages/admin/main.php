@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿<?php
+session_start();
+require_once '../../config/database.php';
+
+if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Quản trị viên') {
+    header('Location: ../auth/dangNhap.php');
+    exit();
+}
+?>
+
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -10,38 +20,24 @@
 </head>
 
 <body>
-
     <div class="container-fluid">
         <div class="row">
 
-            <div class="col-md-3 col-lg-2 sidebar">
-                <h4 class="text-white text-center mt-3">TAVIVU ADMIN</h4>
-                <a href="#" class="row-odd">Quản lý người dùng</a>
-                <a href="#" class="row-even">Duyệt tour</a>
-                <a href="#" class="row-odd">Danh sách tour</a>
-                <a href="#" class="row-even">Đơn đặt tour</a>
-                <a href="#" class="row-odd">Quản lý điểm đến</a>
-                <a href="#" class="row-even">Danh sách báo cáo vi phạm</a>
-                <a href="#" class="row-odd">Danh sách tour vi phạm</a>
-                <a href="#" class="row-even">Thống kê doanh thu</a>
-                <a href="#" class="row-odd">Đăng xuất</a>
-            </div>
-
+            <?php include '../../includes/sideBar-admin.php'; ?>
 
             <div class="col-md-9 col-lg-10 main-content center-flex">
                 <div class="text-center">
                     <h3 class="text-title">
-                        CHÀO MỪNG QUẢN TRỊ VIÊN QUAY TRỞ LẠI HỆ THỐNG!!
+                        CHÀO MỪNG QUẢN TRỊ VIÊN QUAY TRỞ LẠI HỆ THỐNG!
                     </h3>
                     <p class="mt-3 text-muted">
-                        Hãy lựa chọn giao diện ở sidebar bên trái để có thể tiếp tục sử dụng các chức năng.
+                        Hãy lựa chọn giao diện ở sidebar bên trái để tiếp tục sử dụng các chức năng.
                     </p>
                 </div>
             </div>
 
         </div>
     </div>
-
 </body>
 
 </html>

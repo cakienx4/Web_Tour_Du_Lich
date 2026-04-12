@@ -9,6 +9,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
 }
 
 .sidebar a {
@@ -20,17 +23,23 @@ body {
     font-weight: bold;
 }
 
+.sidebar a.active {
+    font-weight: bold;
+    opacity: 1;
+    border-left: 4px solid #fff;
+}
+
 .sidebar a:hover {
     background-color: #495057;
     color: white;
 }
 
-.sidebar .row-odd{
+.sidebar .row-odd {
     background-color: rgb(138, 138, 138);
-    
+
 }
 
-.sidebar .row-even{
+.sidebar .row-even {
     background-color: rgb(187, 187, 187);
 }
 
@@ -50,7 +59,7 @@ body {
 }
 
 
-.content-box-chiTiet{
+.content-box-chiTiet {
     background-color: white;
     padding: 10px 20px;
     border: 1px solid black;
@@ -58,7 +67,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.title-box-chiTiet{
+.title-box-chiTiet {
     display: flex;
     justify-content: space-between;
 }
