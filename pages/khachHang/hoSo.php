@@ -2,11 +2,6 @@
 session_start();
 require_once '../../config/database.php';
 
-if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Khách hàng') {
-    header('Location: ../auth/dangNhap.php');
-    exit();
-}
-
 $stmt = $mysqli->prepare("SELECT hoTen, email, soDienThoai FROM user WHERE maND = ?");
 $stmt->bind_param("i", $_SESSION['maND']);
 $stmt->execute();

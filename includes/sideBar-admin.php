@@ -4,7 +4,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
 <div class="col-md-3 col-lg-2 sidebar">
     <h4 class="text-white text-center mt-3">TAVIVU ADMIN</h4>
-    <a href="main.php" class="<?= $currentPage === 'main.php' ? 'row-odd active' : 'row-odd' ?>">Dashboard</a>
     <a href="quanLyUsers.php" class="<?= $currentPage === 'quanLyUsers.php' ? 'row-even active' : 'row-even' ?>">Quản lý người dùng</a>
     <a href="duyetTour.php" class="<?= $currentPage === 'duyetTour.php' ? 'row-odd active' : 'row-odd' ?>">Duyệt tour</a>
     <a href="quanLyTours.php" class="<?= $currentPage === 'quanLyTours.php' ? 'row-even active' : 'row-even' ?>">Danh sách tour</a>

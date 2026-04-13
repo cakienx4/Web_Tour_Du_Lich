@@ -15,18 +15,7 @@
         <div class="row">
 
             <!-- SIDEBAR -->
-            <div class="col-md-3 col-lg-2 sidebar">
-                <h4 class="text-white text-center mt-3">TAVIVU ADMIN</h4>
-                <a href="#" class="row-odd">Quản lý người dùng</a>
-                <a href="#" class="row-even">Duyệt tour</a>
-                <a href="#" class="row-odd">Danh sách tour</a>
-                <a href="#" class="row-even">Đơn đặt tour</a>
-                <a href="#" class="row-odd">Quản lý điểm đến</a>
-                <a href="#" class="row-even">Danh sách báo cáo vi phạm</a>
-                <a href="#" class="row-odd">Danh sách tour vi phạm</a>
-                <a href="#" class="row-even">Thống kê doanh thu</a>
-                <a href="#" class="row-odd">Đăng xuất</a>
-            </div>
+            <?php include "../../includes/sideBar-admin.php";?>
 
             <!-- MAIN CONTENT -->
             <div class="col-md-9 col-lg-10 p-4">
@@ -50,7 +39,6 @@
                             <select class="form-select">
                                 <option>Tất cả vai trò</option>
                                 <option>Khách hàng</option>
-                                <option>Admin</option>
                                 <option>Nhà phân phối</option>
                             </select>
                         </div>
@@ -73,6 +61,7 @@
                                 <th>ID</th>
                                 <th>Họ tên</th>
                                 <th>Email</th>
+                                <th>Số điện thoại</th>
                                 <th>Vai trò</th>
                                 <th>Hành động</th>
                             </tr>
@@ -84,6 +73,7 @@
                                 <td>1</td>
                                 <td>Nguyễn Văn A</td>
                                 <td>a@gmail.com</td>
+                                <td>0123456789</td>
                                 <td><span class="badge bg-primary">Admin</span></td>
                                 <td>
                                     <button class="btn btn-warning btn-sm">Sửa</button>
@@ -95,6 +85,7 @@
                                 <td>2</td>
                                 <td>Trần Thị B</td>
                                 <td>b@gmail.com</td>
+                                <td>0123456789</td>
                                 <td><span class="badge bg-success">Khách hàng</span></td>
                                 <td>
                                     <button class="btn btn-warning btn-sm">Sửa</button>
@@ -106,6 +97,7 @@
                                 <td>3</td>
                                 <td>Lê Văn C</td>
                                 <td>c@gmail.com</td>
+                                <td>0123456789</td>
                                 <td><span class="badge bg-info text-dark">Nhà phân phối</span></td>
                                 <td>
                                     <button class="btn btn-warning btn-sm">Sửa</button>

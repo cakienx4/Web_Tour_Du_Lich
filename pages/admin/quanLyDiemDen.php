@@ -15,19 +15,7 @@
         <div class="row">
 
             <!-- SIDEBAR -->
-            <div class="col-md-3 col-lg-2 sidebar">
-                <h4 class="text-white text-center mt-3">TAVIVU ADMIN</h4>
-
-                <a href="#" class="row-odd">Quản lý người dùng</a>
-                <a href="#" class="row-even">Duyệt tour</a>
-                <a href="#" class="row-odd">Danh sách tour</a>
-                <a href="#" class="row-even">Đơn đặt tour</a>
-                <a href="#" class="row-odd active">Quản lý điểm đến</a>
-                <a href="#" class="row-even">Danh sách báo cáo vi phạm</a>
-                <a href="#" class="row-odd">Danh sách tour vi phạm</a>
-                <a href="#" class="row-even">Thống kê doanh thu</a>
-                <a href="#" class="row-odd">Đăng xuất</a>
-            </div>
+            <?php include "../../includes/sideBar-admin.php";?>
 
             <!-- MAIN CONTENT -->
             <div class="col-md-9 col-lg-10 p-4">

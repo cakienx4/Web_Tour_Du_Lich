@@ -15,16 +15,8 @@
         <div class="row">
 
             <!-- SIDEBAR -->
-            <div class="col-md-3 col-lg-2 sidebar">
-                <h4 class="text-white text-center mt-3">TAVIVU PROVIDER</h4>
+            <?php include "../../includes/sideBar-NPP.php";?>
 
-                <a href="#" class="row-odd">Tour đã tạo</a>
-                <a href="#" class="row-even">Tạo tour</a>
-                <a href="#" class="row-odd">Đơn đặt tour</a>
-                <a href="#" class="row-even active">Phản hồi từ Admin</a>
-                <a href="#" class="row-odd">Thống kê doanh thu</a>
-                <a href="#" class="row-even">Đăng xuất</a>
-            </div>
 
             <!-- CONTENT -->
             <div class="col-md-9 col-lg-10 p-4">
