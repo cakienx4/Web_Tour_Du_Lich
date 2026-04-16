@@ -101,6 +101,11 @@ $donDatList = $stmt->get_result();
                                 class="btn btn-outline-danger cancel-btn w-100">
                                 Hủy đơn
                             </a>
+                        <?php elseif ($don['trangThaiTT'] === 'hetHan' || $don['trangThaiTT'] === 'daHuy'): ?>
+                            <a href="../../actions/donDat/deleteBooking.php?maDon=<?= $don['maDon'] ?>"
+                                class="btn btn-danger cancel-btn w-100">
+                                Xóa đơn
+                            </a>
                         <?php endif; ?>
                     </div>
 

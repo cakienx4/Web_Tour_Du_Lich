@@ -36,4 +36,3 @@ if ($stmt->execute()) {
     header('Location: ../../pages/khachHang/tour_ChiTiet.php?id=' . $maTour . '&error=loi_he_thong');
 }
 exit();
-?>

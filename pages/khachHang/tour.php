@@ -254,7 +254,7 @@ $diemDenList = $mysqli->query("SELECT maDiemDen, tenDiemDen FROM diemden ORDER B
             <div class="col-lg-9">
                 <div class="tour-list">
                     <?php while ($tour = $tours->fetch_assoc()): ?>
-                        <a href="tour_ChiTiet.php?id=<?= $tour['maTour'] ?>" class="destination-item">
+                        <a href="tour_ChiTiet.php?maTour=<?= $tour['maTour'] ?>" class="destination-item">
                             <div class="card-image">
                                 <img src="../../<?= htmlspecialchars($tour['anhTour']) ?>"
                                     alt="<?= htmlspecialchars($tour['tenTour']) ?>">

@@ -1,4 +1,18 @@
-﻿<!DOCTYPE html>
+﻿<?php
+require_once '../../config/database.php';
+
+$sql = "
+SELECT t.*, u.hoTen 
+FROM tour t
+JOIN user u ON t.maND = u.maND
+WHERE t.trangThai = 'Chờ duyệt'
+ORDER BY t.maTour DESC
+";
+
+$result = $mysqli->query($sql);
+?>
+
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -15,7 +29,7 @@
         <div class="row">
 
             <!-- SIDEBAR -->
-            <?php include "../../includes/sideBar-admin.php";?>
+            <?php include "../../includes/sideBar-admin.php"; ?>
 
             <!-- MAIN CONTENT -->
             <div class="col-md-9 col-lg-10 p-4">
@@ -24,7 +38,18 @@
                 <h3 class="mb-4 text-title">Duyệt tour</h3>
 
                 <hr>
+                
+                <?php if (isset($_GET['success'])): ?>
+                    <div class="alert alert-success">
+                        <?= $_GET['success'] === 'approved' ? 'Đã duyệt tour!' : 'Đã từ chối tour!' ?>
+                    </div>
+                <?php endif; ?>
 
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger">
+                        Lỗi xảy ra!
+                    </div>
+                <?php endif; ?>
                 <!-- TOOLBAR -->
                 <div class="content-box mb-3">
                     <div class="row">
@@ -56,37 +81,45 @@
                         </thead>
 
                         <tbody>
+                            <?php while ($tour = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td>
+                                        <?= $tour['maTour'] ?>
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($tour['tenTour']) ?>
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($tour['hoTen']) ?>
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($tour['diemDen'] ?? '...') ?>
+                                    </td>
+                                    <td>
+                                        <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ
+                                    </td>
+                                    <td>
+                                        <?= $tour['soChoTrong'] ?>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                    </td>
+                                    <td>
+                                        <a href="../khachHang/tour_ChiTiet.php?maTour=<?= $tour['maTour'] ?>"
+                                            class="btn btn-info btn-sm">Xem</a>
 
-                            <!-- Dữ liệu mẫu -->
-                            <tr>
-                                <td>101</td>
-                                <td>Tour Đà Nẵng 3N2Đ</td>
-                                <td>Công ty ABC</td>
-                                <td>Đà Nẵng</td>
-                                <td>3.500.000đ</td>
-                                <td>30/30</td>
-                                <td><span class="badge bg-warning text-dark">Chờ duyệt</span></td>
-                                <td>
-                                    <a href="chiTietTour.html" class="btn btn-info btn-sm">Xem</a>
-                                    <button class="btn btn-success btn-sm">Duyệt</button>
-                                    <button class="btn btn-danger btn-sm">Từ chối</button>
-                                </td>
-                            </tr>
+                                        <a href="../../actions/tour/approveTour.php?id=<?= $tour['maTour'] ?>"
+                                            class="btn btn-success btn-sm" onclick="return confirm('Duyệt tour này?')">
+                                            Duyệt
+                                        </a>
 
-                            <tr>
-                                <td>102</td>
-                                <td>Tour Phú Quốc 4N3Đ</td>
-                                <td>Du lịch XYZ</td>
-                                <td>Phú Quốc</td>
-                                <td>5.200.000đ</td>
-                                <td>30/30</td>
-                                <td><span class="badge bg-warning text-dark">Chờ duyệt</span></td>
-                                <td>
-                                    <a href="#" class="btn btn-info btn-sm">Xem</a>
-                                    <button class="btn btn-success btn-sm">Duyệt</button>
-                                    <button class="btn btn-danger btn-sm">Từ chối</button>
-                                </td>
-                            </tr>
+                                        <a href="../../actions/tour/rejectTour.php?id=<?= $tour['maTour'] ?>"
+                                            class="btn btn-danger btn-sm" onclick="return confirm('Từ chối tour này?')">
+                                            Từ chối
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
 
                         </tbody>
 

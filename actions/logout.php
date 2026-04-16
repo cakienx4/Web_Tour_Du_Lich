@@ -10,4 +10,3 @@ session_destroy();
 // Điều hướng về trang chủ khách
 header("Location: ../pages/khachHang/trangChu.php");
 exit();
-?>

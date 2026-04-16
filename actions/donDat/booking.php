@@ -118,4 +118,3 @@ if ($stmtInsert->execute()) {
     header('Location: ../../pages/khachHang/datTour.php?id=' . $maTour . '&error=loi_he_thong');
     exit();
 }
-?>

@@ -3,7 +3,7 @@ session_start();
 require_once '../../config/database.php';
 
 // Lấy maTour từ URL
-$maTour = $_GET['id'] ?? null;
+$maTour = $_GET['maTour'] ?? null;
 
 if (!$maTour) {
     header('Location: tour.php');
@@ -195,7 +195,7 @@ $anhGallery = $stmtGallery->get_result();
                     </div>
                     <?php if (isset($_SESSION['vaiTro']) && $_SESSION['vaiTro'] === 'Khách hàng'): ?>
                         <div class="d-grid gap-2">
-                            <a href="datTour.php?id=<?= $tour['maTour'] ?>" class="btn btn-danger fw-bold">Đặt tour ngay</a>
+                            <a href="datTour.php?maTour=<?= $tour['maTour'] ?>" class="btn btn-danger fw-bold">Đặt tour ngay</a>
                             <button type="button" class="btn btn-warning fw-bold" data-bs-toggle="modal"
                                 data-bs-target="#popupBaoCao">
                                 Báo cáo vi phạm

@@ -10,11 +10,11 @@ if (!$id) {
 
 $stmt = $mysqli->prepare("
     UPDATE tour 
-    SET trangThai = 'Đang bán'
+    SET trangThai = 'Từ chối'
     WHERE maTour = ?
 ");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 
-header("Location: ../../pages/admin/duyetTour.php?success=approved");
+header("Location: ../../pages/admin/duyetTour.php?success=rejected");
 exit;

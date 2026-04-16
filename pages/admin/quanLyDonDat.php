@@ -1,4 +1,76 @@
-﻿<!DOCTYPE html>
+﻿<?php
+session_start();
+require_once '../../config/database.php';
+
+// Check quyền
+if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Quản trị viên') {
+    header('Location: ../auth/dangNhap.php');
+    exit();
+}
+
+// Lấy filter
+$timKiem = $_GET['timKiem'] ?? '';
+$maDon = $_GET['maDon'] ?? '';
+$maTour = $_GET['maTour'] ?? '';
+$trangThai = $_GET['trangThai'] ?? '';
+
+// SQL
+$sql = "
+SELECT dd.*, 
+       t.tenTour, 
+       t.maTour,
+       u.hoTen
+FROM dondat dd
+JOIN tour t ON dd.maTour = t.maTour
+JOIN user u ON dd.maND = u.maND
+WHERE 1=1
+";
+
+$params = [];
+$types = "";
+
+// Tìm kiếm theo tên KH hoặc tour
+if (!empty($timKiem)) {
+    $sql .= " AND (u.hoTen LIKE ? OR t.tenTour LIKE ?)";
+    $params[] = "%$timKiem%";
+    $params[] = "%$timKiem%";
+    $types .= "ss";
+}
+
+// Lọc theo ID đơn
+if (!empty($maDon)) {
+    $sql .= " AND dd.maDon = ?";
+    $params[] = $maDon;
+    $types .= "i";
+}
+
+// Lọc theo tour
+if (!empty($maTour)) {
+    $sql .= " AND dd.maTour = ?";
+    $params[] = $maTour;
+    $types .= "i";
+}
+
+// Lọc trạng thái
+if (!empty($trangThai) && $trangThai !== 'Tất cả') {
+    $sql .= " AND dd.trangThaiTT = ?";
+    $params[] = $trangThai;
+    $types .= "s";
+}
+
+$sql .= " ORDER BY dd.maDon DESC";
+
+$stmt = $mysqli->prepare($sql);
+
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
+
+$stmt->execute();
+$dondats = $stmt->get_result();
+?>
+
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -15,7 +87,7 @@
         <div class="row">
 
             <!-- SIDEBAR -->
-            <?php include "../../includes/sideBar-admin.php";?>
+            <?php include "../../includes/sideBar-admin.php"; ?>
 
             <!-- MAIN CONTENT -->
             <div class="col-md-9 col-lg-10 p-4">
@@ -27,41 +99,44 @@
 
                 <!-- FILTER -->
                 <div class="content-box mb-3">
-                    <div class="row">
+                    <form method="GET">
+                        <div class="row">
 
-                        <!-- SEARCH -->
-                        <div class="col-md-4">
-                            <label class="form-label"><strong>Tìm kiếm</strong></label>
-                            <input type="text" class="form-control" placeholder="Tên khách hàng hoặc tour...">
+                            <div class="col-md-4">
+                                <label><strong>Tìm kiếm</strong></label>
+                                <input type="text" name="timKiem" class="form-control"
+                                    value="<?= htmlspecialchars($timKiem) ?>">
+                            </div>
+
+                            <div class="col-md-2">
+                                <label><strong>ID đơn</strong></label>
+                                <input type="text" name="maDon" class="form-control"
+                                    value="<?= htmlspecialchars($maDon) ?>">
+                            </div>
+
+                            <div class="col-md-2">
+                                <label><strong>ID Tour</strong></label>
+                                <input type="text" name="maTour" class="form-control"
+                                    value="<?= htmlspecialchars($maTour) ?>">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Trạng thái</strong></label>
+                                <select name="trangThai" class="form-select">
+                                    <option>Tất cả</option>
+                                    <option <?= $trangThai == 'choThanhToan' ? 'selected' : '' ?>>choThanhToan</option>
+                                    <option <?= $trangThai == 'daThanhToan' ? 'selected' : '' ?>>daThanhToan</option>
+                                    <option <?= $trangThai == 'daHuy' ? 'selected' : '' ?>>daHuy</option>
+                                    <option <?= $trangThai == 'hetHan' ? 'selected' : '' ?>>hetHan</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-1 d-flex align-items-end">
+                                <button class="btn btn-primary w-100">Lọc</button>
+                            </div>
+
                         </div>
-
-                        <!-- ID đơn -->
-                        <div class="col-md-2">
-                            <label class="form-label"><strong>ID đơn</strong></label>
-                            <input type="text" class="form-control" placeholder="Nhập ID đơn">
-                        </div>
-
-                        <!-- ID tour -->
-                        <div class="col-md-2">
-                            <label class="form-label"><strong>ID Tour</strong></label>
-                            <input type="text" class="form-control" placeholder="Nhập ID tour">
-                        </div>
-
-                        <!-- TRẠNG THÁI -->
-                        <div class="col-md-3">
-                            <label class="form-label"><strong>Trạng thái thanh toán</strong></label>
-                            <select class="form-select">
-                                <option>Tất cả</option>
-                                <option>Chờ thanh toán</option>
-                                <option>Đã thanh toán</option>
-                                <option>Đã hủy</option>
-                                <option>Không hợp lệ</option>
-                            </select>
-                        </div>
-
-
-
-                    </div>
+                    </form>
                 </div>
 
                 <!-- TABLE -->
@@ -84,38 +159,56 @@
                         </thead>
 
                         <tbody>
+                            <?php while ($don = $dondats->fetch_assoc()): ?>
+                                <tr>
+                                    <td>
+                                        <?= $don['maDon'] ?>
+                                    </td>
+                                    <td>
+                                        <?= $don['maTour'] ?>
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($don['hoTen']) ?>
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($don['tenTour']) ?>
+                                    </td>
 
-                            <!-- Dữ liệu mẫu -->
-                            <tr>
-                                <td>501</td>
-                                <td>101</td>
-                                <td>Nguyễn Văn A</td>
-                                <td>Tour Đà Nẵng 3N2Đ</td>
-                                <td>2026-03-20</td>
-                                <td>3.500.000đ</td>
-                                <td>MOMO</td>
-                                <td><span class="badge bg-success">Đã thanh toán</span></td>
-                                <td>
-                                    <a href="#" class="btn btn-info btn-sm">Xem</a>
-                                    <button class="btn btn-primary btn-sm">Cập nhật trạng thái</button>
-                                </td>
-                            </tr>
+                                    <td>
+                                        <?= date('d/m/Y', strtotime($don['thoiGianDat'])) ?>
+                                    </td>
 
-                            <tr>
-                                <td>502</td>
-                                <td>102</td>
-                                <td>Trần Thị B</td>
-                                <td>Tour Phú Quốc 4N3Đ</td>
-                                <td>2026-03-22</td>
-                                <td>5.200.000đ</td>
-                                <td>-</td>
-                                <td><span class="badge bg-warning text-dark">Chờ thanh toán</span></td>
-                                <td>
-                                    <a href="#" class="btn btn-info btn-sm">Xem</a>
-                                    <button class="btn btn-primary btn-sm">Cập nhật trạng thái</button>
-                                </td>
-                            </tr>
+                                    <td>
+                                        <?= number_format($don['tongTien'], 0, ',', '.') ?>đ
+                                    </td>
 
+                                    <td>
+                                        <?= $don['phuongThucTT'] ?? '-' ?>
+                                    </td>
+
+                                    <td>
+                                        <?php if ($don['trangThaiTT'] === 'daThanhToan'): ?>
+                                            <span class="badge bg-success">Đã thanh toán</span>
+                                        <?php elseif ($don['trangThaiTT'] === 'choThanhToan'): ?>
+                                            <span class="badge bg-warning text-dark">Chờ thanh toán</span>
+                                        <?php elseif ($don['trangThaiTT'] === 'daHuy'): ?>
+                                            <span class="badge bg-danger">Đã hủy</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-secondary">Hết hạn</span>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <td>
+                                        <a href="chiTietDon.php?maDon=<?= $don['maDon'] ?>"
+                                            class="btn btn-info btn-sm">Xem</a>
+
+                                        <a href="../../actions/donDat/updateStatus.php?maDon=<?= $don['maDon'] ?>"
+                                            class="btn btn-primary btn-sm">
+                                            Cập nhật
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
                         </tbody>
 
                     </table>
