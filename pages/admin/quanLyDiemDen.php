@@ -1,4 +1,41 @@
-﻿<!DOCTYPE html>
+﻿<?php
+session_start();
+require_once '../../config/database.php';
+
+if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Quản trị viên') {
+    header('Location: ../auth/dangNhap.php');
+    exit();
+}
+
+// Tìm kiếm + lọc
+$search = trim($_GET['search'] ?? '');
+$vungMien = $_GET['vungMien'] ?? '';
+
+$sql = "SELECT * FROM diemden WHERE 1=1";
+$params = [];
+$types = '';
+
+if ($search) {
+    $sql .= " AND tenDiemDen LIKE ?";
+    $params[] = "%$search%";
+    $types .= 's';
+}
+
+if ($vungMien && in_array($vungMien, ['Bắc', 'Trung', 'Nam'])) {
+    $sql .= " AND vungMien = ?";
+    $params[] = $vungMien;
+    $types .= 's';
+}
+
+$sql .= " ORDER BY maDiemDen ASC";
+$stmt = $mysqli->prepare($sql);
+if ($params)
+    $stmt->bind_param($types, ...$params);
+$stmt->execute();
+$dsDiemDen = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+?>
+
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -15,7 +52,7 @@
         <div class="row">
 
             <!-- SIDEBAR -->
-            <?php include "../../includes/sideBar-admin.php";?>
+            <?php include "../../includes/sideBar-admin.php"; ?>
 
             <!-- MAIN CONTENT -->
             <div class="col-md-9 col-lg-10 p-4">
@@ -24,34 +61,45 @@
                 <h3 class="mb-4 text-title">Quản lý điểm đến</h3>
 
                 <hr>
+
+                <?php if (!empty($_GET['success'])): ?>
+                    <div class="alert alert-success">
+                        <?= match ($_GET['success']) {
+                            'them_moi' => 'Thêm điểm đến thành công!',
+                            'cap_nhat' => 'Cập nhật điểm đến thành công!',
+                            'xoa' => 'Xóa điểm đến thành công!',
+                            default => 'Thao tác thành công!'
+                        } ?>
+                    </div>
+                <?php endif; ?>
                 
                 <!-- FILTER + ADD -->
                 <div class="content-box mb-3">
-                    <div class="row">
-
-                        <!-- SEARCH -->
-                        <div class="col-md-5">
-                            <label class="form-label">Tìm kiếm</label>
-                            <input type="text" class="form-control" placeholder="Tên điểm đến...">
+                    <form method="GET" action="">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label class="form-label">Tìm kiếm</label>
+                                <input type="text" name="search" class="form-control" placeholder="Tên điểm đến..."
+                                    value="<?= htmlspecialchars($search) ?>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Vùng miền</label>
+                                <select name="vungMien" class="form-select">
+                                    <option value="">Tất cả</option>
+                                    <option value="Bắc" <?= $vungMien === 'Bắc' ? 'selected' : '' ?>>Miền Bắc</option>
+                                    <option value="Trung" <?= $vungMien === 'Trung' ? 'selected' : '' ?>>Miền Trung
+                                    </option>
+                                    <option value="Nam" <?= $vungMien === 'Nam' ? 'selected' : '' ?>>Miền Nam</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-secondary w-100">Lọc</button>
+                            </div>
+                            <div class="col-md-2 text-end d-flex align-items-end">
+                                <a href="themDiemDen.php" class="btn btn-primary w-100">Thêm điểm đến</a>
+                            </div>
                         </div>
-
-                        <!-- REGION -->
-                        <div class="col-md-3">
-                            <label class="form-label">Vùng miền</label>
-                            <select class="form-select">
-                                <option>Tất cả</option>
-                                <option>Miền Bắc</option>
-                                <option>Miền Trung</option>
-                                <option>Miền Nam</option>
-                            </select>
-                        </div>
-
-                        <!-- ADD -->
-                        <div class="col-md-4 text-end d-flex align-items-end">
-                            <a href="#" class="btn btn-primary">Thêm điểm đến</a>
-                        </div>
-
-                    </div>
+                    </form>
                 </div>
 
                 <!-- TABLE -->
@@ -70,41 +118,35 @@
                         </thead>
 
                         <tbody>
-
-                            <!-- Dữ liệu mẫu -->
-                            <tr>
-                                <td>1</td>
-                                <td>Đà Nẵng</td>
-                                <td>Miền Trung</td>
-                                <td>Thành phố biển nổi tiếng với du lịch</td>
-                                <td>
-                                    <a href="#" class="btn btn-warning btn-sm">Sửa</a>
-                                    <button class="btn btn-danger btn-sm">Xóa</button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>2</td>
-                                <td>Phú Quốc</td>
-                                <td>Miền Nam</td>
-                                <td>Đảo du lịch nổi tiếng</td>
-                                <td>
-                                    <a href="#" class="btn btn-warning btn-sm">Sửa</a>
-                                    <button class="btn btn-danger btn-sm">Xóa</button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>3</td>
-                                <td>Hà Nội</td>
-                                <td>Miền Bắc</td>
-                                <td>Thủ đô nghìn năm văn hiến</td>
-                                <td>
-                                    <a href="#" class="btn btn-warning btn-sm">Sửa</a>
-                                    <button class="btn btn-danger btn-sm">Xóa</button>
-                                </td>
-                            </tr>
-
+                            <?php if (empty($dsDiemDen)): ?>
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">Không tìm thấy điểm đến nào.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($dsDiemDen as $dd): ?>
+                                    <tr>
+                                        <td>
+                                            <?= $dd['maDiemDen'] ?>
+                                        </td>
+                                        <td>
+                                            <?= htmlspecialchars($dd['tenDiemDen']) ?>
+                                        </td>
+                                        <td>Miền
+                                            <?= htmlspecialchars($dd['vungMien']) ?>
+                                        </td>
+                                        <td>
+                                            <?= htmlspecialchars(mb_strimwidth($dd['moTa'], 0, 60, '...')) ?>
+                                        </td>
+                                        <td>
+                                            <a href="themDiemDen.php?edit=<?= $dd['maDiemDen'] ?>"
+                                                class="btn btn-warning btn-sm">Sửa</a>
+                                            <a href="../../actions/diemDen/deleteDiemDen.php?id=<?= $dd['maDiemDen'] ?>"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Xóa điểm đến này?')">Xóa</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
 
                     </table>

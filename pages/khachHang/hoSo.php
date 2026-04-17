@@ -2,7 +2,7 @@
 session_start();
 require_once '../../config/database.php';
 
-$stmt = $mysqli->prepare("SELECT hoTen, email, soDienThoai FROM user WHERE maND = ?");
+$stmt = $mysqli->prepare("SELECT hoTen, email, soDienThoai, diaChi FROM user WHERE maND = ?");
 $stmt->bind_param("i", $_SESSION['maND']);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
@@ -77,6 +77,11 @@ $mode = $_GET['mode'] ?? 'view';
                             value="<?= htmlspecialchars($user['soDienThoai']) ?>" required>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Địa chỉ</label>
+                        <input type="text" name="diaChi" class="form-control"
+                            value="<?= htmlspecialchars($user['diaChi'] ?? '') ?>">
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Mật khẩu mới <small class="text-muted">(để trống nếu không
                                 đổi)</small></label>
                         <input type="password" name="matKhau" class="form-control">
@@ -105,6 +110,12 @@ $mode = $_GET['mode'] ?? 'view';
                 <div class="profile-row">
                     <span class="profile-label">Số điện thoại</span>
                     <span class="profile-value"><?= htmlspecialchars($user['soDienThoai']) ?></span>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Địa chỉ</span>
+                    <span class="profile-value">
+                        <?= htmlspecialchars($user['diaChi'] ?? 'Chưa cập nhật') ?>
+                    </span>
                 </div>
                 <div class="profile-row">
                     <span class="profile-label">Mật khẩu</span>

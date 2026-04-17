@@ -124,10 +124,10 @@ $dondats = $stmt->get_result();
                                 <label><strong>Trạng thái</strong></label>
                                 <select name="trangThai" class="form-select">
                                     <option>Tất cả</option>
-                                    <option <?= $trangThai == 'choThanhToan' ? 'selected' : '' ?>>choThanhToan</option>
-                                    <option <?= $trangThai == 'daThanhToan' ? 'selected' : '' ?>>daThanhToan</option>
-                                    <option <?= $trangThai == 'daHuy' ? 'selected' : '' ?>>daHuy</option>
-                                    <option <?= $trangThai == 'hetHan' ? 'selected' : '' ?>>hetHan</option>
+                                    <option <?= $trangThai == 'Chờ thanh toán' ? 'selected' : '' ?>>Chờ thanh toán</option>
+                                    <option <?= $trangThai == 'Đã thanh toán' ? 'selected' : '' ?>>Đã thanh toán</option>
+                                    <option <?= $trangThai == 'Đã hủy' ? 'selected' : '' ?>>Đã hủy</option>
+                                    <option <?= $trangThai == 'Hết hạn' ? 'selected' : '' ?>>Hết hạn</option>
                                 </select>
                             </div>
 
@@ -187,11 +187,11 @@ $dondats = $stmt->get_result();
                                     </td>
 
                                     <td>
-                                        <?php if ($don['trangThaiTT'] === 'daThanhToan'): ?>
+                                        <?php if ($don['trangThaiTT'] === 'Đã thanh toán'): ?>
                                             <span class="badge bg-success">Đã thanh toán</span>
-                                        <?php elseif ($don['trangThaiTT'] === 'choThanhToan'): ?>
+                                        <?php elseif ($don['trangThaiTT'] === 'Chờ thanh toán'): ?>
                                             <span class="badge bg-warning text-dark">Chờ thanh toán</span>
-                                        <?php elseif ($don['trangThaiTT'] === 'daHuy'): ?>
+                                        <?php elseif ($don['trangThaiTT'] === 'Đã hủy'): ?>
                                             <span class="badge bg-danger">Đã hủy</span>
                                         <?php else: ?>
                                             <span class="badge bg-secondary">Hết hạn</span>

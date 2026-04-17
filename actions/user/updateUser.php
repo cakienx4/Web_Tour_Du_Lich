@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $hoTen = trim($_POST['hoTen'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $soDienThoai = trim($_POST['soDienThoai'] ?? '');
+$diaChi = trim($_POST['diaChi'] ?? '');
 $matKhau = $_POST['matKhau'] ?? '';
 
 if (empty($hoTen) || empty($email) || empty($soDienThoai)) {
@@ -29,17 +30,11 @@ if ($stmtCheck->get_result()->num_rows > 0) {
 // Có đổi mật khẩu không
 if (!empty($matKhau)) {
     $hashedPassword = password_hash($matKhau, PASSWORD_DEFAULT);
-    $stmt = $mysqli->prepare("
-        UPDATE user SET hoTen = ?, email = ?, soDienThoai = ?, matKhau = ?
-        WHERE maND = ?
-    ");
-    $stmt->bind_param("ssssi", $hoTen, $email, $soDienThoai, $hashedPassword, $_SESSION['maND']);
+    $stmt = $mysqli->prepare("UPDATE user SET hoTen=?, email=?, soDienThoai=?, matKhau=?, diaChi=? WHERE maND=?");
+    $stmt->bind_param("sssssi", $hoTen, $email, $soDienThoai, $hashedPassword, $diaChi, $_SESSION['maND']);
 } else {
-    $stmt = $mysqli->prepare("
-        UPDATE user SET hoTen = ?, email = ?, soDienThoai = ?
-        WHERE maND = ?
-    ");
-    $stmt->bind_param("sssi", $hoTen, $email, $soDienThoai, $_SESSION['maND']);
+    $stmt = $mysqli->prepare("UPDATE user SET hoTen=?, email=?, soDienThoai=?, diaChi=? WHERE maND=?");
+    $stmt->bind_param("ssssi", $hoTen, $email, $soDienThoai, $diaChi, $_SESSION['maND']);
 }
 
 if ($stmt->execute()) {

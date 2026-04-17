@@ -91,12 +91,40 @@ if ($editId) {
 
                         <div class="mb-3">
                             <label class="form-label"><strong>Vai trò</strong></label>
-                            <select name="vaiTro" class="form-select" required>
+                            <select name="vaiTro" id="vaiTroSelect" class="form-select" required
+                                onchange="toggleRoleFields()">
                                 <option value="Khách hàng" <?= ($user['vaiTro'] ?? '') === 'Khách hàng' ? 'selected' : '' ?>>Khách hàng</option>
                                 <option value="Nhà phân phối tour" <?= ($user['vaiTro'] ?? '') === 'Nhà phân phối tour' ? 'selected' : '' ?>>Nhà phân phối</option>
                                 <option value="Quản trị viên" <?= ($user['vaiTro'] ?? '') === 'Quản trị viên' ? 'selected' : '' ?>>Quản trị viên</option>
                             </select>
                         </div>
+
+                        <!-- Chỉ hiện khi Khách hàng -->
+                        <?php if (!$editId || $user['vaiTro'] === 'Khách hàng'): ?>
+                            <div id="khachHangFields">
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Địa chỉ</strong></label>
+                                    <input type="text" name="diaChi" class="form-control"
+                                        value="<?= htmlspecialchars($user['diaChi'] ?? '') ?>">
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- Chỉ hiện khi NPP -->
+                        <?php if (!$editId || $user['vaiTro'] === 'Nhà phân phối tour'): ?>
+                            <div id="nppFields">
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Tên công ty</strong></label>
+                                    <input type="text" name="tenCongTy" class="form-control"
+                                        value="<?= htmlspecialchars($user['tenCongTy'] ?? '') ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Địa chỉ công ty</strong></label>
+                                    <input type="text" name="diaChiCongTy" class="form-control"
+                                        value="<?= htmlspecialchars($user['diaChiCongTy'] ?? '') ?>">
+                                </div>
+                            </div>
+                        <?php endif; ?>
 
                         <div class="d-flex justify-content-between">
                             <a href="quanLyUsers.php" class="btn btn-secondary">← Quay lại</a>
@@ -110,7 +138,20 @@ if ($editId) {
 
         </div>
     </div>
+    <script>
+        function toggleRoleFields() {
+            const vaiTro = document.getElementById('vaiTroSelect').value;
 
+            const khachHangFields = document.getElementById('khachHangFields');
+            const nppFields = document.getElementById('nppFields');
+
+            khachHangFields.style.display = vaiTro === 'Khách hàng' ? 'block' : 'none';
+            nppFields.style.display = vaiTro === 'Nhà phân phối tour' ? 'block' : 'none';
+        }
+
+        // Chạy ngay khi load trang để ẩn/hiện đúng nếu đang edit
+        toggleRoleFields();
+    </script>
 </body>
 
 </html>
