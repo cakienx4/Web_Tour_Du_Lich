@@ -199,10 +199,10 @@ $dondats = $stmt->get_result();
                                     </td>
 
                                     <td>
-                                        <a href="chiTietDon.php?maDon=<?= $don['maDon'] ?>"
+                                        <a href="chiTietDonDat.php?maDon=<?= $don['maDon'] ?>"
                                             class="btn btn-info btn-sm">Xem</a>
 
-                                        <a href="../../actions/donDat/updateStatus.php?maDon=<?= $don['maDon'] ?>"
+                                        <a href="../../actions/donDat/updateBooking.php?maDon=<?= $don['maDon'] ?>"
                                             class="btn btn-primary btn-sm">
                                             Cập nhật
                                         </a>

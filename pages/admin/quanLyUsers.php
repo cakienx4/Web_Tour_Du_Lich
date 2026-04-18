@@ -11,7 +11,7 @@ if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Quản trị viên') {
 $timKiem = $_GET['timKiem'] ?? '';
 $vaiTro = $_GET['vaiTro'] ?? '';
 
-$sql = "SELECT maND, hoTen, email, soDienThoai, vaiTro FROM user WHERE 1=1";
+$sql = "SELECT maND, hoTen, email, soDienThoai, vaiTro, diaChi, tenCongTy, diaChiCongTy, tyLeHoaHong FROM user WHERE 1=1";
 $params = [];
 $types = '';
 
@@ -46,6 +46,7 @@ $users = $stmt->get_result();
     <title>Quản lý người dùng</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../../assets/css/QTV.css">
 </head>
 
@@ -138,6 +139,18 @@ $users = $stmt->get_result();
                                         <?php endif; ?>
                                     </td>
                                     <td>
+                                        <button class="btn btn-info btn-sm" type="button"
+                                            onclick="xemUser(
+                                                <?= $user['maND'] ?>,
+                                                '<?= addslashes(htmlspecialchars($user['hoTen'])) ?>',
+                                                '<?= addslashes(htmlspecialchars($user['email'])) ?>',
+                                                '<?= addslashes(htmlspecialchars($user['soDienThoai'])) ?>',
+                                                '<?= addslashes(htmlspecialchars($user['vaiTro'])) ?>',
+                                                '<?= addslashes(htmlspecialchars($user['diaChi'] ?? '')) ?>',
+                                                '<?= addslashes(htmlspecialchars($user['tenCongTy'] ?? '')) ?>',
+                                                '<?= addslashes(htmlspecialchars($user['diaChiCongTy'] ?? '')) ?>',
+                                                '<?= $user['tyLeHoaHong'] ?? '' ?>'
+                                            )">Xem</button>
                                         <a href="themUsers.php?edit=<?= $user['maND'] ?>"
                                             class="btn btn-warning btn-sm">Sửa</a>
                                         <a href="../../actions/user/addUser.php?xoa=<?= $user['maND'] ?>"
@@ -157,12 +170,58 @@ $users = $stmt->get_result();
                     </table>
 
                 </div>
-
+                <div class="content-box-chiTiet mt-3" id="userDetailBox" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Thông tin người dùng <span id="detailId" class="text-muted fs-6"></span></h5>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="dongBox()">✕ Đóng</button>
+                    </div>
+                    <hr class="mt-0">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Họ tên:</strong> <span id="detailHoTen"></span></p>
+                            <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+                            <p><strong>Số điện thoại:</strong> <span id="detailSoDienThoai"></span></p>
+                            <p><strong>Vai trò:</strong> <span id="detailVaiTro"></span></p>
+                        </div>
+                        <div class="col-md-6" id="detailExtra"></div>
+                    </div>
+                </div>
             </div>
 
         </div>
     </div>
+    <script>
+        function xemUser(id, hoTen, email, soDienThoai, vaiTro, diaChi, tenCongTy, diaChiCongTy, tyLeHoaHong) {
+            document.getElementById('detailId').textContent = '#' + id;
+            document.getElementById('detailHoTen').textContent = hoTen;
+            document.getElementById('detailEmail').textContent = email;
+            document.getElementById('detailSoDienThoai').textContent = soDienThoai;
+            document.getElementById('detailVaiTro').textContent = vaiTro;
 
+            let extra = '';
+            if (vaiTro === 'Khách hàng') {
+                extra = `<p><strong>Địa chỉ:</strong> ${diaChi || 'Chưa cập nhật'}</p>`;
+            } else if (vaiTro === 'Nhà phân phối tour') {
+                extra = `
+            <p><strong>Tên công ty:</strong> ${tenCongTy || 'Chưa cập nhật'}</p>
+            <p><strong>Địa chỉ công ty:</strong> ${diaChiCongTy || 'Chưa cập nhật'}</p>
+            <p><strong>Tỷ lệ hoa hồng:</strong> ${tyLeHoaHong ? tyLeHoaHong + '%' : 'Chưa cập nhật'}</p>
+        `;
+            }
+            document.getElementById('detailExtra').innerHTML = extra;
+
+            const box = document.getElementById('userDetailBox');
+            box.style.display = 'block';
+            box.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            });
+        }
+
+        function dongBox() {
+            document.getElementById('userDetailBox').style.display = 'none';
+        }
+    </script>
 </body>
 
 </html>

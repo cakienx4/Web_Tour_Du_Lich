@@ -150,8 +150,9 @@ $images = $stmtImg->get_result();
                     <!-- ACTION -->
                     <div class="d-flex justify-content-between mb-3">
 
-                        <a href="quanLyTour.php" class="btn btn-secondary">← Quay lại</a>
-
+                        <a href="quanLyTours.php" class="btn btn-secondary">← Quay lại</a>
+                        
+                        <?php if ($tour['trangThai'] === 'Chờ duyệt'): ?>
                         <div>
                             <a href="../../actions/tour/approveTour.php?id=<?= $tour['maTour'] ?>"
                                 class="btn btn-success" onclick="return confirm('Duyệt tour này?')">
@@ -162,7 +163,7 @@ $images = $stmtImg->get_result();
                                 Từ chối
                             </a>
                         </div>
-
+                        <?php endif; ?>
                     </div>
 
                 </div>

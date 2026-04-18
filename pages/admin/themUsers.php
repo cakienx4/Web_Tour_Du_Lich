@@ -99,7 +99,7 @@ if ($editId) {
                             </select>
                         </div>
 
-                        <!-- Chỉ hiện khi Khách hàng -->
+                        <!-- Chỉ hiện khi là Khách hàng -->
                         <?php if (!$editId || $user['vaiTro'] === 'Khách hàng'): ?>
                             <div id="khachHangFields">
                                 <div class="mb-3">
@@ -110,7 +110,7 @@ if ($editId) {
                             </div>
                         <?php endif; ?>
 
-                        <!-- Chỉ hiện khi NPP -->
+                        <!-- Chỉ hiện khi là NPP -->
                         <?php if (!$editId || $user['vaiTro'] === 'Nhà phân phối tour'): ?>
                             <div id="nppFields">
                                 <div class="mb-3">
@@ -122,6 +122,13 @@ if ($editId) {
                                     <label class="form-label"><strong>Địa chỉ công ty</strong></label>
                                     <input type="text" name="diaChiCongTy" class="form-control"
                                         value="<?= htmlspecialchars($user['diaChiCongTy'] ?? '') ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Tỷ lệ hoa hồng (%)</strong></label>
+                                    <input type="number" name="tyLeHoaHong" class="form-control"
+                                        min="0" max="100" step="0.01"
+                                        value="<?= htmlspecialchars($user['tyLeHoaHong'] ?? '85') ?>"
+                                        placeholder="VD: 85 (NPP hưởng 85% doanh thu)">
                                 </div>
                             </div>
                         <?php endif; ?>

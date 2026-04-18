@@ -21,6 +21,7 @@ $vaiTro = trim($_POST['vaiTro'] ?? '');
 $diaChi = trim($_POST['diaChi'] ?? '');
 $tenCongTy = trim($_POST['tenCongTy'] ?? '');
 $diaChiCongTy = trim($_POST['diaChiCongTy'] ?? '');
+$tyLeHoaHong = ($vaiTro === 'Nhà phân phối tour') ? (floatval($_POST['tyLeHoaHong'] ?? 80)) : null;
 
 $validRoles = ['Khách hàng', 'Nhà phân phối tour', 'Quản trị viên'];
 if (!$maND || !$hoTen || !$email || !$soDienThoai || !in_array($vaiTro, $validRoles)) {
@@ -48,12 +49,11 @@ if ($stmt->get_result()->num_rows > 0) {
 
 if ($matKhau) {
     $hash = password_hash($matKhau, PASSWORD_DEFAULT);
-    $stmt = $mysqli->prepare("UPDATE user SET hoTen=?, email=?, soDienThoai=?, matKhau=?, vaiTro=?, diaChi=?, tenCongTy=?, diaChiCongTy=? WHERE maND=?");
-    $stmt->bind_param("ssssssssi", $hoTen, $email, $soDienThoai, $hash, $vaiTro, $diaChi, $tenCongTy, $diaChiCongTy, $maND);
+    $stmt = $mysqli->prepare("UPDATE user SET hoTen=?, email=?, soDienThoai=?, matKhau=?, vaiTro=?, diaChi=?, tenCongTy=?, diaChiCongTy=?, tyLeHoaHong=? WHERE maND=?");
+    $stmt->bind_param("ssssssssdi", $hoTen, $email, $soDienThoai, $hash, $vaiTro, $diaChi, $tenCongTy, $diaChiCongTy, $tyLeHoaHong, $maND);
 } else {
-    $stmt = $mysqli->prepare("UPDATE user SET hoTen=?, email=?, soDienThoai=?, vaiTro=?, diaChi=?, tenCongTy=?, diaChiCongTy=? WHERE maND=?");
-    $stmt->bind_param("sssssssi", $hoTen, $email, $soDienThoai, $vaiTro, $diaChi, $tenCongTy, $diaChiCongTy, $maND);
-
+    $stmt = $mysqli->prepare("UPDATE user SET hoTen=?, email=?, soDienThoai=?, vaiTro=?, diaChi=?, tenCongTy=?, diaChiCongTy=?, tyLeHoaHong=? WHERE maND=?");
+    $stmt->bind_param("sssssssdi", $hoTen, $email, $soDienThoai, $vaiTro, $diaChi, $tenCongTy, $diaChiCongTy, $tyLeHoaHong, $maND);
 }
 
 if ($stmt->execute()) {

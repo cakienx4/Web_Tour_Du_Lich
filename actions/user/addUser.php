@@ -20,6 +20,7 @@ $vaiTro = trim($_POST['vaiTro'] ?? '');
 $diaChi       = trim($_POST['diaChi'] ?? '');
 $tenCongTy    = trim($_POST['tenCongTy'] ?? '');
 $diaChiCongTy = trim($_POST['diaChiCongTy'] ?? '');
+$tyLeHoaHong = ($vaiTro === 'Nhà phân phối tour') ? (floatval($_POST['tyLeHoaHong'] ?? 80)) : null;
 
 $validRoles = ['Khách hàng', 'Nhà phân phối tour', 'Quản trị viên'];
 if (!$hoTen || !$email || !$soDienThoai || !$matKhau || !in_array($vaiTro, $validRoles)) {
@@ -36,8 +37,8 @@ if ($stmt->get_result()->num_rows > 0) {
 }
 
 $hash = password_hash($matKhau, PASSWORD_DEFAULT);
-$stmt = $mysqli->prepare("INSERT INTO user (hoTen, email, soDienThoai, matKhau, vaiTro, diaChi, tenCongTy, diaChiCongTy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("ssssssss", $hoTen, $email, $soDienThoai, $hash, $vaiTro, $diaChi, $tenCongTy, $diaChiCongTy);
+$stmt = $mysqli->prepare("INSERT INTO user (hoTen, email, soDienThoai, matKhau, vaiTro, diaChi, tenCongTy, diaChiCongTy, tyLeHoaHong) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssssssssd", $hoTen, $email, $soDienThoai, $hash, $vaiTro, $diaChi, $tenCongTy, $diaChiCongTy, $tyLeHoaHong);
 
 if ($stmt->execute()) {
     header('Location: ../../pages/admin/quanLyUsers.php?success=them_moi');
