@@ -53,6 +53,7 @@ $diemDenList = $mysqli->query("SELECT maDiemDen, tenDiemDen FROM diemden ORDER B
                 <p>Muôn vàn tour trong nước – Giá tốt – Khởi hành mỗi ngày</p>
 
                 <form class="search-box" action="tour.php" method="GET">
+                    <!-- Điểm đến -->
                     <select name="diemDen">
                         <option value="">Chọn điểm đến</option>
                         <?php while ($dd = $diemDenList->fetch_assoc()): ?>
@@ -62,13 +63,29 @@ $diemDenList = $mysqli->query("SELECT maDiemDen, tenDiemDen FROM diemden ORDER B
                         <?php endwhile; ?>
                     </select>
 
-                    <input type="date">
+                    <!-- Miền -->
+                    <select name="vung">
+                        <option value="">Chọn miền</option>
+                        <option value="Bắc">Bắc</option>
+                        <option value="Trung">Trung</option>
+                        <option value="Nam">Nam</option>
+                    </select>
 
-                    <select>
-                        <option>Số ngày</option>
-                        <option>1 – 3 ngày</option>
-                        <option>4 – 7 ngày</option>
-                        <option>Trên 7 ngày</option>
+                    <!-- Thời gian -->
+                    <select name="thoigian">
+                        <option value="">Số ngày</option>
+                        <option value="1den2ngay">1 - 2 ngày</option>
+                        <option value="3den4ngay">3 - 4 ngày</option>
+                        <option value="5den7ngay">5 - 7 ngày</option>
+                    </select>
+
+                    <!-- Giá -->
+                    <select name="gia">
+                        <option value="">Khoảng giá</option>
+                        <option value="duoi10tr">Dưới 10 triệu</option>
+                        <option value="tu10den20">10 - 20 triệu</option>
+                        <option value="tu20den40">20 - 40 triệu</option>
+                        <option value="tren40tr">Trên 40 triệu</option>
                     </select>
 
                     <button type="submit">Tìm tour</button>
