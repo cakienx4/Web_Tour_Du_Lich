@@ -13,5 +13,5 @@
         class="row-odd <?= $currentPage === 'nhanPhanHoi.php' ? 'active' : '' ?>">Phản hồi từ Admin</a>
     <a href="thongKeDoanhThu.php" 
         class="row-even <?= $currentPage === 'thongKeDoanhThu.php' ? 'active' : '' ?>">Thống kê doanh thu</a>
-    <a href="../../logout.php" class="row-odd">Đăng xuất</a>
+    <a href="../../actions/logout.php" class="row-even">Đăng xuất</a>
 </div>

@@ -174,13 +174,13 @@ $tours = $stmt->get_result();
                                             class="btn btn-info btn-sm">Xem</a>
 
                                         <!-- Xóa -->
-                                        <a href="../../actions/tour/deleteTour.php?id=<?= $tour['maTour'] ?>"
+                                        <a href="../../actions/tour/deleteTour_admin.php?id=<?= $tour['maTour'] ?>"
                                             class="btn btn-danger btn-sm" onclick="return confirm('Xóa tour này?')">
                                             Xóa
                                         </a>
 
                                         <!-- Đổi trạng thái -->
-                                        <a href="../../actions/tour/changeStatus.php?id=<?= $tour['maTour'] ?>"
+                                        <a href="../../actions/tour/changeStatus_admin.php?id=<?= $tour['maTour'] ?>"
                                             class="btn btn-primary btn-sm">
                                             Đổi trạng thái
                                         </a>
