@@ -1,4 +1,17 @@
-﻿<!DOCTYPE html>
+﻿<?php
+session_start();
+require_once '../../config/database.php';
+
+if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Nhà phân phối tour') {
+    header('Location: ../auth/dangNhap.php');
+    exit();
+}
+
+// Lấy danh sách điểm đến từ DB
+$dsDiemDen = $mysqli->query("SELECT maDiemDen, tenDiemDen FROM diemden ORDER BY tenDiemDen ASC");
+?>
+
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -10,104 +23,129 @@
 </head>
 
 <body>
-
     <div class="container-fluid">
         <div class="row">
 
             <!-- SIDEBAR -->
-            <?php include "../../includes/sideBar-NPP.php";?>
-
+            <?php include "../../includes/sideBar-NPP.php"; ?>
 
             <!-- CONTENT -->
             <div class="col-md-9 col-lg-10 p-4">
 
                 <h3 class="mb-4 text-title">Tạo tour mới</h3>
-
                 <hr>
 
-                <div class="content-box">
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?php
+                        echo match ($_GET['error']) {
+                            'missing'  => 'Vui lòng điền đầy đủ thông tin bắt buộc.',
+                            'upload'   => 'Có lỗi khi tải ảnh lên, vui lòng thử lại.',
+                            'db'       => 'Có lỗi khi lưu dữ liệu, vui lòng thử lại.',
+                            'date'     => 'Ngày khởi hành phải sau ngày hôm nay.',
+                            default    => 'Có lỗi xảy ra, vui lòng thử lại.',
+                        };
+                        ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
 
-                    <form>
+                <div class="content-box">
+                    <form action="../../actions/tour/createTour.php" method="POST" enctype="multipart/form-data">
 
                         <div class="row">
 
                             <!-- TÊN TOUR -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label"> <strong>Tên tour</strong> </label>
-                                <input type="text" class="form-control">
+                                <label class="form-label"><strong>Tên tour <span class="text-danger">*</span></strong></label>
+                                <input type="text" name="tenTour" class="form-control" required>
                             </div>
 
                             <!-- GIÁ -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label"> <strong>Giá (VNĐ)</strong> </label>
-                                <input type="number" class="form-control">
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label"><strong>Giá (VNĐ) <span class="text-danger">*</span></strong></label>
+                                <input type="number" name="giaTour" class="form-control" min="0" required>
+                            </div>
+
+                            <!-- SỐ LƯỢNG -->
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label"><strong>Số lượng khách <span class="text-danger">*</span></strong></label>
+                                <input type="number" name="tongSoCho" class="form-control" min="1" required>
                             </div>
 
                             <!-- NGÀY KHỞI HÀNH -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label"> <strong>Ngày khởi hành</strong> </label>
-                                <input type="date" class="form-control">
+                                <label class="form-label"><strong>Ngày khởi hành <span class="text-danger">*</span></strong></label>
+                                <input type="date" name="ngayKhoiHanh" class="form-control" required>
                             </div>
 
                             <!-- SỐ NGÀY -->
                             <div class="col-md-2 mb-3">
-                                <label class="form-label"> <strong>Số ngày</strong> </label>
-                                <input type="number" class="form-control" placeholder="Ví dụ: 3">
+                                <label class="form-label"><strong>Số ngày <span class="text-danger">*</span></strong></label>
+                                <input type="number" name="soNgay" class="form-control" min="1" placeholder="Ví dụ: 3" required>
                             </div>
 
-                            <!-- SỐ ĐÊM -->
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label"> <strong>Số đêm</strong> </label>
-                                <input type="number" class="form-control" placeholder="Ví dụ: 2">
-                            </div>
-
-                            <!-- SỐ LƯỢNG -->
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label"> <strong>Số lượng khách</strong> </label>
-                                <input type="number" class="form-control">
+                            <!-- ĐIỂM XUẤT PHÁT -->
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label"><strong>Điểm xuất phát <span class="text-danger">*</span></strong></label>
+                                <input type="text" name="diemXuatPhat" class="form-control" placeholder="Ví dụ: Hồ Chí Minh" required>
                             </div>
 
                             <!-- ĐIỂM ĐẾN -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label"> <strong>Điểm đến</strong> </label>
-                                <select class="form-select">
-                                    <option>Chọn điểm đến</option>
-                                    <option>Đà Nẵng</option>
-                                    <option>Phú Quốc</option>
-                                    <option>Hà Nội</option>
+                                <label class="form-label"><strong>Điểm đến <span class="text-danger">*</span></strong></label>
+                                <select name="maDiemDen" class="form-select" required>
+                                    <option value="">-- Chọn điểm đến --</option>
+                                    <?php while ($dd = $dsDiemDen->fetch_assoc()): ?>
+                                        <option value="<?= $dd['maDiemDen'] ?>">
+                                            <?= htmlspecialchars($dd['tenDiemDen']) ?>
+                                        </option>
+                                    <?php endwhile; ?>
                                 </select>
                             </div>
 
-                            <!-- ẢNH -->
+                            <!-- ẢNH CHÍNH -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label"> <strong>Hình ảnh</strong> </label>
-                                <input type="file" class="form-control" multiple>
+                                <label class="form-label"><strong>Ảnh chính <span class="text-danger">*</span></strong></label>
+                                <input type="file" name="anhChinh" class="form-control" accept="image/*" required>
+                                <div class="form-text">Ảnh đại diện hiển thị trên danh sách tour.</div>
+                            </div>
+
+                            <!-- ẢNH PHỤ -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label"><strong>Ảnh phụ</strong></label>
+                                <input type="file" name="anhPhu[]" class="form-control" accept="image/*" multiple>
+                                <div class="form-text">Có thể chọn nhiều ảnh.</div>
                             </div>
 
                             <!-- MÔ TẢ -->
                             <div class="col-md-12 mb-3">
-                                <label class="form-label"> <strong>Mô tả</strong> </label>
-                                <textarea class="form-control" rows="4"></textarea>
+                                <label class="form-label"><strong>Mô tả <span class="text-danger">*</span></strong></label>
+                                <textarea name="moTa" class="form-control" rows="4" required></textarea>
+                            </div>
+
+                            <!-- LỊCH TRÌNH -->
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label"><strong>Lịch trình</strong></label>
+                                <textarea name="lichTrinh" class="form-control" rows="4" placeholder="Mô tả lịch trình chi tiết theo từng ngày..."></textarea>
                             </div>
 
                         </div>
 
                         <!-- ACTION -->
                         <div class="d-flex justify-content-end action-group">
-                            <button type="submit" class="btn btn-success">
-                                Tạo tour
-                            </button>
+                            <a href="quanLyTours.php" class="btn btn-secondary me-2">Hủy</a>
+                            <button type="submit" class="btn btn-success">Tạo tour</button>
                         </div>
 
                     </form>
-
                 </div>
 
             </div>
-
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

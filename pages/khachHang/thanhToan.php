@@ -35,20 +35,8 @@ if (!$don) {
 // Kiểm tra đơn có còn hạn không (10 phút)
 $phutConLai = 10 - intval((time() - strtotime($don['thoiGianDat'])) / 60);
 if ($phutConLai <= 0) {
-    // Hoàn lại chỗ trống
-    $stmtHoan = $mysqli->prepare("
-        UPDATE tour SET soChoTrong = soChoTrong + ?,
-        trangThai = CASE 
-            WHEN trangThai = 'Tạm dừng' THEN 'Đang bán'
-            ELSE trangThai 
-        END
-        WHERE maTour = ?
-    ");
-    $stmtHoan->bind_param("ii", $don['soNguoi'], $don['maTour']);
-    $stmtHoan->execute();
-
     // Xóa đơn
-    $stmtXoa = $mysqli->prepare("DELETE FROM dondat WHERE maDon = ?");
+    $stmtXoa = $mysqli->prepare("UPDATE dondat SET trangThaiTT = 'Hết hạn' WHERE maDon = ?");
     $stmtXoa->bind_param("i", $maDon);
     $stmtXoa->execute();
 
@@ -65,9 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['xacNhanThanhToan'])) 
 
     $stmtUpdate = $mysqli->prepare("
         UPDATE dondat 
-        SET trangThaiTT = 'daThanhToan', 
+        SET trangThaiTT = 'Đã thanh toán', 
             phuongThucTT = ?,
-            ngayThanhToan = CURDATE()
+            thoiGianThanhToan = NOW()
         WHERE maDon = ?
     ");
     $stmtUpdate->bind_param("si", $phuongThuc, $maDon);

@@ -37,7 +37,7 @@ if ($error === "") {
         $don = $result->fetch_assoc();
 
         // 5. Kiểm tra trạng thái
-        if ($don['trangThaiTT'] === 'daHuy') {
+        if ($don['trangThaiTT'] === 'Đã hủy') {
             $error = "Đơn đã được hủy trước đó";
         }
     }
@@ -51,7 +51,7 @@ if ($error === "") {
     // Update đơn
     $stmt1 = $mysqli->prepare("
         UPDATE dondat 
-        SET trangThaiTT = 'daHuy' 
+        SET trangThaiTT = 'Đã hủy'
         WHERE maDon = ?
     ");
     $stmt1->bind_param("i", $maDon);
@@ -88,10 +88,9 @@ if ($error === "") {
 
 // 7. Xử lý hiển thị / redirect
 if ($error !== "") {
-    // cách 1: truyền lỗi qua session
-    $_SESSION['error'] = $error;
+    header("Location: ../../pages/khachHang/lichSuDatTour.php?error=huy_that_bai");
 } else {
-    $_SESSION['success'] = $success;
+    header("Location: ../../pages/khachHang/lichSuDatTour.php?success=huy");
 }
 
 header("Location: ../../pages/khachHang/lichSuDatTour.php");

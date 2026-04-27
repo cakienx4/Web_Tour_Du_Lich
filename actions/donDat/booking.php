@@ -28,7 +28,7 @@ if (!$maTour || $soNguoi < 1) {
 // =============================================
 $stmtDonQuaHan = $mysqli->prepare("
     SELECT maDon, maTour, soNguoi FROM dondat
-    WHERE trangThaiTT = 'choPhanHoi'
+    WHERE trangThaiTT = 'Chờ thanh toán'
     AND TIMESTAMPDIFF(MINUTE, thoiGianDat, NOW()) > 10
 ");
 $stmtDonQuaHan->execute();
@@ -72,7 +72,7 @@ if (!$tour || $tour['trangThai'] !== 'Đang bán') {
 
 // Kiểm tra còn đủ chỗ không
 if ($soNguoi > $tour['soChoTrong']) {
-    header('Location: ../../pages/khachHang/datTour.php?id=' . $maTour . '&error=khong_du_cho');
+    header('Location: ../../pages/khachHang/datTour.php?maTour=' . $maTour . '&error=khong_du_cho');
     exit();
 }
 
@@ -83,8 +83,8 @@ $tongTien = $tour['giaTour'] * $soNguoi;
 // LƯU ĐƠN ĐẶT - TẠM KHÓA CHỖ
 // =============================================
 $stmtInsert = $mysqli->prepare("
-    INSERT INTO dondat (maND, maTour, ngayDat, soNguoi, tongTien, phuongThucTT, trangThaiTT, thoiGianDat)
-    VALUES (?, ?, ?, ?, ?, '', 'choPhanHoi', NOW())
+    INSERT INTO dondat (maND, maTour, ngayKhoiHanh, soNguoi, tongTien, trangThaiTT)
+    VALUES (?, ?, ?, ?, ?, 'Chờ thanh toán')
 ");
 $stmtInsert->bind_param("iisid", $_SESSION['maND'], $maTour, $tour['ngayKhoiHanh'], $soNguoi, $tongTien);
 
@@ -115,6 +115,6 @@ if ($stmtInsert->execute()) {
     header('Location: ../../pages/khachHang/thanhToan.php?maDon=' . $maDon);
     exit();
 } else {
-    header('Location: ../../pages/khachHang/datTour.php?id=' . $maTour . '&error=loi_he_thong');
+    header('Location: ../../pages/khachHang/datTour.php?maTour=' . $maTour . '&error=loi_he_thong');
     exit();
 }

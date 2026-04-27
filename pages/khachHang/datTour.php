@@ -7,7 +7,7 @@ if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Khách hàng') {
     exit();
 }
 
-$maTour = $_GET['id'] ?? null;
+$maTour = $_GET['maTour'] ?? null;
 if (!$maTour) {
     header('Location: tour.php');
     exit();

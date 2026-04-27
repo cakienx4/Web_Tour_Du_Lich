@@ -12,7 +12,7 @@ $denNgay = $_GET['denNgay'] ?? '';
 $maNPP   = $_GET['maNPP'] ?? '';
 
 // Điều kiện lọc theo ngày và NPP
-$whereClause = "WHERE dd.trangThaiTT IN ('daThanhToan', 'Hết hạn')";
+$whereClause = "WHERE dd.trangThaiTT IN ('Đã thanh toán', 'Hết hạn')";
 $params = [];
 $types  = '';
 

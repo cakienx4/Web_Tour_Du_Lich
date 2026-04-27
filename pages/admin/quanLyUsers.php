@@ -11,7 +11,7 @@ if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Quản trị viên') {
 $timKiem = $_GET['timKiem'] ?? '';
 $vaiTro = $_GET['vaiTro'] ?? '';
 
-$sql = "SELECT maND, hoTen, email, soDienThoai, vaiTro, diaChi, tenCongTy, diaChiCongTy, tyLeHoaHong FROM user WHERE 1=1";
+$sql = "SELECT maND, hoTen, email, soDienThoai, vaiTro, trangThai, diaChi, tenCongTy, diaChiCongTy, tyLeHoaHong FROM user WHERE 1=1";
 $params = [];
 $types = '';
 
@@ -66,7 +66,30 @@ $users = $stmt->get_result();
                 </div>
 
                 <hr>
-
+                <?php if (isset($_GET['success'])): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?php
+                        echo match ($_GET['success']) {
+                            'disabled'  => 'Vô hiệu hóa người dùng thành công.',
+                            'restored' => 'Kích hoạt tài khoản thành công.',
+                            default    => 'Thao tác thành công.',
+                        };
+                        ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php elseif (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?php
+                        echo match ($_GET['error']) {
+                            'self'     => 'Không thể vô hiệu hóa tài khoản đang đăng nhập.',
+                            'notfound' => 'Không tìm thấy người dùng.',
+                            'invalid'  => 'Yêu cầu không hợp lệ.',
+                            default    => 'Có lỗi xảy ra, vui lòng thử lại.',
+                        };
+                        ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
                 <div class="content-box mb-3">
                     <div class="row">
                         <form action="quanLyUsers.php" method="GET">
@@ -110,6 +133,7 @@ $users = $stmt->get_result();
                                 <th>Email</th>
                                 <th>Số điện thoại</th>
                                 <th>Vai trò</th>
+                                <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -139,6 +163,13 @@ $users = $stmt->get_result();
                                         <?php endif; ?>
                                     </td>
                                     <td>
+                                        <?php if ($user['trangThai'] === 'Vô hiệu hóa'): ?>
+                                            <span class="badge bg-danger">Vô hiệu hóa</span>
+                                        <?php elseif ($user['trangThai'] === 'Hoạt động'): ?>
+                                            <span class="badge bg-succes">Hoạt động</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
                                         <button class="btn btn-info btn-sm" type="button"
                                             onclick="xemUser(
                                                 <?= $user['maND'] ?>,
@@ -153,9 +184,19 @@ $users = $stmt->get_result();
                                             )">Xem</button>
                                         <a href="themUsers.php?edit=<?= $user['maND'] ?>"
                                             class="btn btn-warning btn-sm">Sửa</a>
-                                        <a href="../../actions/user/addUser.php?xoa=<?= $user['maND'] ?>"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Xác nhận xóa người dùng này?')">Xóa</a>
+                                        <?php if ($user['trangThai'] === 'Vô hiệu hóa'): ?>
+                                            <span class="badge bg-secondary">Vô hiệu hóa</span>
+                                        <?php endif; ?>
+
+                                        <?php if ($user['trangThai'] === 'Hoạt động'): ?>
+                                            <a href="../../actions/user/disableUser.php?maND=<?= $user['maND'] ?>"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Vô hiệu hóa người dùng này?')">Vô hiệu hóa</a>
+                                        <?php else: ?>
+                                            <a href="../../actions/user/restoreUser.php?maND=<?= $user['maND'] ?>"
+                                                class="btn btn-secondary btn-sm"
+                                                onclick="return confirm('Kích hoạt lại người dùng này?')">Kích hoạt</a>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

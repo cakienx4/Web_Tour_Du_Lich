@@ -19,7 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
-
+        if ($user['trangThai'] === 'Vô hiệu hóa') {
+            $error = 'Tài khoản đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên.';
+        }
         if ($user && password_verify($password, $user['matKhau'])) {
 
             $_SESSION['maND'] = $user['maND'];
@@ -34,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: ../pages/khachHang/trangChu.php");
             }
             exit();
-
         } else {
             $error = "Sai email hoặc mật khẩu!";
         }
