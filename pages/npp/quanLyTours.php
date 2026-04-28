@@ -62,7 +62,7 @@ $tours = $stmt->get_result();
             <?php include "../../includes/sideBar-NPP.php"; ?>
 
             <!-- CONTENT -->
-            <div class="col-md-9 col-lg-10 p-4">
+            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
 
                 <h3 class="mb-4 text-title">Danh sách tour đã tạo</h3>
                 <hr>

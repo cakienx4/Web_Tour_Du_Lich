@@ -3,15 +3,13 @@ body {
 }
 
 .sidebar {
+    background-color: #343a40;
     height: 100vh;
     padding: 0;
-    background-color: #343a40;
     display: flex;
+    position: fixed;
     flex-direction: column;
     gap: 10px;
-    position: sticky;
-    top: 0;
-    overflow-y: auto;
     z-index: 1000;
 }
 

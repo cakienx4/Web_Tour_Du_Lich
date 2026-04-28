@@ -59,7 +59,7 @@ $users = $stmt->get_result();
             <?php include "../../includes/sideBar-admin.php"; ?>
 
             <!-- MAIN CONTENT -->
-            <div class="col-md-9 col-lg-10 p-4">
+            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
 
                 <div class="mb-4">
                     <h3 class="text-title">Quản lý người dùng</h3>

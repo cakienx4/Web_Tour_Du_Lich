@@ -26,7 +26,7 @@ if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Nhà phân phối tour
             <!-- SIDEBAR -->
             <?php include "../../includes/sideBar-NPP.php"; ?>
 
-            <div class="col-md-9 col-lg-10 main-content center-flex">
+            <div class="col-md-9 col-lg-10 p-4 d-flex flex-column justify-content-center min-vh-100" style="margin-left: 336px;">
                 <div class="text-center">
                     <h3 class="text-title">
                         CHÀO MỪNG NHÀ PHÂN PHỐI ĐẾN VỚI HỆ THỐNG!

@@ -2,6 +2,11 @@
 session_start();
 require_once '../../config/database.php';
 
+if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Quản trị viên') {
+    header('Location: ../auth/dangNhap.php');
+    exit();
+}
+
 $id = $_GET['id'] ?? '';
 if (!$id) {
     header('Location: quanLyBaoCaoViPham.php');
@@ -54,7 +59,7 @@ $dsPhanHoi = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <div class="row">
             <?php include "../../includes/sideBar-admin.php"; ?>
 
-            <div class="col-md-9 col-lg-10 p-4">
+            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
                 <h3 class="mb-4 text-title">Chi tiết báo cáo #<?= $bc['maBaoCao'] ?></h3>
                 <hr>
 
@@ -63,7 +68,7 @@ $dsPhanHoi = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                 <?php endif; ?>
 
                 <!-- THÔNG TIN BÁO CÁO -->
-                <div class="content-box mb-4">
+                <div class="content-box-chiTiet mb-4">
                     <h5 class="mb-3">Thông tin báo cáo</h5>
                     <div class="row mb-2">
                         <div class="col-md-3 fw-bold">Người gửi:</div>
@@ -107,40 +112,6 @@ $dsPhanHoi = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                         <a href="quanLyBaoCaoViPham.php" class="btn btn-secondary">← Quay lại</a>
                     </div>
                 </div>
-
-                <!-- PHẢN HỒI -->
-                <div class="content-box mb-4">
-                    <h5 class="mb-3">Lịch sử phản hồi</h5>
-                    <?php if (empty($dsPhanHoi)): ?>
-                        <p class="text-muted">Chưa có phản hồi nào.</p>
-                    <?php else: ?>
-                        <?php foreach ($dsPhanHoi as $ph): ?>
-                            <div class="border rounded p-3 mb-2">
-                                <div class="d-flex justify-content-between mb-1">
-                                    <strong><?= htmlspecialchars($ph['tenNguoiGui']) ?></strong>
-                                    <small class="text-muted"><?= date('d/m/Y H:i', strtotime($ph['ngayGui'])) ?></small>
-                                </div>
-                                <p class="mb-0"><?= nl2br(htmlspecialchars($ph['noiDung'])) ?></p>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
-
-                <!-- FORM GỬI PHẢN HỒI -->
-                <?php if ($bc['trangThaiXuLy'] === 'choPhanHoi'): ?>
-                    <div class="content-box">
-                        <h5 class="mb-3">Gửi phản hồi</h5>
-                        <form action="../../actions/baoCao/replyReport.php" method="POST">
-                            <input type="hidden" name="maBaoCao" value="<?= $bc['maBaoCao'] ?>">
-                            <div class="mb-3">
-                                <textarea name="noiDung" class="form-control" rows="4"
-                                    placeholder="Nhập nội dung phản hồi..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Gửi phản hồi</button>
-                        </form>
-                    </div>
-                <?php endif; ?>
-
             </div>
         </div>
     </div>

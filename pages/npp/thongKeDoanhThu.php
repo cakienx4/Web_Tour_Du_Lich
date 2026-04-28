@@ -19,7 +19,7 @@
 
 
             <!-- CONTENT -->
-            <div class="col-md-9 col-lg-10 p-4">
+            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
 
                 <h3 class="mb-4 text-title">Thống kê doanh thu</h3>
 

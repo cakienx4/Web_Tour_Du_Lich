@@ -18,7 +18,7 @@
             <?php include "../../includes/sideBar-admin.php";?>
 
             <!-- MAIN CONTENT -->
-            <div class="col-md-9 col-lg-10 p-4">
+            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
 
                 <h3 class="mb-4 text-title">Chi tiết đơn đặt tour</h3>
 

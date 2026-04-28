@@ -9,13 +9,11 @@ if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Quản trị viên') {
 
 $search = trim($_GET['search'] ?? '');
 
-// Lấy các tour Tạm dừng có báo cáo daXuLy, kèm lý do từ báo cáo mới nhất
 $sql = "
     SELECT t.maTour, t.tenTour, t.trangThai,
            u.hoTen AS tenNPP,
            d.tenDiemDen,
-           bc.noiDung AS lyDo,
-           bc.ngayGui
+           bc.maBaoCao, bc.noiDung AS lyDo, bc.ngayGui
     FROM tour t
     JOIN user u ON t.maND = u.maND
     JOIN tour_diemden td ON t.maTour = td.maTour
@@ -54,36 +52,35 @@ $dsTourViPham = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     <title>Danh sách tour vi phạm</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../../assets/css/QTV.css">
 </head>
 
 <body>
-
     <div class="container-fluid">
         <div class="row">
 
-            <!-- SIDEBAR -->
             <?php include "../../includes/sideBar-admin.php"; ?>
 
-            <!-- MAIN CONTENT -->
-            <div class="col-md-9 col-lg-10 p-4">
+            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
 
-                <!-- TITLE -->
                 <h3 class="mb-4 text-title">Danh sách tour vi phạm</h3>
-
                 <hr>
+
                 <?php if (!empty($_GET['success'])): ?>
-                    <div class="alert alert-success">
-                        <?= match ($_GET['success']) {
-                            'go_tour'     => 'Đã gỡ tour khỏi hệ thống.',
-                            'khoi_phuc'   => 'Đã khôi phục tour thành công.',
-                            default       => 'Thao tác thành công!'
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <?= match($_GET['success']) {
+                            'go_tour'   => 'Đã gỡ tour khỏi hệ thống.',
+                            'khoi_phuc' => 'Đã khôi phục tour thành công.',
+                            default     => 'Thao tác thành công.'
                         } ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 <?php endif; ?>
+
                 <!-- FILTER -->
                 <div class="content-box mb-3">
-                    <form method="GET" action="">
+                    <form method="GET">
                         <div class="row">
                             <div class="col-md-4">
                                 <label class="form-label">Tìm kiếm</label>
@@ -100,9 +97,7 @@ $dsTourViPham = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
                 <!-- TABLE -->
                 <div class="content-box">
-
                     <table class="table table-bordered table-hover align-middle">
-
                         <thead class="table-dark">
                             <tr>
                                 <th>ID Tour</th>
@@ -114,7 +109,6 @@ $dsTourViPham = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                                 <th>Hành động</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             <?php if (empty($dsTourViPham)): ?>
                                 <tr>
@@ -130,28 +124,98 @@ $dsTourViPham = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                                         <td><?= htmlspecialchars(mb_strimwidth($t['lyDo'], 0, 60, '...')) ?></td>
                                         <td><span class="badge bg-danger">Tạm dừng</span></td>
                                         <td>
-                                            <a href="chiTietTour.php?maTour=<?= $t['maTour'] ?>" class="btn btn-info btn-sm">Xem</a>
-                                            <a href="../../actions/tour/deleteTour.php?id=<?= $t['maTour'] ?>"
-                                                class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Gỡ tour này khỏi hệ thống?')">Gỡ tour</a>
-                                            <a href="../../actions/tour/restoreTour.php?id=<?= $t['maTour'] ?>"
-                                                class="btn btn-success btn-sm"
-                                                onclick="return confirm('Khôi phục tour này?')">Khôi phục</a>
+                                            <a href="chiTietTour.php?maTour=<?= $t['maTour'] ?>"
+                                                class="btn btn-info btn-sm">Xem</a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="moModalGoTour(<?= $t['maTour'] ?>, <?= $t['maBaoCao'] ?>)">
+                                                Gỡ tour</button>
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                onclick="moModalKhoiPhuc(<?= $t['maTour'] ?>, <?= $t['maBaoCao'] ?>)">
+                                                Khôi phục</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tbody>
-
                     </table>
-
                 </div>
 
             </div>
-
         </div>
     </div>
 
+    <!-- MODAL GỠ TOUR -->
+    <div class="modal fade" id="modalGoTour" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="../../actions/tour/deleteTour_admin.php" method="POST">
+                    <input type="hidden" name="id" id="goTourId">
+                    <input type="hidden" name="maBaoCao" id="goTourMaBaoCao">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Gỡ tour khỏi hệ thống</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-danger">Tour sẽ bị xóa vĩnh viễn khỏi hệ thống.</p>
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Phản hồi gửi cho nhà phân phối</strong></label>
+                            <textarea name="noiDungPhanHoi" class="form-control" rows="4"
+                                placeholder="Nhập lý do gỡ tour để thông báo cho nhà phân phối..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-danger">Xác nhận gỡ tour</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KHÔI PHỤC TOUR -->
+    <div class="modal fade" id="modalKhoiPhuc" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="../../actions/tour/restoreTour.php" method="POST">
+                    <input type="hidden" name="id" id="khoiPhucId">
+                    <input type="hidden" name="maBaoCao" id="khoiPhucMaBaoCao">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Khôi phục tour</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-muted">Tour sẽ được chuyển về trạng thái <strong>Đang bán</strong>.</p>
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Phản hồi gửi cho nhà phân phối</strong></label>
+                            <textarea name="noiDungPhanHoi" class="form-control" rows="4"
+                                placeholder="Nhập lý do khôi phục để thông báo cho nhà phân phối..."></textarea>
+                            <div class="form-text">Không bắt buộc.</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-success">Xác nhận khôi phục</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function moModalGoTour(maTour, maBaoCao) {
+            document.getElementById('goTourId').value = maTour;
+            document.getElementById('goTourMaBaoCao').value = maBaoCao;
+            new bootstrap.Modal(document.getElementById('modalGoTour')).show();
+        }
+
+        function moModalKhoiPhuc(maTour, maBaoCao) {
+            document.getElementById('khoiPhucId').value = maTour;
+            document.getElementById('khoiPhucMaBaoCao').value = maBaoCao;
+            new bootstrap.Modal(document.getElementById('modalKhoiPhuc')).show();
+        }
+    </script>
 </body>
 
 </html>

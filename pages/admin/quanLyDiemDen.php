@@ -55,7 +55,7 @@ $dsDiemDen = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             <?php include "../../includes/sideBar-admin.php"; ?>
 
             <!-- MAIN CONTENT -->
-            <div class="col-md-9 col-lg-10 p-4">
+            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
 
                 <!-- TITLE -->
                 <h3 class="mb-4 text-title">Quản lý điểm đến</h3>
