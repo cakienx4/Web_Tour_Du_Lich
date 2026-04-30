@@ -55,140 +55,135 @@ $dsDiemDen = $mysqli->query("SELECT maDiemDen, tenDiemDen FROM diemden ORDER BY 
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
+    <?php include "../../includes/sideBar-NPP.php"; ?>
 
-            <?php include "../../includes/sideBar-NPP.php"; ?>
+    <div class="main-content p-4">
 
-            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
+        <h3 class="mb-4 text-title">Chỉnh sửa tour</h3>
+        <hr>
 
-                <h3 class="mb-4 text-title">Chỉnh sửa tour</h3>
-                <hr>
+        <?php if (isset($_GET['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php
+                echo match ($_GET['error']) {
+                    'missing' => 'Vui lòng điền đầy đủ thông tin bắt buộc.',
+                    'date'    => 'Ngày khởi hành phải sau ngày hôm nay.',
+                    'upload'  => 'Có lỗi khi tải ảnh lên, vui lòng thử lại.',
+                    'db'      => 'Có lỗi khi lưu dữ liệu, vui lòng thử lại.',
+                    default   => 'Có lỗi xảy ra, vui lòng thử lại.',
+                };
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
 
-                <?php if (isset($_GET['error'])): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?php
-                        echo match ($_GET['error']) {
-                            'missing' => 'Vui lòng điền đầy đủ thông tin bắt buộc.',
-                            'date'    => 'Ngày khởi hành phải sau ngày hôm nay.',
-                            'upload'  => 'Có lỗi khi tải ảnh lên, vui lòng thử lại.',
-                            'db'      => 'Có lỗi khi lưu dữ liệu, vui lòng thử lại.',
-                            default   => 'Có lỗi xảy ra, vui lòng thử lại.',
-                        };
-                        ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="content-box">
+            <form action="../../actions/tour/fixTour.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="maTour" value="<?= $tour['maTour'] ?>">
+
+                <div class="row">
+
+                    <!-- TÊN TOUR -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Tên tour <span class="text-danger">*</span></strong></label>
+                        <input type="text" name="tenTour" class="form-control"
+                            value="<?= htmlspecialchars($tour['tenTour']) ?>" required>
                     </div>
-                <?php endif; ?>
 
-                <div class="content-box">
-                    <form action="../../actions/tour/fixTour.php" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="maTour" value="<?= $tour['maTour'] ?>">
+                    <!-- GIÁ -->
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label"><strong>Giá (VNĐ) <span class="text-danger">*</span></strong></label>
+                        <input type="number" name="giaTour" class="form-control"
+                            value="<?= $tour['giaTour'] ?>" min="0" required>
+                    </div>
 
-                        <div class="row">
+                    <!-- SỐ LƯỢNG -->
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label"><strong>Số lượng khách <span class="text-danger">*</span></strong></label>
+                        <input type="number" name="tongSoCho" class="form-control"
+                            value="<?= $tour['tongSoCho'] ?>" min="1" required>
+                    </div>
 
-                            <!-- TÊN TOUR -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label"><strong>Tên tour <span class="text-danger">*</span></strong></label>
-                                <input type="text" name="tenTour" class="form-control"
-                                    value="<?= htmlspecialchars($tour['tenTour']) ?>" required>
-                            </div>
+                    <!-- NGÀY KHỞI HÀNH -->
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label"><strong>Ngày khởi hành <span class="text-danger">*</span></strong></label>
+                        <input type="date" name="ngayKhoiHanh" class="form-control"
+                            value="<?= $tour['ngayKhoiHanh'] ?>" required>
+                    </div>
 
-                            <!-- GIÁ -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label"><strong>Giá (VNĐ) <span class="text-danger">*</span></strong></label>
-                                <input type="number" name="giaTour" class="form-control"
-                                    value="<?= $tour['giaTour'] ?>" min="0" required>
-                            </div>
+                    <!-- SỐ NGÀY -->
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label"><strong>Số ngày <span class="text-danger">*</span></strong></label>
+                        <input type="number" name="soNgay" class="form-control"
+                            value="<?= $tour['soNgay'] ?>" min="1" required>
+                    </div>
 
-                            <!-- SỐ LƯỢNG -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label"><strong>Số lượng khách <span class="text-danger">*</span></strong></label>
-                                <input type="number" name="tongSoCho" class="form-control"
-                                    value="<?= $tour['tongSoCho'] ?>" min="1" required>
-                            </div>
+                    <!-- ĐIỂM XUẤT PHÁT -->
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label"><strong>Điểm xuất phát <span class="text-danger">*</span></strong></label>
+                        <input type="text" name="diemXuatPhat" class="form-control"
+                            value="<?= htmlspecialchars($tour['diemXuatPhat']) ?>" required>
+                    </div>
 
-                            <!-- NGÀY KHỞI HÀNH -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label"><strong>Ngày khởi hành <span class="text-danger">*</span></strong></label>
-                                <input type="date" name="ngayKhoiHanh" class="form-control"
-                                    value="<?= $tour['ngayKhoiHanh'] ?>" required>
-                            </div>
+                    <!-- ĐIỂM ĐẾN -->
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label"><strong>Điểm đến <span class="text-danger">*</span></strong></label>
+                        <select name="maDiemDen" class="form-select" required>
+                            <option value="">-- Chọn điểm đến --</option>
+                            <?php while ($dd = $dsDiemDen->fetch_assoc()): ?>
+                                <option value="<?= $dd['maDiemDen'] ?>"
+                                    <?= $dd['maDiemDen'] == $tour['maDiemDen'] ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($dd['tenDiemDen']) ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
 
-                            <!-- SỐ NGÀY -->
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label"><strong>Số ngày <span class="text-danger">*</span></strong></label>
-                                <input type="number" name="soNgay" class="form-control"
-                                    value="<?= $tour['soNgay'] ?>" min="1" required>
-                            </div>
-
-                            <!-- ĐIỂM XUẤT PHÁT -->
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label"><strong>Điểm xuất phát <span class="text-danger">*</span></strong></label>
-                                <input type="text" name="diemXuatPhat" class="form-control"
-                                    value="<?= htmlspecialchars($tour['diemXuatPhat']) ?>" required>
-                            </div>
-
-                            <!-- ĐIỂM ĐẾN -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label"><strong>Điểm đến <span class="text-danger">*</span></strong></label>
-                                <select name="maDiemDen" class="form-select" required>
-                                    <option value="">-- Chọn điểm đến --</option>
-                                    <?php while ($dd = $dsDiemDen->fetch_assoc()): ?>
-                                        <option value="<?= $dd['maDiemDen'] ?>"
-                                            <?= $dd['maDiemDen'] == $tour['maDiemDen'] ? 'selected' : '' ?>>
-                                            <?= htmlspecialchars($dd['tenDiemDen']) ?>
-                                        </option>
-                                    <?php endwhile; ?>
-                                </select>
-                            </div>
-
-                            <!-- ẢNH CHÍNH HIỆN TẠI -->
-                            <?php if ($anhChinh): ?>
-                                <div class="col-md-12 mb-2">
-                                    <label class="form-label"><strong>Ảnh chính hiện tại</strong></label><br>
-                                    <img src="../../<?= htmlspecialchars($anhChinh['duongDan']) ?>"
-                                        style="height: 150px; object-fit: cover; border-radius: 6px;">
-                                </div>
-                            <?php endif; ?>
-
-                            <!-- ẢNH CHÍNH MỚI -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label"><strong>Đổi ảnh chính</strong></label>
-                                <input type="file" name="anhChinh" class="form-control" accept="image/*">
-                                <div class="form-text">Để trống nếu không muốn thay đổi.</div>
-                            </div>
-
-                            <!-- ẢNH PHỤ MỚI -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label"><strong>Thêm ảnh phụ</strong></label>
-                                <input type="file" name="anhPhu[]" class="form-control" accept="image/*" multiple>
-                                <div class="form-text">Ảnh phụ cũ sẽ được giữ nguyên, ảnh mới sẽ được thêm vào.</div>
-                            </div>
-
-                            <!-- MÔ TẢ -->
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label"><strong>Mô tả <span class="text-danger">*</span></strong></label>
-                                <textarea name="moTa" class="form-control" rows="4" required><?= htmlspecialchars($tour['moTa']) ?></textarea>
-                            </div>
-
-                            <!-- LỊCH TRÌNH -->
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label"><strong>Lịch trình</strong></label>
-                                <textarea name="lichTrinh" class="form-control" rows="4"><?= htmlspecialchars($tour['lichTrinh'] ?? '') ?></textarea>
-                            </div>
-
+                    <!-- ẢNH CHÍNH HIỆN TẠI -->
+                    <?php if ($anhChinh): ?>
+                        <div class="col-md-12 mb-2">
+                            <label class="form-label"><strong>Ảnh chính hiện tại</strong></label><br>
+                            <img src="../../<?= htmlspecialchars($anhChinh['duongDan']) ?>"
+                                style="height: 150px; object-fit: cover; border-radius: 6px;">
                         </div>
+                    <?php endif; ?>
 
-                        <div class="d-flex justify-content-between action-group">
-                            <a href="chiTietTour.php?maTour=<?= $maTour ?>" class="btn btn-secondary">← Hủy</a>
-                            <button type="submit" class="btn btn-success">Lưu thay đổi</button>
-                        </div>
+                    <!-- ẢNH CHÍNH MỚI -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Đổi ảnh chính</strong></label>
+                        <input type="file" name="anhChinh" class="form-control" accept="image/*">
+                        <div class="form-text">Để trống nếu không muốn thay đổi.</div>
+                    </div>
 
-                    </form>
+                    <!-- ẢNH PHỤ MỚI -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><strong>Thêm ảnh phụ</strong></label>
+                        <input type="file" name="anhPhu[]" class="form-control" accept="image/*" multiple>
+                        <div class="form-text">Ảnh phụ cũ sẽ được giữ nguyên, ảnh mới sẽ được thêm vào.</div>
+                    </div>
+
+                    <!-- MÔ TẢ -->
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label"><strong>Mô tả <span class="text-danger">*</span></strong></label>
+                        <textarea name="moTa" class="form-control" rows="4" required><?= htmlspecialchars($tour['moTa']) ?></textarea>
+                    </div>
+
+                    <!-- LỊCH TRÌNH -->
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label"><strong>Lịch trình</strong></label>
+                        <textarea name="lichTrinh" class="form-control" rows="4"><?= htmlspecialchars($tour['lichTrinh'] ?? '') ?></textarea>
+                    </div>
+
                 </div>
 
-            </div>
+                <div class="d-flex justify-content-between action-group">
+                    <a href="chiTietTour.php?maTour=<?= $maTour ?>" class="btn btn-secondary">← Hủy</a>
+                    <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                </div>
+
+            </form>
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

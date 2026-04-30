@@ -26,60 +26,62 @@ $diemDenList = $mysqli->query("
 </head>
 
 <body>
-
     <?php include '../../includes/header.php'; ?>
-
-    <!-- ------------------------------------- BREADCRUMB ------------------------------------- -->
-    <div class="breadcrumb-box">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb tour-breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="trangChu.php" class="breadcrumb-link">Trang chủ</a>
-                    </li>
-                    <li class="breadcrumb-item active">Danh sách điểm đến</li>
-                </ol>
-            </nav>
+    <main>
+        <!-- ------------------------------------- BREADCRUMB ------------------------------------- -->
+        <div class="breadcrumb-box">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb tour-breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="trangChu.php" class="breadcrumb-link">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item active">Danh sách điểm đến</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <h1 class="page-title">Danh sách điểm đến</h1>
-        <hr>
-        <?php
-        $vungHienTai = '';
-        while ($dd = $diemDenList->fetch_assoc()):
-            if ($dd['vungMien'] !== $vungHienTai):
-                if ($vungHienTai !== '')
-                    echo '</div>'; // đóng destination-list trước
-                $vungHienTai = $dd['vungMien'];
+        <div class="container my-4">
+            <h1 class="page-title">Danh sách điểm đến</h1>
+            <hr>
+            <?php
+            $vungHienTai = '';
+            while ($dd = $diemDenList->fetch_assoc()):
+                if ($dd['vungMien'] !== $vungHienTai):
+                    if ($vungHienTai !== '')
+                        echo '</div>'; // đóng destination-list trước
+                    $vungHienTai = $dd['vungMien'];
+            ?>
+                    <h3 class="mt-4 mb-3">Miền
+                        <?= htmlspecialchars($dd['vungMien']) ?>
+                    </h3>
+                    <div class="destination-list">
+                    <?php endif; ?>
+
+                    <a href="tour.php?diemDen=<?= $dd['maDiemDen'] ?>" class="destination-card">
+                        <div class="destination-image">
+                            <img src="../../<?= htmlspecialchars($dd['anhDiemDen'] ?? '') ?>"
+                                alt="<?= htmlspecialchars($dd['tenDiemDen']) ?>">
+                        </div>
+                        <div class="destination-content">
+                            <h3 class="destination-name">
+                                <?= htmlspecialchars($dd['tenDiemDen']) ?>
+                            </h3>
+                            <p class="destination-desc">
+                                <?= htmlspecialchars($dd['moTa']) ?>
+                            </p>
+                        </div>
+                    </a>
+
+                <?php endwhile; ?>
+                <?php if ($vungHienTai !== '')
+                    echo '</div>'; // đóng destination-list cuối 
                 ?>
-                <h3 class="mt-4 mb-3">Miền
-                    <?= htmlspecialchars($dd['vungMien']) ?>
-                </h3>
-                <div class="destination-list">
-                <?php endif; ?>
-
-                <a href="tour.php?diemDen=<?= $dd['maDiemDen'] ?>" class="destination-card">
-                    <div class="destination-image">
-                        <img src="../../<?= htmlspecialchars($dd['anhDiemDen'] ?? '') ?>"
-                            alt="<?= htmlspecialchars($dd['tenDiemDen']) ?>">
                     </div>
-                    <div class="destination-content">
-                        <h3 class="destination-name">
-                            <?= htmlspecialchars($dd['tenDiemDen']) ?>
-                        </h3>
-                        <p class="destination-desc">
-                            <?= htmlspecialchars($dd['moTa']) ?>
-                        </p>
-                    </div>
-                </a>
-
-            <?php endwhile; ?>
-            <?php if ($vungHienTai !== '')
-                echo '</div>'; // đóng destination-list cuối ?>
         </div>
-        <?php include '../../includes/footer.php'; ?>
+    </main>
+    <?php include '../../includes/footer.php'; ?>
 </body>
 
 </html>

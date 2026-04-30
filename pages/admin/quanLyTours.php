@@ -69,135 +69,124 @@ $tours = $stmt->get_result();
 </head>
 
 <body>
+    <!-- SIDEBAR -->
+    <?php include "../../includes/sideBar-admin.php"; ?>
 
-    <div class="container-fluid">
-        <div class="row">
+    <!-- MAIN CONTENT -->
+    <div class="main-content p-4">
 
-            <!-- SIDEBAR -->
-            <?php include "../../includes/sideBar-admin.php"; ?>
+        <!-- TITLE -->
+        <h3 class="mb-4 text-title">Quản lý tour</h3>
+        <hr>
+        <!-- TOOLBAR -->
+        <div class="content-box mb-3">
+            <form method="GET">
+                <div class="row">
 
-            <!-- MAIN CONTENT -->
-            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
+                    <div class="col-md-6">
+                        <label><strong>Tìm kiếm</strong></label>
+                        <input type="text" name="timKiem" class="form-control"
+                            value="<?= htmlspecialchars($timKiem) ?>">
+                    </div>
 
-                <!-- TITLE -->
-                <h3 class="mb-4 text-title">Quản lý tour</h3>
-                <hr>
-                <!-- TOOLBAR -->
-                <div class="content-box mb-3">
-                    <form method="GET">
-                        <div class="row">
+                    <div class="col-md-3">
+                        <label><strong>Trạng thái</strong></label>
+                        <select name="trangThai" class="form-select">
+                            <option>Tất cả</option>
+                            <option <?= $trangThai == 'Đang bán' ? 'selected' : '' ?>>Đang bán</option>
+                            <option <?= $trangThai == 'Tạm dừng' ? 'selected' : '' ?>>Tạm dừng</option>
+                            <option <?= $trangThai == 'Chờ duyệt' ? 'selected' : '' ?>>Chờ duyệt</option>
+                        </select>
+                    </div>
 
-                            <div class="col-md-6">
-                                <label><strong>Tìm kiếm</strong></label>
-                                <input type="text" name="timKiem" class="form-control"
-                                    value="<?= htmlspecialchars($timKiem) ?>">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Trạng thái</strong></label>
-                                <select name="trangThai" class="form-select">
-                                    <option>Tất cả</option>
-                                    <option <?= $trangThai == 'Đang bán' ? 'selected' : '' ?>>Đang bán</option>
-                                    <option <?= $trangThai == 'Tạm dừng' ? 'selected' : '' ?>>Tạm dừng</option>
-                                    <option <?= $trangThai == 'Chờ duyệt' ? 'selected' : '' ?>>Chờ duyệt</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-3 d-flex align-items-end">
-                                <button class="btn btn-primary w-100">Lọc</button>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-
-                <!-- TABLE -->
-                <div class="content-box">
-
-                    <table class="table table-bordered table-hover align-middle">
-
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên tour</th>
-                                <th>Nhà phân phối</th>
-                                <th>Điểm đến</th>
-                                <th>Giá</th>
-                                <th>Số chỗ trống</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <?php while ($tour = $tours->fetch_assoc()): ?>
-                                <tr>
-                                    <td>
-                                        <?= $tour['maTour'] ?>
-                                    </td>
-
-                                    <td>
-                                        <?= htmlspecialchars($tour['tenTour']) ?>
-                                    </td>
-
-                                    <td>
-                                        <?= htmlspecialchars($tour['hoTen']) ?>
-                                    </td>
-
-                                    <td>
-                                        <?= htmlspecialchars($tour['tenDiemDen'] ?? 'Chưa có') ?>
-                                    </td>
-
-                                    <td>
-                                        <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ
-                                    </td>
-
-                                    <td>
-                                        <?= $tour['soChoTrong'] ?>
-                                    </td>
-
-                                    <td>
-                                        <?php if ($tour['trangThai'] === 'Đang bán'): ?>
-                                            <span class="badge bg-success">Đang bán</span>
-                                        <?php elseif ($tour['trangThai'] === 'Tạm dừng'): ?>
-                                            <span class="badge bg-danger">Tạm dừng</span>
-                                        <?php else: ?>
-                                            <span class="badge bg-warning text-dark">
-                                                <?= $tour['trangThai'] ?>
-                                            </span>
-                                        <?php endif; ?>
-                                    </td>
-
-                                    <td>
-                                        <!-- Xem -->
-                                        <a href="../admin/chiTietTour.php?maTour=<?= $tour['maTour'] ?>"
-                                            class="btn btn-info btn-sm">Xem</a>
-
-                                        <!-- Xóa -->
-                                        <a href="../../actions/tour/deleteTour_admin.php?id=<?= $tour['maTour'] ?>"
-                                            class="btn btn-danger btn-sm" onclick="return confirm('Xóa tour này?')">
-                                            Xóa
-                                        </a>
-
-                                        <!-- Đổi trạng thái -->
-                                        <a href="../../actions/tour/changeStatus_admin.php?id=<?= $tour['maTour'] ?>"
-                                            class="btn btn-primary btn-sm">
-                                            Đổi trạng thái
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-
-                    </table>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button class="btn btn-primary w-100">Lọc</button>
+                    </div>
 
                 </div>
+            </form>
+        </div>
 
-            </div>
+        <!-- TABLE -->
+        <div class="content-box">
 
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên tour</th>
+                        <th>Nhà phân phối</th>
+                        <th>Điểm đến</th>
+                        <th>Giá</th>
+                        <th>Số chỗ trống</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php while ($tour = $tours->fetch_assoc()): ?>
+                        <tr>
+                            <td>
+                                <?= $tour['maTour'] ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($tour['tenTour']) ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($tour['hoTen']) ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($tour['tenDiemDen'] ?? 'Chưa có') ?>
+                            </td>
+
+                            <td>
+                                <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ
+                            </td>
+
+                            <td>
+                                <?= $tour['soChoTrong'] ?>
+                            </td>
+
+                            <td>
+                                <?php if ($tour['trangThai'] === 'Đang bán'): ?>
+                                    <span class="badge bg-success">Đang bán</span>
+                                <?php elseif ($tour['trangThai'] === 'Tạm dừng'): ?>
+                                    <span class="badge bg-danger">Tạm dừng</span>
+                                <?php else: ?>
+                                    <span class="badge bg-warning text-dark">
+                                        <?= $tour['trangThai'] ?>
+                                    </span>
+                                <?php endif; ?>
+                            </td>
+
+                            <td>
+                                <!-- Xem -->
+                                <a href="../admin/chiTietTour.php?maTour=<?= $tour['maTour'] ?>"
+                                    class="btn btn-info btn-sm">Xem</a>
+
+                                <!-- Xóa -->
+                                <a href="../../actions/tour/deleteTour_admin.php?id=<?= $tour['maTour'] ?>"
+                                    class="btn btn-danger btn-sm" onclick="return confirm('Xóa tour này?')">
+                                    Xóa
+                                </a>
+
+                                <!-- Đổi trạng thái -->
+                                <a href="../../actions/tour/changeStatus_admin.php?id=<?= $tour['maTour'] ?>"
+                                    class="btn btn-primary btn-sm">
+                                    Đổi trạng thái
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
         </div>
     </div>
-
 </body>
 
 </html>

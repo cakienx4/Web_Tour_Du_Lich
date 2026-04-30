@@ -147,143 +147,144 @@ $diemDenList = $mysqli->query("SELECT maDiemDen, tenDiemDen FROM diemden ORDER B
 
 
     <!-- ------------------------------------- SIDEBAR ------------------------------------- -->
+    <main>
+        <div class="container my-4">
+            <div class="row">
+                <!-- SIDEBAR FILTER -->
+                <div class="col-lg-3 col-md-4">
+                    <form action="tour.php" method="GET">
+                        <div class="filter-sidebar">
 
-    <div class="container my-4">
-        <div class="row">
-            <!-- SIDEBAR FILTER -->
-            <div class="col-lg-3 col-md-4">
-                <form action="tour.php" method="GET">
-                    <div class="filter-sidebar">
+                            <h5 class="filter-title">Bộ lọc tìm kiếm</h5>
 
-                        <h5 class="filter-title">Bộ lọc tìm kiếm</h5>
+                            <!-- Miền -->
+                            <div class="filter-group">
+                                <h6 class="filter-heading">Miền</h6>
 
-                        <!-- Miền -->
-                        <div class="filter-group">
-                            <h6 class="filter-heading">Miền</h6>
+                                <div class="filter-options">
+                                    <input type="radio" name="vung" id="bac" value="Bắc" class="filter-checkbox"
+                                        <?= ($_GET['vung'] ?? '') === 'Bắc' ? 'checked' : '' ?>>
+                                    <label for="bac" class="filter-box">Bắc</label>
 
-                            <div class="filter-options">
-                                <input type="radio" name="vung" id="bac" value="Bắc" class="filter-checkbox"
-                                    <?= ($_GET['vung'] ?? '') === 'Bắc' ? 'checked' : '' ?>>
-                                <label for="bac" class="filter-box">Bắc</label>
+                                    <input type="radio" name="vung" id="trung" value="Trung" class="filter-checkbox"
+                                        <?= ($_GET['vung'] ?? '') === 'Trung' ? 'checked' : '' ?>>
+                                    <label for="trung" class="filter-box">Trung</label>
 
-                                <input type="radio" name="vung" id="trung" value="Trung" class="filter-checkbox"
-                                    <?= ($_GET['vung'] ?? '') === 'Trung' ? 'checked' : '' ?>>
-                                <label for="trung" class="filter-box">Trung</label>
+                                    <input type="radio" name="vung" id="nam" value="Nam" class="filter-checkbox"
+                                        <?= ($_GET['vung'] ?? '') === 'Nam' ? 'checked' : '' ?>>
+                                    <label for="nam" class="filter-box">Nam</label>
+                                </div>
+                            </div>
 
-                                <input type="radio" name="vung" id="nam" value="Nam" class="filter-checkbox"
-                                    <?= ($_GET['vung'] ?? '') === 'Nam' ? 'checked' : '' ?>>
-                                <label for="nam" class="filter-box">Nam</label>
+                            <!-- Điểm đến -->
+                            <div class="filter-group">
+                                <h6 class="filter-heading">Điểm đến</h6>
+
+                                <div class="filter-options">
+
+                                    <?php while ($dd = $diemDenList->fetch_assoc()): ?>
+                                        <input type="radio" name="diemDen" id="dd_<?= $dd['maDiemDen'] ?>"
+                                            value="<?= $dd['maDiemDen'] ?>" class="filter-checkbox" <?= ($_GET['diemDen'] ?? '') == $dd['maDiemDen'] ? 'checked' : '' ?>>
+                                        <label for="dd_<?= $dd['maDiemDen'] ?>" class="filter-box">
+                                            <?= htmlspecialchars($dd['tenDiemDen']) ?>
+                                        </label>
+                                    <?php endwhile; ?>
+
+                                </div>
+                            </div>
+
+                            <!-- Khoảng giá -->
+                            <div class="filter-group">
+                                <h6 class="filter-heading">Giá tour/khách</h6>
+
+                                <div class="filter-options">
+
+                                    <input type="radio" name="gia" id="duoi10tr" value="duoi10tr" class="filter-checkbox"
+                                        <?= ($_GET['gia'] ?? '') === 'duoi10tr' ? 'checked' : '' ?>>
+                                    <label for="duoi10tr" class="filter-box">Dưới 10 triệu</label>
+
+                                    <input type="radio" name="gia" id="tu10den20" value="tu10den20" class="filter-checkbox"
+                                        <?= ($_GET['gia'] ?? '') === 'tu10den20' ? 'checked' : '' ?>>
+                                    <label for="tu10den20" class="filter-box">Từ 10-20 triệu</label>
+
+                                    <input type="radio" name="gia" id="tu20den40" value="tu20den40" class="filter-checkbox"
+                                        <?= ($_GET['gia'] ?? '') === 'tu20den40' ? 'checked' : '' ?>>
+                                    <label for="tu20den40" class="filter-box">Từ 20-40 triệu</label>
+
+                                    <input type="radio" name="gia" id="tren40tr" value="tren40tr" class="filter-checkbox"
+                                        <?= ($_GET['gia'] ?? '') === 'tren40tr' ? 'checked' : '' ?>>
+                                    <label for="tren40tr" class="filter-box">Trên 40 triệu</label>
+
+                                </div>
+                            </div>
+
+                            <!-- Thời gian -->
+                            <div class="filter-group">
+                                <h6 class="filter-heading">Thời gian</h6>
+
+                                <div class="filter-options">
+                                    <input type="radio" name="thoigian" id="1den2ngay" value="1den2ngay"
+                                        class="filter-checkbox" <?= ($_GET['thoigian'] ?? '') === '1den2ngay' ? 'checked' : '' ?>>
+                                    <label for="1den2ngay" class="filter-box">1-2 ngày</label>
+
+                                    <input type="radio" name="thoigian" id="3den4ngay" value="3den4ngay"
+                                        class="filter-checkbox" <?= ($_GET['thoigian'] ?? '') === '3den4ngay' ? 'checked' : '' ?>>
+                                    <label for="3den4ngay" class="filter-box">3-4 ngày</label>
+
+                                    <input type="radio" name="thoigian" id="5den7ngay" value="5den7ngay"
+                                        class="filter-checkbox" <?= ($_GET['thoigian'] ?? '') === '5den7ngay' ? 'checked' : '' ?>>
+                                    <label for="5den7ngay" class="filter-box">5-7 ngày</label>
+                                </div>
+
+                                <!-- Button -->
+                                <a href="tour.php" class="btn btn-danger w-100 mt-3">
+                                    Xóa bộ lọc
+                                </a>
+                                <button class="btn btn-primary w-100 mt-2">
+                                    Áp dụng bộ lọc
+                                </button>
+
                             </div>
                         </div>
+                    </form>
+                </div>
 
-                        <!-- Điểm đến -->
-                        <div class="filter-group">
-                            <h6 class="filter-heading">Điểm đến</h6>
+                <!-- ------------------------------------- DANH SÁCH TOUR (bên phải) ------------------------------------- -->
 
-                            <div class="filter-options">
-
-                                <?php while ($dd = $diemDenList->fetch_assoc()): ?>
-                                    <input type="radio" name="diemDen" id="dd_<?= $dd['maDiemDen'] ?>"
-                                        value="<?= $dd['maDiemDen'] ?>" class="filter-checkbox" <?= ($_GET['diemDen'] ?? '') == $dd['maDiemDen'] ? 'checked' : '' ?>>
-                                    <label for="dd_<?= $dd['maDiemDen'] ?>" class="filter-box">
-                                        <?= htmlspecialchars($dd['tenDiemDen']) ?>
-                                    </label>
-                                <?php endwhile; ?>
-
-                            </div>
-                        </div>
-
-                        <!-- Khoảng giá -->
-                        <div class="filter-group">
-                            <h6 class="filter-heading">Giá tour/khách</h6>
-
-                            <div class="filter-options">
-
-                                <input type="radio" name="gia" id="duoi10tr" value="duoi10tr" class="filter-checkbox"
-                                    <?= ($_GET['gia'] ?? '') === 'duoi10tr' ? 'checked' : '' ?>>
-                                <label for="duoi10tr" class="filter-box">Dưới 10 triệu</label>
-
-                                <input type="radio" name="gia" id="tu10den20" value="tu10den20" class="filter-checkbox"
-                                    <?= ($_GET['gia'] ?? '') === 'tu10den20' ? 'checked' : '' ?>>
-                                <label for="tu10den20" class="filter-box">Từ 10-20 triệu</label>
-
-                                <input type="radio" name="gia" id="tu20den40" value="tu20den40" class="filter-checkbox"
-                                    <?= ($_GET['gia'] ?? '') === 'tu20den40' ? 'checked' : '' ?>>
-                                <label for="tu20den40" class="filter-box">Từ 20-40 triệu</label>
-
-                                <input type="radio" name="gia" id="tren40tr" value="tren40tr" class="filter-checkbox"
-                                    <?= ($_GET['gia'] ?? '') === 'tren40tr' ? 'checked' : '' ?>>
-                                <label for="tren40tr" class="filter-box">Trên 40 triệu</label>
-
-                            </div>
-                        </div>
-
-                        <!-- Thời gian -->
-                        <div class="filter-group">
-                            <h6 class="filter-heading">Thời gian</h6>
-
-                            <div class="filter-options">
-                                <input type="radio" name="thoigian" id="1den2ngay" value="1den2ngay"
-                                    class="filter-checkbox" <?= ($_GET['thoigian'] ?? '') === '1den2ngay' ? 'checked' : '' ?>>
-                                <label for="1den2ngay" class="filter-box">1-2 ngày</label>
-
-                                <input type="radio" name="thoigian" id="3den4ngay" value="3den4ngay"
-                                    class="filter-checkbox" <?= ($_GET['thoigian'] ?? '') === '3den4ngay' ? 'checked' : '' ?>>
-                                <label for="3den4ngay" class="filter-box">3-4 ngày</label>
-
-                                <input type="radio" name="thoigian" id="5den7ngay" value="5den7ngay"
-                                    class="filter-checkbox" <?= ($_GET['thoigian'] ?? '') === '5den7ngay' ? 'checked' : '' ?>>
-                                <label for="5den7ngay" class="filter-box">5-7 ngày</label>
-                            </div>
-
-                            <!-- Button -->
-                            <a href="tour.php" class="btn btn-danger w-100 mt-3">
-                                Xóa bộ lọc
+                <div class="col-lg-9">
+                    <div class="tour-list">
+                        <?php while ($tour = $tours->fetch_assoc()): ?>
+                            <a href="tour_ChiTiet.php?maTour=<?= $tour['maTour'] ?>" class="destination-item">
+                                <div class="card-image">
+                                    <img src="../../<?= htmlspecialchars($tour['anhTour']) ?>"
+                                        alt="<?= htmlspecialchars($tour['tenTour']) ?>">
+                                </div>
+                                <div class="card-content">
+                                    <h3>
+                                        <?= htmlspecialchars($tour['tenTour']) ?>
+                                    </h3>
+                                    <p class="duration">
+                                        <?= $tour['soNgay'] ?> ngày
+                                        <?= $tour['soNgay'] - 1 ?> đêm
+                                    </p>
+                                    <p class="duration">Khởi hành:
+                                        <?= date('d/m/Y', strtotime($tour['ngayKhoiHanh'])) ?>
+                                    </p>
+                                    <p class="price">Từ
+                                        <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ
+                                    </p>
+                                </div>
                             </a>
-                            <button class="btn btn-primary w-100 mt-2">
-                                Áp dụng bộ lọc
-                            </button>
+                        <?php endwhile; ?>
 
-                        </div>
+                        <?php if ($tours->num_rows === 0): ?>
+                            <p>Không tìm thấy tour nào phù hợp.</p>
+                        <?php endif; ?>
                     </div>
-                </form>
-            </div>
-
-            <!-- ------------------------------------- DANH SÁCH TOUR (bên phải) ------------------------------------- -->
-
-            <div class="col-lg-9">
-                <div class="tour-list">
-                    <?php while ($tour = $tours->fetch_assoc()): ?>
-                        <a href="tour_ChiTiet.php?maTour=<?= $tour['maTour'] ?>" class="destination-item">
-                            <div class="card-image">
-                                <img src="../../<?= htmlspecialchars($tour['anhTour']) ?>"
-                                    alt="<?= htmlspecialchars($tour['tenTour']) ?>">
-                            </div>
-                            <div class="card-content">
-                                <h3>
-                                    <?= htmlspecialchars($tour['tenTour']) ?>
-                                </h3>
-                                <p class="duration">
-                                    <?= $tour['soNgay'] ?> ngày
-                                    <?= $tour['soNgay'] - 1 ?> đêm
-                                </p>
-                                <p class="duration">Khởi hành:
-                                    <?= date('d/m/Y', strtotime($tour['ngayKhoiHanh'])) ?>
-                                </p>
-                                <p class="price">Từ
-                                    <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ
-                                </p>
-                            </div>
-                        </a>
-                    <?php endwhile; ?>
-
-                    <?php if ($tours->num_rows === 0): ?>
-                        <p>Không tìm thấy tour nào phù hợp.</p>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
     <?php include '../../includes/footer.php'; ?>
 </body>
 

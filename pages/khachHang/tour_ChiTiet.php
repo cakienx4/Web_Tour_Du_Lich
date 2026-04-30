@@ -107,107 +107,109 @@ $anhGallery = $stmtGallery->get_result();
             </div>
         </div>
     <?php endif; ?>
-    <div class="container my-4">
-        <!-- ------------------------------------- TITLE ------------------------------------- -->
+    <main>
+        <div class="container my-4">
+            <!-- ------------------------------------- TITLE ------------------------------------- -->
 
-        <h1 class="tour-title">
-            <?= htmlspecialchars($tour['tenTour']) ?>
-        </h1>
+            <h1 class="tour-title">
+                <?= htmlspecialchars($tour['tenTour']) ?>
+            </h1>
 
-        <div class="row mt-4">
+            <div class="row mt-4">
 
-            <!-- ------------------------------------- NỬA TRÁI ------------------------------------- -->
-            <!-- ------------------------------------- NỬA TRÁI ------------------------------------- -->
+                <!-- ------------------------------------- NỬA TRÁI ------------------------------------- -->
+                <!-- ------------------------------------- NỬA TRÁI ------------------------------------- -->
 
-            <div class="col-lg-7">
+                <div class="col-lg-7">
 
-                <!-- ------------------------------------- IMAGE ------------------------------------- -->
+                    <!-- ------------------------------------- IMAGE ------------------------------------- -->
 
-                <div class="main-image">
-                    <?php if ($anhChinh): ?>
-                        <img src="../../<?= htmlspecialchars($anhChinh['duongDan']) ?>"
-                            alt="<?= htmlspecialchars($tour['tenTour']) ?>">
-                    <?php else: ?>
-                        <img src="../../assets/img/placeholder.jpg" alt="Chưa có ảnh">
-                    <?php endif; ?>
-                </div>
-
-                <div class="image-gallery">
-                    <?php if ($anhGallery->num_rows > 0): ?>
-                        <?php while ($anh = $anhGallery->fetch_assoc()): ?>
-                            <img src="../../<?= htmlspecialchars($anh['duongDan']) ?>"
+                    <div class="main-image">
+                        <?php if ($anhChinh): ?>
+                            <img src="../../<?= htmlspecialchars($anhChinh['duongDan']) ?>"
                                 alt="<?= htmlspecialchars($tour['tenTour']) ?>">
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <p>Chưa có ảnh gallery.</p>
-                    <?php endif; ?>
-                </div>
+                        <?php else: ?>
+                            <img src="../../assets/img/placeholder.jpg" alt="Chưa có ảnh">
+                        <?php endif; ?>
+                    </div>
 
-                <!-- ------------------------------------- MÔ TẢ TOUR ------------------------------------- -->
+                    <div class="image-gallery">
+                        <?php if ($anhGallery->num_rows > 0): ?>
+                            <?php while ($anh = $anhGallery->fetch_assoc()): ?>
+                                <img src="../../<?= htmlspecialchars($anh['duongDan']) ?>"
+                                    alt="<?= htmlspecialchars($tour['tenTour']) ?>">
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <p>Chưa có ảnh gallery.</p>
+                        <?php endif; ?>
+                    </div>
 
-                <div class="box tour-section">
-                    <h1>Giới thiệu tour</h1>
-                    <p>
-                        <?= nl2br(htmlspecialchars($tour['moTa'])) ?>
-                    </p>
-                </div>
+                    <!-- ------------------------------------- MÔ TẢ TOUR ------------------------------------- -->
 
-                <!-- ------------------------------------- LỊCH TRÌNH TOUR ------------------------------------- -->
-
-                <div class="box tour-section">
-                    <h1>Lịch trình tour</h1>
-                    <p>
-                        <?= nl2br(htmlspecialchars($tour['lichTrinh'])) ?>
-                    </p>
-                </div>
-            </div>
-
-            <!-- ------------------------------------- NỬA PHẢI ------------------------------------- -->
-            <!-- ------------------------------------- NỬA PHẢI ------------------------------------- -->
-
-            <div class="col-lg-5">
-
-                <!-- ------------------------------------- BẢNG ĐẶT TOUR ------------------------------------- -->
-
-                <div class="box">
-                    <div class="tour-info">
-                        <p><strong>Thời gian:</strong>
-                            <?= $tour['soNgay'] ?> ngày
-                            <?= $tour['soNgay'] - 1 ?> đêm
-                        </p>
-                        <p><strong>Khởi hành:</strong>
-                            <?= date('d/m/Y', strtotime($tour['ngayKhoiHanh'])) ?>
-                        </p>
-                        <p><strong>Điểm đến:</strong>
-                            <?= htmlspecialchars(implode(', ', $tenDiemDen)) ?>
-                        </p>
-                        <p><strong>Nhà tổ chức:</strong>
-                            <?= htmlspecialchars($tour['tenNPP']) ?>
-                        </p>
-                        <p><strong>Số chỗ còn lại:</strong>
-                            <?= $tour['soChoTrong'] ?>
+                    <div class="box tour-section">
+                        <h1>Giới thiệu tour</h1>
+                        <p>
+                            <?= nl2br(htmlspecialchars($tour['moTa'])) ?>
                         </p>
                     </div>
-                    <div class="price-box">
-                        <span class="price">
-                            <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ / người
-                        </span>
+
+                    <!-- ------------------------------------- LỊCH TRÌNH TOUR ------------------------------------- -->
+
+                    <div class="box tour-section">
+                        <h1>Lịch trình tour</h1>
+                        <p>
+                            <?= nl2br(htmlspecialchars($tour['lichTrinh'])) ?>
+                        </p>
                     </div>
-                    <?php if (isset($_SESSION['vaiTro']) && $_SESSION['vaiTro'] === 'Khách hàng'): ?>
-                        <div class="d-grid gap-2">
-                            <a href="datTour.php?maTour=<?= $tour['maTour'] ?>" class="btn btn-danger fw-bold">Đặt tour ngay</a>
-                            <button type="button" class="btn btn-warning fw-bold" data-bs-toggle="modal"
-                                data-bs-target="#popupBaoCao">
-                                Báo cáo vi phạm
-                            </button>
+                </div>
+
+                <!-- ------------------------------------- NỬA PHẢI ------------------------------------- -->
+                <!-- ------------------------------------- NỬA PHẢI ------------------------------------- -->
+
+                <div class="col-lg-5">
+
+                    <!-- ------------------------------------- BẢNG ĐẶT TOUR ------------------------------------- -->
+
+                    <div class="box">
+                        <div class="tour-info">
+                            <p><strong>Thời gian:</strong>
+                                <?= $tour['soNgay'] ?> ngày
+                                <?= $tour['soNgay'] - 1 ?> đêm
+                            </p>
+                            <p><strong>Khởi hành:</strong>
+                                <?= date('d/m/Y', strtotime($tour['ngayKhoiHanh'])) ?>
+                            </p>
+                            <p><strong>Điểm đến:</strong>
+                                <?= htmlspecialchars(implode(', ', $tenDiemDen)) ?>
+                            </p>
+                            <p><strong>Nhà tổ chức:</strong>
+                                <?= htmlspecialchars($tour['tenNPP']) ?>
+                            </p>
+                            <p><strong>Số chỗ còn lại:</strong>
+                                <?= $tour['soChoTrong'] ?>
+                            </p>
                         </div>
-                    <?php else: ?>
-                        <a href="../auth/dangNhap.php" class="btn-book">Đăng nhập để đặt tour</a>
-                    <?php endif; ?>
+                        <div class="price-box">
+                            <span class="price">
+                                <?= number_format($tour['giaTour'], 0, ',', '.') ?>đ / người
+                            </span>
+                        </div>
+                        <?php if (isset($_SESSION['vaiTro']) && $_SESSION['vaiTro'] === 'Khách hàng'): ?>
+                            <div class="d-grid gap-2">
+                                <a href="datTour.php?maTour=<?= $tour['maTour'] ?>" class="btn btn-danger fw-bold">Đặt tour ngay</a>
+                                <button type="button" class="btn btn-warning fw-bold" data-bs-toggle="modal"
+                                    data-bs-target="#popupBaoCao">
+                                    Báo cáo vi phạm
+                                </button>
+                            </div>
+                        <?php else: ?>
+                            <a href="../auth/dangNhap.php" class="btn-book">Đăng nhập để đặt tour</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
     <?php include '../../includes/footer.php'; ?>
     <div class="modal fade" id="popupBaoCao" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">

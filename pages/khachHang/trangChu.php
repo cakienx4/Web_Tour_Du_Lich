@@ -13,6 +13,7 @@ function getTourByVung($mysqli, $vung, $limit = 4)
         JOIN diemden d ON td.maDiemDen = d.maDiemDen
         WHERE d.vungMien = ? AND t.trangThai = 'Đang bán'
         GROUP BY t.maTour
+        ORDER BY RAND()
         LIMIT ?
     ");
     $stmt->bind_param("si", $vung, $limit);

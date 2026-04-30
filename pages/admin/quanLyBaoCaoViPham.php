@@ -51,110 +51,108 @@ $dsBaoCao = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
 
-            <?php include "../../includes/sideBar-admin.php"; ?>
+    <?php include "../../includes/sideBar-admin.php"; ?>
 
-            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
+    <div class="main-content p-4">
 
-                <h3 class="mb-4 text-title">Danh sách báo cáo vi phạm</h3>
-                <hr>
+        <h3 class="mb-4 text-title">Danh sách báo cáo vi phạm</h3>
+        <hr>
 
-                <?php if (!empty($_GET['success'])): ?>
-                    <div class="alert alert-success alert-dismissible fade show">
-                        <?= match($_GET['success']) {
-                            'da_xu_ly' => 'Đã xử lý báo cáo và gửi phản hồi cho nhà phân phối.',
-                            'xoa'      => 'Đã xóa báo cáo.',
-                            default    => 'Thao tác thành công.'
-                        } ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
-                <!-- FILTER -->
-                <div class="content-box mb-3">
-                    <form method="GET">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label class="form-label">Tìm kiếm</label>
-                                <input type="text" name="search" class="form-control"
-                                    placeholder="Người gửi hoặc nội dung..."
-                                    value="<?= htmlspecialchars($search) ?>">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Trạng thái xử lý</label>
-                                <select name="trangThai" class="form-select">
-                                    <option value="">Tất cả</option>
-                                    <option value="choPhanHoi" <?= $trangThai === 'choPhanHoi' ? 'selected' : '' ?>>Chờ xử lý</option>
-                                    <option value="daXuLy"     <?= $trangThai === 'daXuLy'     ? 'selected' : '' ?>>Đã xử lý</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 d-flex align-items-end">
-                                <button type="submit" class="btn btn-secondary w-100">Lọc</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- TABLE -->
-                <div class="content-box">
-                    <table class="table table-bordered table-hover align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Người gửi</th>
-                                <th>Tour</th>
-                                <th>Nội dung</th>
-                                <th>Ngày gửi</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($dsBaoCao)): ?>
-                                <tr>
-                                    <td colspan="7" class="text-center text-muted">Không có báo cáo nào.</td>
-                                </tr>
-                            <?php else: ?>
-                                <?php foreach ($dsBaoCao as $bc): ?>
-                                    <tr>
-                                        <td><?= $bc['maBaoCao'] ?></td>
-                                        <td><?= htmlspecialchars($bc['hoTen']) ?></td>
-                                        <td><?= htmlspecialchars($bc['tenTour']) ?></td>
-                                        <td><?= htmlspecialchars(mb_strimwidth($bc['noiDung'], 0, 50, '...')) ?></td>
-                                        <td><?= date('d/m/Y', strtotime($bc['ngayGui'])) ?></td>
-                                        <td>
-                                            <?php if ($bc['trangThaiXuLy'] === 'choPhanHoi'): ?>
-                                                <span class="badge bg-warning text-dark">Chờ xử lý</span>
-                                            <?php else: ?>
-                                                <span class="badge bg-success">Đã xử lý</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td>
-                                            <a href="chiTietBaoCao.php?id=<?= $bc['maBaoCao'] ?>"
-                                                class="btn btn-info btn-sm">Xem</a>
-
-                                            <?php if ($bc['trangThaiXuLy'] === 'choPhanHoi'): ?>
-                                                <button type="button" class="btn btn-success btn-sm"
-                                                    onclick="moModalXuLy(<?= $bc['maBaoCao'] ?>)">
-                                                    Đánh dấu xử lý
-                                                </button>
-                                            <?php endif; ?>
-
-                                            <a href="../../actions/baoCao/handleReport.php?id=<?= $bc['maBaoCao'] ?>&action=xoa"
-                                                class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Xóa báo cáo này?')">Xóa</a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-
+        <?php if (!empty($_GET['success'])): ?>
+            <div class="alert alert-success alert-dismissible fade show">
+                <?= match ($_GET['success']) {
+                    'da_xu_ly' => 'Đã xử lý báo cáo và gửi phản hồi cho nhà phân phối.',
+                    'xoa'      => 'Đã xóa báo cáo.',
+                    default    => 'Thao tác thành công.'
+                } ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
+        <?php endif; ?>
+
+        <!-- FILTER -->
+        <div class="content-box mb-3">
+            <form method="GET">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Tìm kiếm</label>
+                        <input type="text" name="search" class="form-control"
+                            placeholder="Người gửi hoặc nội dung..."
+                            value="<?= htmlspecialchars($search) ?>">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Trạng thái xử lý</label>
+                        <select name="trangThai" class="form-select">
+                            <option value="">Tất cả</option>
+                            <option value="choPhanHoi" <?= $trangThai === 'choPhanHoi' ? 'selected' : '' ?>>Chờ xử lý</option>
+                            <option value="daXuLy" <?= $trangThai === 'daXuLy'     ? 'selected' : '' ?>>Đã xử lý</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-secondary w-100">Lọc</button>
+                    </div>
+                </div>
+            </form>
         </div>
+
+        <!-- TABLE -->
+        <div class="content-box">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Người gửi</th>
+                        <th>Tour</th>
+                        <th>Nội dung</th>
+                        <th>Ngày gửi</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($dsBaoCao)): ?>
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">Không có báo cáo nào.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($dsBaoCao as $bc): ?>
+                            <tr>
+                                <td><?= $bc['maBaoCao'] ?></td>
+                                <td><?= htmlspecialchars($bc['hoTen']) ?></td>
+                                <td><?= htmlspecialchars($bc['tenTour']) ?></td>
+                                <td><?= htmlspecialchars(mb_strimwidth($bc['noiDung'], 0, 50, '...')) ?></td>
+                                <td><?= date('d/m/Y', strtotime($bc['ngayGui'])) ?></td>
+                                <td>
+                                    <?php if ($bc['trangThaiXuLy'] === 'choPhanHoi'): ?>
+                                        <span class="badge bg-warning text-dark">Chờ xử lý</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-success">Đã xử lý</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <a href="chiTietBaoCao.php?id=<?= $bc['maBaoCao'] ?>"
+                                        class="btn btn-info btn-sm">Xem</a>
+
+                                    <?php if ($bc['trangThaiXuLy'] === 'choPhanHoi'): ?>
+                                        <button type="button" class="btn btn-success btn-sm"
+                                            onclick="moModalXuLy(<?= $bc['maBaoCao'] ?>)">
+                                            Đánh dấu xử lý
+                                        </button>
+                                    <?php endif; ?>
+
+                                    <a href="../../actions/baoCao/handleReport.php?id=<?= $bc['maBaoCao'] ?>&action=xoa"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Xóa báo cáo này?')">Xóa</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    </div>
     </div>
 
     <!-- MODAL XỬ LÝ BÁO CÁO -->
@@ -183,15 +181,13 @@ $dsBaoCao = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
 
-    <script>
-        function moModalXuLy(maBaoCao) {
-            document.getElementById('modalMaBaoCao').value = maBaoCao;
-            new bootstrap.Modal(document.getElementById('modalXuLy')).show();
-        }
-    </script>
+            <script>
+                function moModalXuLy(maBaoCao) {
+                    document.getElementById('modalMaBaoCao').value = maBaoCao;
+                    new bootstrap.Modal(document.getElementById('modalXuLy')).show();
+                }
+            </script>
 </body>
 
 </html>

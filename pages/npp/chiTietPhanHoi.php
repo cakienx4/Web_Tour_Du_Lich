@@ -53,54 +53,49 @@ if ($ph['trangThai'] === 'chuaXem') {
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
+    <?php include "../../includes/sideBar-NPP.php"; ?>
 
-            <?php include "../../includes/sideBar-NPP.php"; ?>
+    <div class="main-content p-4">
 
-            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
+        <h3 class="mb-4 text-title">Chi tiết phản hồi</h3>
 
-                <h3 class="mb-4 text-title">Chi tiết phản hồi</h3>
+        <div class="content-box-chiTiet">
 
-                <div class="content-box-chiTiet">
+            <h4 class="mb-3">Tour liên quan</h4>
+            <p><strong>Mã tour:</strong> <?= $ph['maTour'] ?></p>
+            <p><strong>Tên tour:</strong>
+                <a href="chiTietTour.php?maTour=<?= $ph['maTour'] ?>">
+                    <?= htmlspecialchars($ph['tenTour']) ?>
+                </a>
+            </p>
 
-                    <h4 class="mb-3">Tour liên quan</h4>
-                    <p><strong>Mã tour:</strong> <?= $ph['maTour'] ?></p>
-                    <p><strong>Tên tour:</strong>
-                        <a href="chiTietTour.php?maTour=<?= $ph['maTour'] ?>">
-                            <?= htmlspecialchars($ph['tenTour']) ?>
-                        </a>
-                    </p>
+            <hr>
 
-                    <hr>
-
-                    <h4 class="mb-3">Báo cáo vi phạm</h4>
-                    <p><strong>Mã báo cáo:</strong> <?= $ph['maBaoCao'] ?></p>
-                    <p><strong>Ngày gửi báo cáo:</strong> <?= date('d/m/Y', strtotime($ph['ngayGuiBaoCao'])) ?></p>
-                    <p><strong>Nội dung báo cáo:</strong></p>
-                    <div class="p-3 bg-light rounded mb-3">
-                        <?= nl2br(htmlspecialchars($ph['noiDungBaoCao'])) ?>
-                    </div>
-
-                    <hr>
-
-                    <h4 class="mb-3">Phản hồi từ Quản trị viên</h4>
-                    <p><strong>Ngày phản hồi:</strong> <?= date('d/m/Y', strtotime($ph['ngayGui'])) ?></p>
-                    <p><strong>Nội dung:</strong></p>
-                    <div class="p-3 bg-light rounded mb-3">
-                        <?= nl2br(htmlspecialchars($ph['noiDung'])) ?>
-                    </div>
-
-                    <hr>
-
-                    <div class="d-flex justify-content-between mb-3">
-                        <a href="nhanPhanHoi.php" class="btn btn-secondary">← Quay lại</a>
-                    </div>
-
-                </div>
-
+            <h4 class="mb-3">Báo cáo vi phạm</h4>
+            <p><strong>Mã báo cáo:</strong> <?= $ph['maBaoCao'] ?></p>
+            <p><strong>Ngày gửi báo cáo:</strong> <?= date('d/m/Y', strtotime($ph['ngayGuiBaoCao'])) ?></p>
+            <p><strong>Nội dung báo cáo:</strong></p>
+            <div class="p-3 bg-light rounded mb-3">
+                <?= nl2br(htmlspecialchars($ph['noiDungBaoCao'])) ?>
             </div>
+
+            <hr>
+
+            <h4 class="mb-3">Phản hồi từ Quản trị viên</h4>
+            <p><strong>Ngày phản hồi:</strong> <?= date('d/m/Y', strtotime($ph['ngayGui'])) ?></p>
+            <p><strong>Nội dung:</strong></p>
+            <div class="p-3 bg-light rounded mb-3">
+                <?= nl2br(htmlspecialchars($ph['noiDung'])) ?>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between mb-3">
+                <a href="nhanPhanHoi.php" class="btn btn-secondary">← Quay lại</a>
+            </div>
+
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

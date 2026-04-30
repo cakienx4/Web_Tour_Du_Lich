@@ -82,142 +82,135 @@ $dondats = $stmt->get_result();
 </head>
 
 <body>
+    <!-- SIDEBAR -->
+    <?php include "../../includes/sideBar-admin.php"; ?>
 
-    <div class="container-fluid">
-        <div class="row">
+    <!-- MAIN CONTENT -->
+    <div class="main-content p-4">
 
-            <!-- SIDEBAR -->
-            <?php include "../../includes/sideBar-admin.php"; ?>
+        <!-- TITLE -->
+        <h3 class="mb-4 text-title">Quản lý đơn đặt tour</h3>
 
-            <!-- MAIN CONTENT -->
-            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
+        <hr>
 
-                <!-- TITLE -->
-                <h3 class="mb-4 text-title">Quản lý đơn đặt tour</h3>
+        <!-- FILTER -->
+        <div class="content-box mb-3">
+            <form method="GET">
+                <div class="row">
 
-                <hr>
+                    <div class="col-md-4">
+                        <label><strong>Tìm kiếm</strong></label>
+                        <input type="text" name="timKiem" class="form-control"
+                            value="<?= htmlspecialchars($timKiem) ?>">
+                    </div>
 
-                <!-- FILTER -->
-                <div class="content-box mb-3">
-                    <form method="GET">
-                        <div class="row">
+                    <div class="col-md-2">
+                        <label><strong>ID đơn</strong></label>
+                        <input type="text" name="maDon" class="form-control"
+                            value="<?= htmlspecialchars($maDon) ?>">
+                    </div>
 
-                            <div class="col-md-4">
-                                <label><strong>Tìm kiếm</strong></label>
-                                <input type="text" name="timKiem" class="form-control"
-                                    value="<?= htmlspecialchars($timKiem) ?>">
-                            </div>
+                    <div class="col-md-2">
+                        <label><strong>ID Tour</strong></label>
+                        <input type="text" name="maTour" class="form-control"
+                            value="<?= htmlspecialchars($maTour) ?>">
+                    </div>
 
-                            <div class="col-md-2">
-                                <label><strong>ID đơn</strong></label>
-                                <input type="text" name="maDon" class="form-control"
-                                    value="<?= htmlspecialchars($maDon) ?>">
-                            </div>
+                    <div class="col-md-3">
+                        <label><strong>Trạng thái</strong></label>
+                        <select name="trangThai" class="form-select">
+                            <option>Tất cả</option>
+                            <option <?= $trangThai == 'Chờ thanh toán' ? 'selected' : '' ?>>Chờ thanh toán</option>
+                            <option <?= $trangThai == 'Đã thanh toán' ? 'selected' : '' ?>>Đã thanh toán</option>
+                            <option <?= $trangThai == 'Đã hủy' ? 'selected' : '' ?>>Đã hủy</option>
+                            <option <?= $trangThai == 'Hết hạn' ? 'selected' : '' ?>>Hết hạn</option>
+                        </select>
+                    </div>
 
-                            <div class="col-md-2">
-                                <label><strong>ID Tour</strong></label>
-                                <input type="text" name="maTour" class="form-control"
-                                    value="<?= htmlspecialchars($maTour) ?>">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Trạng thái</strong></label>
-                                <select name="trangThai" class="form-select">
-                                    <option>Tất cả</option>
-                                    <option <?= $trangThai == 'Chờ thanh toán' ? 'selected' : '' ?>>Chờ thanh toán</option>
-                                    <option <?= $trangThai == 'Đã thanh toán' ? 'selected' : '' ?>>Đã thanh toán</option>
-                                    <option <?= $trangThai == 'Đã hủy' ? 'selected' : '' ?>>Đã hủy</option>
-                                    <option <?= $trangThai == 'Hết hạn' ? 'selected' : '' ?>>Hết hạn</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-1 d-flex align-items-end">
-                                <button class="btn btn-primary w-100">Lọc</button>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-
-                <!-- TABLE -->
-                <div class="content-box">
-
-                    <table class="table table-bordered table-hover align-middle">
-
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID đơn</th>
-                                <th>ID tour</th>
-                                <th>Khách hàng</th>
-                                <th>Tour</th>
-                                <th>Ngày đặt</th>
-                                <th>Tổng tiền</th>
-                                <th>Phương thức</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <?php while ($don = $dondats->fetch_assoc()): ?>
-                                <tr>
-                                    <td>
-                                        <?= $don['maDon'] ?>
-                                    </td>
-                                    <td>
-                                        <?= $don['maTour'] ?>
-                                    </td>
-                                    <td>
-                                        <?= htmlspecialchars($don['hoTen']) ?>
-                                    </td>
-                                    <td>
-                                        <?= htmlspecialchars($don['tenTour']) ?>
-                                    </td>
-
-                                    <td>
-                                        <?= date('d/m/Y', strtotime($don['thoiGianDat'])) ?>
-                                    </td>
-
-                                    <td>
-                                        <?= number_format($don['tongTien'], 0, ',', '.') ?>đ
-                                    </td>
-
-                                    <td>
-                                        <?= $don['phuongThucTT'] ?? '-' ?>
-                                    </td>
-
-                                    <td>
-                                        <?php if ($don['trangThaiTT'] === 'Đã thanh toán'): ?>
-                                            <span class="badge bg-success">Đã thanh toán</span>
-                                        <?php elseif ($don['trangThaiTT'] === 'Chờ thanh toán'): ?>
-                                            <span class="badge bg-warning text-dark">Chờ thanh toán</span>
-                                        <?php elseif ($don['trangThaiTT'] === 'Đã hủy'): ?>
-                                            <span class="badge bg-danger">Đã hủy</span>
-                                        <?php else: ?>
-                                            <span class="badge bg-secondary">Hết hạn</span>
-                                        <?php endif; ?>
-                                    </td>
-
-                                    <td>
-                                        <a href="chiTietDonDat.php?maDon=<?= $don['maDon'] ?>"
-                                            class="btn btn-info btn-sm">Xem</a>
-
-                                        <a href="../../actions/donDat/updateBooking.php?maDon=<?= $don['maDon'] ?>"
-                                            class="btn btn-primary btn-sm">
-                                            Cập nhật
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-
-                    </table>
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button class="btn btn-primary w-100">Lọc</button>
+                    </div>
 
                 </div>
+            </form>
+        </div>
 
-            </div>
+        <!-- TABLE -->
+        <div class="content-box">
+
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID đơn</th>
+                        <th>ID tour</th>
+                        <th>Khách hàng</th>
+                        <th>Tour</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng tiền</th>
+                        <th>Phương thức</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php while ($don = $dondats->fetch_assoc()): ?>
+                        <tr>
+                            <td>
+                                <?= $don['maDon'] ?>
+                            </td>
+                            <td>
+                                <?= $don['maTour'] ?>
+                            </td>
+                            <td>
+                                <?= htmlspecialchars($don['hoTen']) ?>
+                            </td>
+                            <td>
+                                <?= htmlspecialchars($don['tenTour']) ?>
+                            </td>
+
+                            <td>
+                                <?= date('d/m/Y', strtotime($don['thoiGianDat'])) ?>
+                            </td>
+
+                            <td>
+                                <?= number_format($don['tongTien'], 0, ',', '.') ?>đ
+                            </td>
+
+                            <td>
+                                <?= $don['phuongThucTT'] ?? '-' ?>
+                            </td>
+
+                            <td>
+                                <?php if ($don['trangThaiTT'] === 'Đã thanh toán'): ?>
+                                    <span class="badge bg-success">Đã thanh toán</span>
+                                <?php elseif ($don['trangThaiTT'] === 'Chờ thanh toán'): ?>
+                                    <span class="badge bg-warning text-dark">Chờ thanh toán</span>
+                                <?php elseif ($don['trangThaiTT'] === 'Đã hủy'): ?>
+                                    <span class="badge bg-danger">Đã hủy</span>
+                                <?php else: ?>
+                                    <span class="badge bg-secondary">Hết hạn</span>
+                                <?php endif; ?>
+                            </td>
+
+                            <td>
+                                <a href="chiTietDonDat.php?maDon=<?= $don['maDon'] ?>"
+                                    class="btn btn-info btn-sm">Xem</a>
+
+                                <a href="../../actions/donDat/updateBooking.php?maDon=<?= $don['maDon'] ?>"
+                                    class="btn btn-primary btn-sm">
+                                    Cập nhật
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+
+            </table>
 
         </div>
+
     </div>
 
 </body>

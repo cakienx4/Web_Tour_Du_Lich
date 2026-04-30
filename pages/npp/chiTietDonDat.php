@@ -52,72 +52,66 @@ if (!$don) {
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
+    <?php include "../../includes/sideBar-NPP.php"; ?>
 
-            <?php include "../../includes/sideBar-NPP.php"; ?>
+    <div class="main-content p-4">
 
-            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
+        <h3 class="mb-4 text-title">Chi tiết đơn đặt tour</h3>
 
-                <h3 class="mb-4 text-title">Chi tiết đơn đặt tour</h3>
+        <div class="content-box-chiTiet">
 
-                <div class="content-box-chiTiet">
+            <!-- THÔNG TIN ĐƠN -->
+            <h4 class="mb-3">Thông tin đơn đặt</h4>
+            <p><strong>Mã đơn:</strong> <?= $don['maDon'] ?></p>
+            <p><strong>Ngày đặt:</strong> <?= date('d/m/Y H:i', strtotime($don['thoiGianDat'])) ?></p>
+            <p><strong>Số người:</strong> <?= $don['soNguoi'] ?></p>
+            <p><strong>Tổng tiền:</strong> <?= number_format($don['tongTien'], 0, ',', '.') ?>đ</p>
 
-                    <!-- THÔNG TIN ĐƠN -->
-                    <h4 class="mb-3">Thông tin đơn đặt</h4>
-                    <p><strong>Mã đơn:</strong> <?= $don['maDon'] ?></p>
-                    <p><strong>Ngày đặt:</strong> <?= date('d/m/Y H:i', strtotime($don['thoiGianDat'])) ?></p>
-                    <p><strong>Số người:</strong> <?= $don['soNguoi'] ?></p>
-                    <p><strong>Tổng tiền:</strong> <?= number_format($don['tongTien'], 0, ',', '.') ?>đ</p>
+            <hr>
 
-                    <hr>
+            <!-- KHÁCH HÀNG -->
+            <h4 class="mb-3">Thông tin khách hàng</h4>
+            <p><strong>Họ tên:</strong> <?= htmlspecialchars($don['tenKhach']) ?></p>
+            <p><strong>Email:</strong> <?= htmlspecialchars($don['email']) ?></p>
+            <p><strong>Số điện thoại:</strong> <?= htmlspecialchars($don['soDienThoai']) ?></p>
 
-                    <!-- KHÁCH HÀNG -->
-                    <h4 class="mb-3">Thông tin khách hàng</h4>
-                    <p><strong>Họ tên:</strong> <?= htmlspecialchars($don['tenKhach']) ?></p>
-                    <p><strong>Email:</strong> <?= htmlspecialchars($don['email']) ?></p>
-                    <p><strong>Số điện thoại:</strong> <?= htmlspecialchars($don['soDienThoai']) ?></p>
+            <hr>
 
-                    <hr>
+            <!-- TOUR -->
+            <h4 class="mb-3">Thông tin tour</h4>
+            <p><strong>Mã tour:</strong> <?= $don['maTour'] ?></p>
+            <p><strong>Tên tour:</strong> <?= htmlspecialchars($don['tenTour']) ?></p>
+            <p><strong>Điểm đến:</strong> <?= htmlspecialchars($don['tenDiemDen'] ?? 'Chưa cập nhật') ?></p>
+            <p><strong>Ngày khởi hành:</strong> <?= date('d/m/Y', strtotime($don['ngayKhoiHanh'])) ?></p>
 
-                    <!-- TOUR -->
-                    <h4 class="mb-3">Thông tin tour</h4>
-                    <p><strong>Mã tour:</strong> <?= $don['maTour'] ?></p>
-                    <p><strong>Tên tour:</strong> <?= htmlspecialchars($don['tenTour']) ?></p>
-                    <p><strong>Điểm đến:</strong> <?= htmlspecialchars($don['tenDiemDen'] ?? 'Chưa cập nhật') ?></p>
-                    <p><strong>Ngày khởi hành:</strong> <?= date('d/m/Y', strtotime($don['ngayKhoiHanh'])) ?></p>
+            <hr>
 
-                    <hr>
+            <!-- THANH TOÁN -->
+            <h4 class="mb-3">Thanh toán</h4>
+            <p><strong>Phương thức:</strong> <?= $don['phuongThucTT'] ?? '-' ?></p>
+            <p><strong>Thời gian thanh toán:</strong>
+                <?= $don['thoiGianThanhToan'] ? date('d/m/Y H:i', strtotime($don['thoiGianThanhToan'])) : '-' ?>
+            </p>
+            <p>
+                <strong>Trạng thái:</strong>
+                <?php
+                $badge = match ($don['trangThaiTT']) {
+                    'Chờ thanh toán' => 'bg-warning text-dark',
+                    'Đã thanh toán'  => 'bg-success',
+                    'Đã hủy'         => 'bg-danger',
+                    'Hết hạn'        => 'bg-secondary',
+                    default          => 'bg-secondary'
+                };
+                ?>
+                <span class="badge <?= $badge ?>"><?= $don['trangThaiTT'] ?></span>
+            </p>
 
-                    <!-- THANH TOÁN -->
-                    <h4 class="mb-3">Thanh toán</h4>
-                    <p><strong>Phương thức:</strong> <?= $don['phuongThucTT'] ?? '-' ?></p>
-                    <p><strong>Thời gian thanh toán:</strong>
-                        <?= $don['thoiGianThanhToan'] ? date('d/m/Y H:i', strtotime($don['thoiGianThanhToan'])) : '-' ?>
-                    </p>
-                    <p>
-                        <strong>Trạng thái:</strong>
-                        <?php
-                        $badge = match($don['trangThaiTT']) {
-                            'Chờ thanh toán' => 'bg-warning text-dark',
-                            'Đã thanh toán'  => 'bg-success',
-                            'Đã hủy'         => 'bg-danger',
-                            'Hết hạn'        => 'bg-secondary',
-                            default          => 'bg-secondary'
-                        };
-                        ?>
-                        <span class="badge <?= $badge ?>"><?= $don['trangThaiTT'] ?></span>
-                    </p>
+            <hr>
 
-                    <hr>
-
-                    <div class="d-flex justify-content-between action-group mb-3">
-                        <a href="quanLyDonDat.php" class="btn btn-secondary">← Quay lại</a>
-                    </div>
-
-                </div>
-
+            <div class="d-flex justify-content-between action-group mb-3">
+                <a href="quanLyDonDat.php" class="btn btn-secondary">← Quay lại</a>
             </div>
+
         </div>
     </div>
 

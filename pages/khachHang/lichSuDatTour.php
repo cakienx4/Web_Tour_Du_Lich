@@ -31,91 +31,91 @@ $donDatList = $stmt->get_result();
 
 <body>
     <?php include '../../includes/header.php'; ?>
-
-    <div class="breadcrumb-box">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb tour-breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="trangChu.php" class="breadcrumb-link">Trang chủ</a>
-                    </li>
-                    <li class="breadcrumb-item active">Lịch sử đặt tour</li>
-                </ol>
-            </nav>
+    <main>
+        <div class="breadcrumb-box">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb tour-breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="trangChu.php" class="breadcrumb-link">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item active">Lịch sử đặt tour</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-5 py-4">
-        <div class="page-title">Lịch sử đơn đặt của tôi</div>
+        <div class="container my-5 py-4">
+            <div class="page-title">Lịch sử đơn đặt của tôi</div>
 
-        <?php if ($donDatList->num_rows === 0): ?>
-            <div class="box text-center">
-                <p>Bạn chưa có đơn đặt tour nào.</p>
-                <a href="tour.php" class="btn-book text-white">Khám phá tour ngay</a>
-            </div>
-        <?php endif; ?>
-
-        <?php while ($don = $donDatList->fetch_assoc()): ?>
-            <div class="box">
-                <div class="row align-items-center">
-
-                    <div class="col-md-2">
-                        <img src="../../<?= htmlspecialchars($don['anhTour'] ?? '') ?>"
-                            alt="<?= htmlspecialchars($don['tenTour']) ?>" style="width:100%; border-radius:8px;">
-                    </div>
-
-                    <div class="col-md-7">
-                        <div class="tour-title"><?= htmlspecialchars($don['tenTour']) ?></div>
-                        <div class="tour-info">
-                            <p><strong>Mã đơn:</strong> #<?= $don['maDon'] ?></p>
-                            <p><strong>Ngày khởi hành:</strong> <?= date('d/m/Y', strtotime($don['ngayKhoiHanh'])) ?></p>
-                            <p><strong>Thời gian:</strong> <?= $don['soNgay'] ?> ngày <?= $don['soNgay'] - 1 ?> đêm</p>
-                            <p><strong>Số người:</strong> <?= $don['soNguoi'] ?></p>
-                            <p><strong>Tổng tiền:</strong>
-                                <span class="price"><?= number_format($don['tongTien'], 0, ',', '.') ?>đ</span>
-                            </p>
-                            <p><strong>Trạng thái:</strong>
-                                <?php if ($don['trangThaiTT'] === 'Đã thanh toán'): ?>
-                                    <span class="status status-upcoming">Đã thanh toán</span>
-                                <?php elseif ($don['trangThaiTT'] === 'Đã hủy'): ?>
-                                    <span class="status status-finished">Đã hủy</span>
-                                <?php elseif ($don['trangThaiTT'] === 'Hết hạn'): ?>
-                                    <span class="status" style="background:#f8d7da; color:#842029;">Hết hạn</span>
-                                <?php else: ?>
-                                    <span class="status" style="background:#fff3cd; color:#856404;">Chờ thanh toán</span>
-                                <?php endif; ?>
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 text-end">
-                        <?php if ($don['trangThaiTT'] === 'Chờ thanh toán'): ?>
-                            <a href="thanhToan.php?maDon=<?= $don['maDon'] ?>" class="btn btn-danger text-white mb-2 w-100">
-                                Thanh toán
-                            </a>
-                            <br>
-                            <a href="../../actions/donDat/cancelBooking.php?maDon=<?= $don['maDon'] ?>"
-                                class="btn btn-outline-danger cancel-btn w-100">
-                                Hủy đơn
-                            </a>
-                        <?php elseif ($don['trangThaiTT'] === 'Đã thanh toán'): ?>
-                            <a href="../../actions/donDat/cancelBooking.php?maDon=<?= $don['maDon'] ?>"
-                                class="btn btn-outline-danger cancel-btn w-100">
-                                Hủy đơn
-                            </a>
-                        <?php elseif ($don['trangThaiTT'] === 'Đã hủy' || $don['trangThaiTT'] === 'Hết hạn'): ?>
-                            <a href="../../actions/donDat/deleteBooking.php?maDon=<?= $don['maDon'] ?>"
-                                class="btn btn-danger cancel-btn w-100">
-                                Xóa đơn
-                            </a>
-                        <?php endif; ?>
-                    </div>
-
+            <?php if ($donDatList->num_rows === 0): ?>
+                <div class="box text-center">
+                    <p>Bạn chưa có đơn đặt tour nào.</p>
+                    <a href="tour.php" class="btn-book text-white">Khám phá tour ngay</a>
                 </div>
-            </div>
-        <?php endwhile; ?>
-    </div>
+            <?php endif; ?>
 
+            <?php while ($don = $donDatList->fetch_assoc()): ?>
+                <div class="box">
+                    <div class="row align-items-center">
+
+                        <div class="col-md-2">
+                            <img src="../../<?= htmlspecialchars($don['anhTour'] ?? '') ?>"
+                                alt="<?= htmlspecialchars($don['tenTour']) ?>" style="width:100%; border-radius:8px;">
+                        </div>
+
+                        <div class="col-md-7">
+                            <div class="tour-title"><?= htmlspecialchars($don['tenTour']) ?></div>
+                            <div class="tour-info">
+                                <p><strong>Mã đơn:</strong> #<?= $don['maDon'] ?></p>
+                                <p><strong>Ngày khởi hành:</strong> <?= date('d/m/Y', strtotime($don['ngayKhoiHanh'])) ?></p>
+                                <p><strong>Thời gian:</strong> <?= $don['soNgay'] ?> ngày <?= $don['soNgay'] - 1 ?> đêm</p>
+                                <p><strong>Số người:</strong> <?= $don['soNguoi'] ?></p>
+                                <p><strong>Tổng tiền:</strong>
+                                    <span class="price"><?= number_format($don['tongTien'], 0, ',', '.') ?>đ</span>
+                                </p>
+                                <p><strong>Trạng thái:</strong>
+                                    <?php if ($don['trangThaiTT'] === 'Đã thanh toán'): ?>
+                                        <span class="status status-upcoming">Đã thanh toán</span>
+                                    <?php elseif ($don['trangThaiTT'] === 'Đã hủy'): ?>
+                                        <span class="status status-finished">Đã hủy</span>
+                                    <?php elseif ($don['trangThaiTT'] === 'Hết hạn'): ?>
+                                        <span class="status" style="background:#f8d7da; color:#842029;">Hết hạn</span>
+                                    <?php else: ?>
+                                        <span class="status" style="background:#fff3cd; color:#856404;">Chờ thanh toán</span>
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 text-end">
+                            <?php if ($don['trangThaiTT'] === 'Chờ thanh toán'): ?>
+                                <a href="thanhToan.php?maDon=<?= $don['maDon'] ?>" class="btn btn-danger text-white mb-2 w-100">
+                                    Thanh toán
+                                </a>
+                                <br>
+                                <a href="../../actions/donDat/cancelBooking.php?maDon=<?= $don['maDon'] ?>"
+                                    class="btn btn-outline-danger cancel-btn w-100">
+                                    Hủy đơn
+                                </a>
+                            <?php elseif ($don['trangThaiTT'] === 'Đã thanh toán'): ?>
+                                <a href="../../actions/donDat/cancelBooking.php?maDon=<?= $don['maDon'] ?>"
+                                    class="btn btn-outline-danger cancel-btn w-100">
+                                    Hủy đơn
+                                </a>
+                            <?php elseif ($don['trangThaiTT'] === 'Đã hủy' || $don['trangThaiTT'] === 'Hết hạn'): ?>
+                                <a href="../../actions/donDat/deleteBooking.php?maDon=<?= $don['maDon'] ?>"
+                                    class="btn btn-danger cancel-btn w-100">
+                                    Xóa đơn
+                                </a>
+                            <?php endif; ?>
+                        </div>
+
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    </main>
     <?php include '../../includes/footer.php'; ?>
 </body>
 

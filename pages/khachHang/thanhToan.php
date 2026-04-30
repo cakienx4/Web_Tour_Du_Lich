@@ -92,107 +92,109 @@ if (!empty($_POST['payment_method']) && !isset($_POST['xacNhanThanhToan'])) {
 
 <body>
     <?php include '../../includes/header.php'; ?>
-    <div class="breadcrumb-box">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb tour-breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="trangChu.php" class="breadcrumb-link">Trang chủ</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="tour_ChiTiet.php?id=<?= $don['maTour'] ?>" class="breadcrumb-link">
+    <main>
+        <div class="breadcrumb-box">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb tour-breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="trangChu.php" class="breadcrumb-link">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="tour_ChiTiet.php?id=<?= $don['maTour'] ?>" class="breadcrumb-link">
+                                <?= htmlspecialchars($don['tenTour']) ?>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active">Thanh toán</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="container my-4">
+            <div class="row">
+                <!-- BOX CHỌN THANH TOÁN -->
+                <div class="col-lg-6">
+                    <div class="box">
+                        <h5>Chọn phương thức thanh toán</h5>
+                        <!-- Chọn phương thức -->
+                        <form method="POST">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button
+                                        class="payment-option <?= ($_POST['payment_method'] ?? '') === 'momo' ? 'active' : '' ?>"
+                                        name="payment_method" value="momo">MoMo</button>
+                                </div>
+                                <div class="col-6">
+                                    <button
+                                        class="payment-option <?= ($_POST['payment_method'] ?? '') === 'vnpay' ? 'active' : '' ?>"
+                                        name="payment_method" value="vnpay">VNPay</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Hiển thị QR nếu đã chọn -->
+                        <?php if (!empty($anhQR)): ?>
+                            <div class="qr-box mt-3 text-center">
+                                <p>Quét mã QR để thanh toán</p>
+                                <img src="<?= $anhQR ?>" alt="QR Code" style="width:200px;">
+                                <br>
+                                <form method="POST">
+                                    <input type="hidden" name="payment_method"
+                                        value="<?= htmlspecialchars($_POST['payment_method']) ?>">
+                                    <input type="hidden" name="xacNhanThanhToan" value="1">
+                                    <button class="btn btn-pay text-white mt-3">
+                                        Thanh toán đã hoàn tất
+                                    </button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                </div>
+
+
+                <!-- BOX THÔNG TIN ĐƠN -->
+
+                <div class="col-lg-6">
+
+                    <div class="box">
+                        <h5 class="text-danger">
+                            Đơn đặt của bạn đã được tạm khóa – còn
+                            <?= $phutConLai ?> phút
+                        </h5>
+                        <hr>
+                        <p><strong>Tour:</strong>
                             <?= htmlspecialchars($don['tenTour']) ?>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item active">Thanh toán</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
+                        </p>
+                        <p><strong>Ngày khởi hành:</strong>
+                            <?= date('d/m/Y', strtotime($don['ngayKhoiHanh'])) ?>
+                        </p>
+                        <p><strong>Số người:</strong>
+                            <?= $don['soNguoi'] ?>
+                        </p>
+                        <p><strong>Họ tên:</strong>
+                            <?= htmlspecialchars($don['hoTen']) ?>
+                        </p>
+                        <p><strong>SĐT:</strong>
+                            <?= htmlspecialchars($don['soDienThoai']) ?>
+                        </p>
+                        <hr>
+                        <h5><strong>Tổng tiền:</strong>
+                            <span class="price">
+                                <?= number_format($don['tongTien'], 0, ',', '.') ?>đ
+                            </span>
+                        </h5>
+                    </div>
 
-    <div class="container my-4">
-        <div class="row">
-            <!-- BOX CHỌN THANH TOÁN -->
-            <div class="col-lg-6">
-                <div class="box">
-                    <h5>Chọn phương thức thanh toán</h5>
-                    <!-- Chọn phương thức -->
-                    <form method="POST">
-                        <div class="row">
-                            <div class="col-6">
-                                <button
-                                    class="payment-option <?= ($_POST['payment_method'] ?? '') === 'momo' ? 'active' : '' ?>"
-                                    name="payment_method" value="momo">MoMo</button>
-                            </div>
-                            <div class="col-6">
-                                <button
-                                    class="payment-option <?= ($_POST['payment_method'] ?? '') === 'vnpay' ? 'active' : '' ?>"
-                                    name="payment_method" value="vnpay">VNPay</button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- Hiển thị QR nếu đã chọn -->
-                    <?php if (!empty($anhQR)): ?>
-                        <div class="qr-box mt-3 text-center">
-                            <p>Quét mã QR để thanh toán</p>
-                            <img src="<?= $anhQR ?>" alt="QR Code" style="width:200px;">
-                            <br>
-                            <form method="POST">
-                                <input type="hidden" name="payment_method"
-                                    value="<?= htmlspecialchars($_POST['payment_method']) ?>">
-                                <input type="hidden" name="xacNhanThanhToan" value="1">
-                                <button class="btn btn-pay text-white mt-3">
-                                    Thanh toán đã hoàn tất
-                                </button>
-                            </form>
-                        </div>
-                    <?php endif; ?>
-                </div>
-
-            </div>
-
-
-            <!-- BOX THÔNG TIN ĐƠN -->
-
-            <div class="col-lg-6">
-
-                <div class="box">
-                    <h5 class="text-danger">
-                        Đơn đặt của bạn đã được tạm khóa – còn
-                        <?= $phutConLai ?> phút
-                    </h5>
-                    <hr>
-                    <p><strong>Tour:</strong>
-                        <?= htmlspecialchars($don['tenTour']) ?>
-                    </p>
-                    <p><strong>Ngày khởi hành:</strong>
-                        <?= date('d/m/Y', strtotime($don['ngayKhoiHanh'])) ?>
-                    </p>
-                    <p><strong>Số người:</strong>
-                        <?= $don['soNguoi'] ?>
-                    </p>
-                    <p><strong>Họ tên:</strong>
-                        <?= htmlspecialchars($don['hoTen']) ?>
-                    </p>
-                    <p><strong>SĐT:</strong>
-                        <?= htmlspecialchars($don['soDienThoai']) ?>
-                    </p>
-                    <hr>
-                    <h5><strong>Tổng tiền:</strong>
-                        <span class="price">
-                            <?= number_format($don['tongTien'], 0, ',', '.') ?>đ
-                        </span>
-                    </h5>
                 </div>
 
             </div>
 
         </div>
 
-    </div>
-
-    </div>
+        </div>
+    </main>
 
 
     <!-- POPUP CẢM ƠN -->

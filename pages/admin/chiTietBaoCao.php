@@ -55,63 +55,59 @@ $dsPhanHoi = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <?php include "../../includes/sideBar-admin.php"; ?>
+    <?php include "../../includes/sideBar-admin.php"; ?>
 
-            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
-                <h3 class="mb-4 text-title">Chi tiết báo cáo #<?= $bc['maBaoCao'] ?></h3>
-                <hr>
+    <div class="main-content p-4">
+        <h3 class="mb-4 text-title">Chi tiết báo cáo #<?= $bc['maBaoCao'] ?></h3>
+        <hr>
 
-                <?php if (!empty($_GET['success'])): ?>
-                    <div class="alert alert-success">Đã gửi phản hồi thành công!</div>
-                <?php endif; ?>
+        <?php if (!empty($_GET['success'])): ?>
+            <div class="alert alert-success">Đã gửi phản hồi thành công!</div>
+        <?php endif; ?>
 
-                <!-- THÔNG TIN BÁO CÁO -->
-                <div class="content-box-chiTiet mb-4">
-                    <h5 class="mb-3">Thông tin báo cáo</h5>
-                    <div class="row mb-2">
-                        <div class="col-md-3 fw-bold">Người gửi:</div>
-                        <div class="col-md-9"><?= htmlspecialchars($bc['tenNguoiGui']) ?> — <?= htmlspecialchars($bc['email']) ?></div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-3 fw-bold">Tour bị báo cáo:</div>
-                        <div class="col-md-9">
-                            <a href="chiTietTour.php?maTour=<?= $bc['maTour'] ?>" class="text-decoration-none"><?= htmlspecialchars($bc['tenTour']) ?></a>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-3 fw-bold">Ngày gửi:</div>
-                        <div class="col-md-9"><?= date('d/m/Y H:i', strtotime($bc['ngayGui'])) ?></div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-3 fw-bold">Trạng thái:</div>
-                        <div class="col-md-9">
-                            <?php if ($bc['trangThaiXuLy'] === 'choPhanHoi'): ?>
-                                <span class="badge bg-warning text-dark">Chờ xử lý</span>
-                            <?php else: ?>
-                                <span class="badge bg-success">Đã xử lý</span>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-3 fw-bold">Nội dung:</div>
-                        <div class="col-md-9"><?= nl2br(htmlspecialchars($bc['noiDung'])) ?></div>
-                    </div>
-
-                    <!-- HÀNH ĐỘNG -->
-                    <div class="mt-3 d-flex gap-2">
-                        <?php if ($bc['trangThaiXuLy'] === 'choPhanHoi'): ?>
-                            <a href="../../actions/baoCao/handleReport.php?id=<?= $bc['maBaoCao'] ?>&action=xu_ly"
-                                class="btn btn-success"
-                                onclick="return confirm('Đánh dấu đã xử lý?')">Đánh dấu xử lý</a>
-                        <?php endif; ?>
-                        <a href="../../actions/baoCao/handleReport.php?id=<?= $bc['maBaoCao'] ?>&action=xoa"
-                            class="btn btn-danger"
-                            onclick="return confirm('Xóa báo cáo này?')">Xóa báo cáo</a>
-                        <a href="quanLyBaoCaoViPham.php" class="btn btn-secondary">← Quay lại</a>
-                    </div>
+        <!-- THÔNG TIN BÁO CÁO -->
+        <div class="content-box-chiTiet mb-4">
+            <h5 class="mb-3">Thông tin báo cáo</h5>
+            <div class="row mb-2">
+                <div class="col-md-3 fw-bold">Người gửi:</div>
+                <div class="col-md-9"><?= htmlspecialchars($bc['tenNguoiGui']) ?> — <?= htmlspecialchars($bc['email']) ?></div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-3 fw-bold">Tour bị báo cáo:</div>
+                <div class="col-md-9">
+                    <a href="chiTietTour.php?maTour=<?= $bc['maTour'] ?>" class="text-decoration-none"><?= htmlspecialchars($bc['tenTour']) ?></a>
                 </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-3 fw-bold">Ngày gửi:</div>
+                <div class="col-md-9"><?= date('d/m/Y H:i', strtotime($bc['ngayGui'])) ?></div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-3 fw-bold">Trạng thái:</div>
+                <div class="col-md-9">
+                    <?php if ($bc['trangThaiXuLy'] === 'choPhanHoi'): ?>
+                        <span class="badge bg-warning text-dark">Chờ xử lý</span>
+                    <?php else: ?>
+                        <span class="badge bg-success">Đã xử lý</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-3 fw-bold">Nội dung:</div>
+                <div class="col-md-9"><?= nl2br(htmlspecialchars($bc['noiDung'])) ?></div>
+            </div>
+
+            <!-- HÀNH ĐỘNG -->
+            <div class="mt-3 d-flex gap-2">
+                <?php if ($bc['trangThaiXuLy'] === 'choPhanHoi'): ?>
+                    <a href="../../actions/baoCao/handleReport.php?id=<?= $bc['maBaoCao'] ?>&action=xu_ly"
+                        class="btn btn-success"
+                        onclick="return confirm('Đánh dấu đã xử lý?')">Đánh dấu xử lý</a>
+                <?php endif; ?>
+                <a href="../../actions/baoCao/handleReport.php?id=<?= $bc['maBaoCao'] ?>&action=xoa"
+                    class="btn btn-danger"
+                    onclick="return confirm('Xóa báo cáo này?')">Xóa báo cáo</a>
+                <a href="quanLyBaoCaoViPham.php" class="btn btn-secondary">← Quay lại</a>
             </div>
         </div>
     </div>

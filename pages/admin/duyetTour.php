@@ -49,98 +49,93 @@ $result = $stmt->get_result();
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
+    <?php include "../../includes/sideBar-admin.php"; ?>
 
-            <?php include "../../includes/sideBar-admin.php"; ?>
+    <div class="main-content p-4">
 
-            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
+        <h3 class="mb-4 text-title">Duyệt tour</h3>
+        <hr>
 
-                <h3 class="mb-4 text-title">Duyệt tour</h3>
-                <hr>
-
-                <?php if (isset($_GET['success'])): ?>
-                    <div class="alert alert-success alert-dismissible fade show">
-                        <?= match ($_GET['success']) {
-                            'approved' => 'Đã duyệt tour thành công.',
-                            'rejected' => 'Đã từ chối tour.',
-                            default    => 'Thao tác thành công.'
-                        } ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (isset($_GET['error'])): ?>
-                    <div class="alert alert-danger alert-dismissible fade show">
-                        Có lỗi xảy ra, vui lòng thử lại.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
-                <!-- FILTER -->
-                <div class="content-box mb-3">
-                    <form method="GET">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" name="search" class="form-control"
-                                    placeholder="Tìm kiếm theo tên tour hoặc nhà phân phối..."
-                                    value="<?= htmlspecialchars($search) ?>">
-                            </div>
-                            <div class="col-md-2 d-flex align-items-end">
-                                <button type="submit" class="btn btn-secondary w-100">Tìm</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- TABLE -->
-                <div class="content-box">
-                    <table class="table table-bordered table-hover align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên tour</th>
-                                <th>Nhà phân phối</th>
-                                <th>Điểm đến</th>
-                                <th>Giá</th>
-                                <th>Số chỗ trống</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($result->num_rows === 0): ?>
-                                <tr>
-                                    <td colspan="8" class="text-center text-muted">Không có tour nào chờ duyệt.</td>
-                                </tr>
-                            <?php else: ?>
-                                <?php while ($tour = $result->fetch_assoc()): ?>
-                                    <tr>
-                                        <td><?= $tour['maTour'] ?></td>
-                                        <td><?= htmlspecialchars($tour['tenTour']) ?></td>
-                                        <td><?= htmlspecialchars($tour['hoTen']) ?></td>
-                                        <td><?= htmlspecialchars($tour['tenDiemDen'] ?? '—') ?></td>
-                                        <td><?= number_format($tour['giaTour'], 0, ',', '.') ?>đ</td>
-                                        <td><?= $tour['soChoTrong'] ?></td>
-                                        <td><span class="badge bg-warning text-dark">Chờ duyệt</span></td>
-                                        <td>
-                                            <a href="chiTietTour.php?maTour=<?= $tour['maTour'] ?>"
-                                                class="btn btn-info btn-sm">Xem</a>
-                                            <a href="../../actions/tour/approveTour.php?id=<?= $tour['maTour'] ?>"
-                                                class="btn btn-success btn-sm"
-                                                onclick="return confirm('Duyệt tour này?')">Duyệt</a>
-                                            <button type="button" class="btn btn-danger btn-sm"
-                                                onclick="moModalTuChoi(<?= $tour['maTour'] ?>)">Từ chối</button>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-
+        <?php if (isset($_GET['success'])): ?>
+            <div class="alert alert-success alert-dismissible fade show">
+                <?= match ($_GET['success']) {
+                    'approved' => 'Đã duyệt tour thành công.',
+                    'rejected' => 'Đã từ chối tour.',
+                    default    => 'Thao tác thành công.'
+                } ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show">
+                Có lỗi xảy ra, vui lòng thử lại.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
+
+        <!-- FILTER -->
+        <div class="content-box mb-3">
+            <form method="GET">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" name="search" class="form-control"
+                            placeholder="Tìm kiếm theo tên tour hoặc nhà phân phối..."
+                            value="<?= htmlspecialchars($search) ?>">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-secondary w-100">Tìm</button>
+                    </div>
+                </div>
+            </form>
         </div>
+
+        <!-- TABLE -->
+        <div class="content-box">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên tour</th>
+                        <th>Nhà phân phối</th>
+                        <th>Điểm đến</th>
+                        <th>Giá</th>
+                        <th>Số chỗ trống</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($result->num_rows === 0): ?>
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">Không có tour nào chờ duyệt.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php while ($tour = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?= $tour['maTour'] ?></td>
+                                <td><?= htmlspecialchars($tour['tenTour']) ?></td>
+                                <td><?= htmlspecialchars($tour['hoTen']) ?></td>
+                                <td><?= htmlspecialchars($tour['tenDiemDen'] ?? '—') ?></td>
+                                <td><?= number_format($tour['giaTour'], 0, ',', '.') ?>đ</td>
+                                <td><?= $tour['soChoTrong'] ?></td>
+                                <td><span class="badge bg-warning text-dark">Chờ duyệt</span></td>
+                                <td>
+                                    <a href="chiTietTour.php?maTour=<?= $tour['maTour'] ?>"
+                                        class="btn btn-info btn-sm">Xem</a>
+                                    <a href="../../actions/tour/approveTour.php?id=<?= $tour['maTour'] ?>"
+                                        class="btn btn-success btn-sm"
+                                        onclick="return confirm('Duyệt tour này?')">Duyệt</a>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        onclick="moModalTuChoi(<?= $tour['maTour'] ?>)">Từ chối</button>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <!-- MODAL TỪ CHỐI -->

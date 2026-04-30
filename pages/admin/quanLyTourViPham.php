@@ -57,91 +57,86 @@ $dsTourViPham = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
+    <?php include "../../includes/sideBar-admin.php"; ?>
 
-            <?php include "../../includes/sideBar-admin.php"; ?>
+    <div class="main-content p-4">
 
-            <div class="col-md-9 col-lg-10 p-4" style="margin-left: 336px;">
+        <h3 class="mb-4 text-title">Danh sách tour vi phạm</h3>
+        <hr>
 
-                <h3 class="mb-4 text-title">Danh sách tour vi phạm</h3>
-                <hr>
-
-                <?php if (!empty($_GET['success'])): ?>
-                    <div class="alert alert-success alert-dismissible fade show">
-                        <?= match($_GET['success']) {
-                            'go_tour'   => 'Đã gỡ tour khỏi hệ thống.',
-                            'khoi_phuc' => 'Đã khôi phục tour thành công.',
-                            default     => 'Thao tác thành công.'
-                        } ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
-                <!-- FILTER -->
-                <div class="content-box mb-3">
-                    <form method="GET">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label class="form-label">Tìm kiếm</label>
-                                <input type="text" name="search" class="form-control"
-                                    placeholder="Tên tour hoặc nhà phân phối..."
-                                    value="<?= htmlspecialchars($search) ?>">
-                            </div>
-                            <div class="col-md-2 d-flex align-items-end">
-                                <button type="submit" class="btn btn-secondary w-100">Lọc</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- TABLE -->
-                <div class="content-box">
-                    <table class="table table-bordered table-hover align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID Tour</th>
-                                <th>Tên tour</th>
-                                <th>Điểm đến</th>
-                                <th>Nhà phân phối</th>
-                                <th>Lý do vi phạm</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($dsTourViPham)): ?>
-                                <tr>
-                                    <td colspan="7" class="text-center text-muted">Không có tour vi phạm nào.</td>
-                                </tr>
-                            <?php else: ?>
-                                <?php foreach ($dsTourViPham as $t): ?>
-                                    <tr>
-                                        <td><?= $t['maTour'] ?></td>
-                                        <td><?= htmlspecialchars($t['tenTour']) ?></td>
-                                        <td><?= htmlspecialchars($t['tenDiemDen']) ?></td>
-                                        <td><?= htmlspecialchars($t['tenNPP']) ?></td>
-                                        <td><?= htmlspecialchars(mb_strimwidth($t['lyDo'], 0, 60, '...')) ?></td>
-                                        <td><span class="badge bg-danger">Tạm dừng</span></td>
-                                        <td>
-                                            <a href="chiTietTour.php?maTour=<?= $t['maTour'] ?>"
-                                                class="btn btn-info btn-sm">Xem</a>
-                                            <button type="button" class="btn btn-danger btn-sm"
-                                                onclick="moModalGoTour(<?= $t['maTour'] ?>, <?= $t['maBaoCao'] ?>)">
-                                                Gỡ tour</button>
-                                            <button type="button" class="btn btn-success btn-sm"
-                                                onclick="moModalKhoiPhuc(<?= $t['maTour'] ?>, <?= $t['maBaoCao'] ?>)">
-                                                Khôi phục</button>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-
+        <?php if (!empty($_GET['success'])): ?>
+            <div class="alert alert-success alert-dismissible fade show">
+                <?= match ($_GET['success']) {
+                    'go_tour'   => 'Đã gỡ tour khỏi hệ thống.',
+                    'khoi_phuc' => 'Đã khôi phục tour thành công.',
+                    default     => 'Thao tác thành công.'
+                } ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
+        <?php endif; ?>
+
+        <!-- FILTER -->
+        <div class="content-box mb-3">
+            <form method="GET">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Tìm kiếm</label>
+                        <input type="text" name="search" class="form-control"
+                            placeholder="Tên tour hoặc nhà phân phối..."
+                            value="<?= htmlspecialchars($search) ?>">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-secondary w-100">Lọc</button>
+                    </div>
+                </div>
+            </form>
         </div>
+
+        <!-- TABLE -->
+        <div class="content-box">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID Tour</th>
+                        <th>Tên tour</th>
+                        <th>Điểm đến</th>
+                        <th>Nhà phân phối</th>
+                        <th>Lý do vi phạm</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($dsTourViPham)): ?>
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">Không có tour vi phạm nào.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($dsTourViPham as $t): ?>
+                            <tr>
+                                <td><?= $t['maTour'] ?></td>
+                                <td><?= htmlspecialchars($t['tenTour']) ?></td>
+                                <td><?= htmlspecialchars($t['tenDiemDen']) ?></td>
+                                <td><?= htmlspecialchars($t['tenNPP']) ?></td>
+                                <td><?= htmlspecialchars(mb_strimwidth($t['lyDo'], 0, 60, '...')) ?></td>
+                                <td><span class="badge bg-danger">Tạm dừng</span></td>
+                                <td>
+                                    <a href="chiTietTour.php?maTour=<?= $t['maTour'] ?>"
+                                        class="btn btn-info btn-sm">Xem</a>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        onclick="moModalGoTour(<?= $t['maTour'] ?>, <?= $t['maBaoCao'] ?>)">
+                                        Gỡ tour</button>
+                                    <button type="button" class="btn btn-success btn-sm"
+                                        onclick="moModalKhoiPhuc(<?= $t['maTour'] ?>, <?= $t['maBaoCao'] ?>)">
+                                        Khôi phục</button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <!-- MODAL GỠ TOUR -->
