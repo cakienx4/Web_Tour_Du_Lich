@@ -4,6 +4,7 @@ require_once '../../config/database.php';
 
 $error = "";
 $success = "";
+$don = null;
 
 // 1. Kiểm tra đăng nhập
 if (!isset($_SESSION['maND'])) {
@@ -39,6 +40,8 @@ if ($error === "") {
         // 5. Kiểm tra trạng thái
         if ($don['trangThaiTT'] === 'Đã hủy') {
             $error = "Đơn đã được hủy trước đó";
+        } elseif ($don['trangThaiTT'] === 'Đã thanh toán') {
+            $error = "Không thể hủy đơn đã thanh toán";
         }
     }
 }
@@ -92,6 +95,4 @@ if ($error !== "") {
 } else {
     header("Location: ../../pages/khachHang/lichSuDatTour.php?success=huy");
 }
-
-header("Location: ../../pages/khachHang/lichSuDatTour.php");
 exit();
