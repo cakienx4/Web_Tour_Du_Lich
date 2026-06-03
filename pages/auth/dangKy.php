@@ -1,5 +1,5 @@
-﻿<?php 
-    session_start()
+﻿<?php
+session_start()
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -19,62 +19,64 @@
 
 <body>
     <?php include '../../includes/header.php'; ?>
+    <main>
 
-    <div class="container login-container">
-        <div class="card login-card position-relative">
+        <div class="container login-container">
+            <div class="card login-card position-relative">
 
-            <div class="text-center">
-                <h2 class="login-title">Đăng Ký</h2>
+                <div class="text-center">
+                    <h2 class="login-title">Đăng Ký</h2>
+                </div>
+
+                <form action="../../actions/signUp.php" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Họ và tên</label>
+                        <input type="text" name="hoTen" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="tel" name="soDienThoai" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu</label>
+                        <input type="password" name="matKhau" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nhập lại mật khẩu</label>
+                        <input type="password" name="confirmMatKhau" class="form-control" required>
+                    </div>
+
+                    <div class="d-flex mb-4">
+                        <a href="dangNhap.php" class="register-login-link">
+                            Đã có tài khoản? Đăng nhập ngay!
+                        </a>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-login">Đăng ký</button>
+                    </div>
+
+                </form>
+                <?php
+                if (isset($_SESSION['error'])): ?>
+                    <p style="color:red;">
+                        <?php
+                        echo $_SESSION['error'];
+                        unset($_SESSION['error']);
+                        ?>
+                    </p>
+                <?php endif; ?>
             </div>
-
-            <form action="../../actions/signUp.php" method="post">
-                <div class="mb-3">
-                    <label class="form-label">Họ và tên</label>
-                    <input type="text" name="hoTen" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Số điện thoại</label>
-                    <input type="tel" name="soDienThoai" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Mật khẩu</label>
-                    <input type="password" name="matKhau" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Nhập lại mật khẩu</label>
-                    <input type="password" name="confirmMatKhau" class="form-control" required>
-                </div>
-
-                <div class="d-flex mb-4">
-                    <a href="dangNhap.php" class="register-login-link">
-                        Đã có tài khoản? Đăng nhập ngay!
-                    </a>
-                </div>
-
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-login">Đăng ký</button>
-                </div>
-
-            </form>
-            <?php 
-            if (isset($_SESSION['error'])): ?>
-                <p style="color:red;">
-                    <?php 
-                    echo $_SESSION['error']; 
-                    unset($_SESSION['error']);
-                    ?>
-                </p>
-            <?php endif; ?>
         </div>
-    </div>
+    </main>
     <?php include '../../includes/footer.php'; ?>
 </body>
 

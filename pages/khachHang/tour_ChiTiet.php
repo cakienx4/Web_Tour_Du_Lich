@@ -3,7 +3,7 @@ session_start();
 require_once '../../config/database.php';
 
 // Lấy maTour từ URL
-$maTour = $_GET['maTour'] ?? null;
+$maTour = $_GET['maTour'] ?? $_GET['id'] ?? null;
 
 if (!$maTour) {
     header('Location: tour.php');

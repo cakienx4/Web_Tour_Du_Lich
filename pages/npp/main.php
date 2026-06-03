@@ -17,6 +17,26 @@ if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Nhà phân phối tour
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/NPP.css">
+        <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+            background-color: #eef0f3;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,7 +46,7 @@ if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Nhà phân phối tour
             <!-- SIDEBAR -->
             <?php include "../../includes/sideBar-NPP.php"; ?>
 
-            <div class="col-md-9 col-lg-10 p-4 d-flex flex-column justify-content-center min-vh-100" style="margin-left: 336px;">
+            <div class="main-content">
                 <div class="text-center">
                     <h3 class="text-title">
                         CHÀO MỪNG NHÀ PHÂN PHỐI ĐẾN VỚI HỆ THỐNG!

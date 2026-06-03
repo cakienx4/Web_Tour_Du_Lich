@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $maND         = intval($_SESSION['maND']);
 $maTour       = intval($_POST['maTour'] ?? 0);
 $tenTour      = trim($_POST['tenTour'] ?? '');
-$giaTour      = floatval($_POST['giaTour'] ?? 0);
+$giaTour      = trim($_POST['giaTour'] ?? '');
 $tongSoCho    = intval($_POST['tongSoCho'] ?? 0);
 $ngayKhoiHanh = trim($_POST['ngayKhoiHanh'] ?? '');
 $soNgay       = intval($_POST['soNgay'] ?? 0);
@@ -34,7 +34,6 @@ if (strtotime($ngayKhoiHanh) <= strtotime('today')) {
     exit();
 }
 
-// Kiểm tra tour thuộc NPP này và không phải Chờ duyệt
 $stmt = $mysqli->prepare("SELECT trangThai FROM tour WHERE maTour = ? AND maND = ? AND trangThai != 'Chờ duyệt'");
 $stmt->bind_param('ii', $maTour, $maND);
 $stmt->execute();
@@ -43,7 +42,6 @@ if (!$stmt->get_result()->fetch_assoc()) {
     exit();
 }
 
-// Tính lại soChoTrong: soChoTrong mới = tongSoCho mới - số người đã đặt thành công
 $stmt = $mysqli->prepare("
     SELECT COALESCE(SUM(soNguoi), 0) AS daDat FROM dondat
     WHERE maTour = ? AND trangThaiTT = 'Đã thanh toán'
@@ -53,32 +51,28 @@ $stmt->execute();
 $daDat = intval($stmt->get_result()->fetch_assoc()['daDat']);
 $soChoTrong = max(0, $tongSoCho - $daDat);
 
-// Update tour
 $stmt = $mysqli->prepare("
     UPDATE tour SET tenTour=?, moTa=?, lichTrinh=?, giaTour=?, ngayKhoiHanh=?,
     soNgay=?, diemXuatPhat=?, tongSoCho=?, soChoTrong=?
     WHERE maTour = ? AND maND = ?
 ");
-$stmt->bind_param('ssssdisiiii', $tenTour, $moTa, $lichTrinh, $giaTour, $ngayKhoiHanh, $soNgay, $diemXuatPhat, $tongSoCho, $soChoTrong, $maTour, $maND);
+$stmt->bind_param('sssssisiiii', $tenTour, $moTa, $lichTrinh, $giaTour, $ngayKhoiHanh, $soNgay, $diemXuatPhat, $tongSoCho, $soChoTrong, $maTour, $maND);
 
 if (!$stmt->execute()) {
     header("Location: ../../pages/npp/suaTour.php?maTour=$maTour&error=db");
     exit();
 }
 
-// Update điểm đến
 $stmt = $mysqli->prepare("UPDATE tour_diemden SET maDiemDen = ? WHERE maTour = ?");
 $stmt->bind_param('ii', $maDiemDen, $maTour);
 $stmt->execute();
 
-// Upload ảnh chính mới nếu có
 if (isset($_FILES['anhChinh']) && $_FILES['anhChinh']['error'] === UPLOAD_ERR_OK) {
     $uploadDir = '../../assets/img/tours/';
     $ext = pathinfo($_FILES['anhChinh']['name'], PATHINFO_EXTENSION);
     $tenFile = 'tour_' . $maTour . '_main_' . time() . '.' . $ext;
 
     if (move_uploaded_file($_FILES['anhChinh']['tmp_name'], $uploadDir . $tenFile)) {
-        // Xóa ảnh chính cũ
         $stmt = $mysqli->prepare("DELETE FROM tour_anh WHERE maTour = ? AND laManhChinh = 1");
         $stmt->bind_param('i', $maTour);
         $stmt->execute();
@@ -91,7 +85,6 @@ if (isset($_FILES['anhChinh']) && $_FILES['anhChinh']['error'] === UPLOAD_ERR_OK
     }
 }
 
-// Upload ảnh phụ mới nếu có
 if (!empty($_FILES['anhPhu']['name'][0])) {
     $laManhChinh = 0;
     $uploadDir = '../../assets/img/tours/';

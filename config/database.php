@@ -11,4 +11,11 @@ if ($mysqli->connect_error) {
 }
 
 $mysqli->set_charset("utf8");
+
+$mysqli->query("
+    UPDATE tour
+    SET trangThai = 'Đã kết thúc'
+    WHERE trangThai IN ('Đang bán', 'Tạm dừng')
+    AND ngayKhoiHanh < CURDATE()
+");
 ?>

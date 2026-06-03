@@ -96,6 +96,7 @@ $tours = $stmt->get_result();
                             <option <?= $trangThai == 'Đang bán' ? 'selected' : '' ?>>Đang bán</option>
                             <option <?= $trangThai == 'Tạm dừng' ? 'selected' : '' ?>>Tạm dừng</option>
                             <option <?= $trangThai == 'Chờ duyệt' ? 'selected' : '' ?>>Chờ duyệt</option>
+                            <option <?= $trangThai == 'Đã kết thúc' ? 'selected' : '' ?>>Đã kết thúc</option>
                         </select>
                     </div>
 
@@ -157,10 +158,10 @@ $tours = $stmt->get_result();
                                     <span class="badge bg-success">Đang bán</span>
                                 <?php elseif ($tour['trangThai'] === 'Tạm dừng'): ?>
                                     <span class="badge bg-danger">Tạm dừng</span>
+                                <?php elseif ($tour['trangThai'] === 'Đã kết thúc'): ?>
+                                    <span class="badge bg-secondary">Đã kết thúc</span>
                                 <?php else: ?>
-                                    <span class="badge bg-warning text-dark">
-                                        <?= $tour['trangThai'] ?>
-                                    </span>
+                                    <span class="badge bg-warning text-dark"><?= $tour['trangThai'] ?></span>
                                 <?php endif; ?>
                             </td>
 

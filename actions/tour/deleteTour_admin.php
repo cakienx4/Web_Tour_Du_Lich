@@ -7,8 +7,8 @@ if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Quản trị viên') {
     exit();
 }
 
-$id        = intval($_POST['id'] ?? 0);
-$maBaoCao  = intval($_POST['maBaoCao'] ?? 0);
+$id             = intval($_POST['id'] ?? 0);
+$maBaoCao       = intval($_POST['maBaoCao'] ?? 0);
 $noiDungPhanHoi = trim($_POST['noiDungPhanHoi'] ?? '');
 
 if (!$id) {
@@ -24,13 +24,31 @@ if ($stmt->get_result()->num_rows === 0) {
     exit();
 }
 
-// Gửi phản hồi trước khi xóa baocao
+// Gửi phản hồi trước khi xóa
 if ($maBaoCao && !empty($noiDungPhanHoi)) {
     $maND = intval($_SESSION['maND']);
     $stmt = $mysqli->prepare("INSERT INTO phanhoi (maND, maBaoCao, noiDung, ngayGui, trangThai) VALUES (?, ?, ?, NOW(), 'chuaXem')");
     $stmt->bind_param("iis", $maND, $maBaoCao, $noiDungPhanHoi);
     $stmt->execute();
 }
+
+// Hủy đơn 'Chờ thanh toán' và hoàn chỗ trống
+$stmt = $mysqli->prepare("
+    UPDATE tour t
+    JOIN dondat dd ON t.maTour = dd.maTour
+    SET t.soChoTrong = t.soChoTrong + dd.soNguoi
+    WHERE dd.maTour = ? AND dd.trangThaiTT = 'Chờ thanh toán'
+");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+// Hủy tất cả đơn còn active (Chờ thanh toán + Đã thanh toán)
+$stmt = $mysqli->prepare("
+    UPDATE dondat SET trangThaiTT = 'Đã hủy'
+    WHERE maTour = ? AND trangThaiTT IN ('Chờ thanh toán', 'Đã thanh toán')
+");
+$stmt->bind_param("i", $id);
+$stmt->execute();
 
 // Xóa các bảng liên quan
 $stmt = $mysqli->prepare("DELETE FROM tour_anh WHERE maTour = ?");
@@ -49,10 +67,7 @@ $stmt = $mysqli->prepare("DELETE FROM baocao WHERE maTour = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 
-$stmt = $mysqli->prepare("DELETE FROM dondat WHERE maTour = ?");
-$stmt->bind_param("i", $id);
-$stmt->execute();
-
+// Giữ lại dondat để khách hàng xem lịch sử, chỉ xóa tour
 $stmt = $mysqli->prepare("DELETE FROM tour WHERE maTour = ?");
 $stmt->bind_param("i", $id);
 

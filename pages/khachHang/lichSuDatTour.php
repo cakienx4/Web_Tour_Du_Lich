@@ -98,11 +98,6 @@ $donDatList = $stmt->get_result();
                                     class="btn btn-outline-danger cancel-btn w-100">
                                     Hủy đơn
                                 </a>
-                            <?php elseif ($don['trangThaiTT'] === 'Đã thanh toán'): ?>
-                                <a href="../../actions/donDat/cancelBooking.php?maDon=<?= $don['maDon'] ?>"
-                                    class="btn btn-outline-danger cancel-btn w-100">
-                                    Hủy đơn
-                                </a>
                             <?php elseif ($don['trangThaiTT'] === 'Đã hủy' || $don['trangThaiTT'] === 'Hết hạn'): ?>
                                 <a href="../../actions/donDat/deleteBooking.php?maDon=<?= $don['maDon'] ?>"
                                     class="btn btn-danger cancel-btn w-100">

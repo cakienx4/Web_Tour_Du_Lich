@@ -43,7 +43,7 @@ $stmt = $mysqli->prepare("
     INSERT INTO tour (maND, tenTour, moTa, lichTrinh, giaTour, ngayKhoiHanh, soNgay, diemXuatPhat, soChoTrong, tongSoCho, trangThai)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Chờ duyệt')
 ");
-$stmt->bind_param('issssdisii', $maND, $tenTour, $moTa, $lichTrinh, $giaTour, $ngayKhoiHanh, $soNgay, $diemXuatPhat, $tongSoCho, $tongSoCho);
+$stmt->bind_param('isssssisii', $maND, $tenTour, $moTa, $lichTrinh, $giaTour, $ngayKhoiHanh, $soNgay, $diemXuatPhat, $tongSoCho, $tongSoCho);
 
 if (!$stmt->execute()) {
     header('Location: ../../pages/npp/taoTour.php?error=db');
