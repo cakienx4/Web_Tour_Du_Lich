@@ -157,11 +157,11 @@ $tours = $stmt->get_result();
                                 <?php if ($tour['trangThai'] === 'Đang bán'): ?>
                                     <span class="badge bg-success">Đang bán</span>
                                 <?php elseif ($tour['trangThai'] === 'Tạm dừng'): ?>
-                                    <span class="badge bg-danger">Tạm dừng</span>
+                                    <span class="badge bg-warning text-dark">Tạm dừng</span>
                                 <?php elseif ($tour['trangThai'] === 'Đã kết thúc'): ?>
                                     <span class="badge bg-secondary">Đã kết thúc</span>
                                 <?php else: ?>
-                                    <span class="badge bg-warning text-dark"><?= $tour['trangThai'] ?></span>
+                                    <span class="badge bg-danger"><?= $tour['trangThai'] ?></span>
                                 <?php endif; ?>
                             </td>
 

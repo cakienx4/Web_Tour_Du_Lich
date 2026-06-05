@@ -180,9 +180,6 @@ $users = $stmt->get_result();
                                             )">Xem</button>
                                 <a href="themUsers.php?edit=<?= $user['maND'] ?>"
                                     class="btn btn-warning btn-sm">Sửa</a>
-                                <?php if ($user['trangThai'] === 'Vô hiệu hóa'): ?>
-                                    <span class="badge bg-secondary">Vô hiệu hóa</span>
-                                <?php endif; ?>
 
                                 <?php if ($user['trangThai'] === 'Hoạt động'): ?>
                                     <a href="../../actions/user/disableUser.php?maND=<?= $user['maND'] ?>"
@@ -190,7 +187,7 @@ $users = $stmt->get_result();
                                         onclick="return confirm('Vô hiệu hóa người dùng này?')">Vô hiệu hóa</a>
                                 <?php else: ?>
                                     <a href="../../actions/user/restoreUser.php?maND=<?= $user['maND'] ?>"
-                                        class="btn btn-secondary btn-sm"
+                                        class="btn btn-success btn-sm"
                                         onclick="return confirm('Kích hoạt lại người dùng này?')">Kích hoạt</a>
                                 <?php endif; ?>
                             </td>

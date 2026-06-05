@@ -8,8 +8,8 @@ $stmt = $mysqli->prepare("
     FROM dondat dd
     JOIN tour t ON dd.maTour = t.maTour
     WHERE dd.maND = ?
-    ORDER BY dd.ngayKhoiHanh DESC,
-             FIELD(dd.trangThaiTT, 'Đã thanh toán', 'Chờ thanh toán', 'Đã hủy', 'Hết hạn')
+    ORDER BY FIELD(dd.trangThaiTT, 'Chờ thanh toán', 'Đã thanh toán', 'Hết hạn', 'Đã hủy'),
+             dd.ngayKhoiHanh DESC
 ");
 $stmt->bind_param("i", $_SESSION['maND']);
 $stmt->execute();
