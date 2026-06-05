@@ -37,7 +37,11 @@ $_SESSION['maND']  = $user['maND'];
 $_SESSION['hoTen'] = $user['hoTen'];
 $_SESSION['vaiTro'] = $user['vaiTro'];
 
-if ($user['vaiTro'] === 'Quản trị viên') {
+$redirect = trim($_POST['redirect'] ?? '');
+
+if (!empty($redirect) && $user['vaiTro'] === 'Khách hàng') {
+    header("Location: ../" . ltrim($redirect, '/'));
+} elseif ($user['vaiTro'] === 'Quản trị viên') {
     header("Location: ../pages/admin/main.php");
 } elseif ($user['vaiTro'] === 'Nhà phân phối tour') {
     header("Location: ../pages/npp/main.php");

@@ -162,7 +162,7 @@ $users = $stmt->get_result();
                                 <?php if ($user['trangThai'] === 'Vô hiệu hóa'): ?>
                                     <span class="badge bg-danger">Vô hiệu hóa</span>
                                 <?php elseif ($user['trangThai'] === 'Hoạt động'): ?>
-                                    <span class="badge bg-succes">Hoạt động</span>
+                                    <span class="badge bg-success">Hoạt động</span>
                                 <?php endif; ?>
                             </td>
                             <td>

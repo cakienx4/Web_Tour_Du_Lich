@@ -121,7 +121,7 @@ $result = $stmt->get_result();
                                 <td><?= $tour['soChoTrong'] ?></td>
                                 <td><span class="badge bg-warning text-dark">Chờ duyệt</span></td>
                                 <td>
-                                    <a href="chiTietTour.php?maTour=<?= $tour['maTour'] ?>"
+                                    <a href="../admin/chiTietTour.php?maTour=<?= $tour['maTour'] ?>&from=duyetTour"
                                         class="btn btn-info btn-sm">Xem</a>
                                     <a href="../../actions/tour/approveTour.php?id=<?= $tour['maTour'] ?>"
                                         class="btn btn-success btn-sm"

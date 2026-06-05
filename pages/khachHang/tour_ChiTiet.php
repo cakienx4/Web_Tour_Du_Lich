@@ -203,7 +203,9 @@ $anhGallery = $stmtGallery->get_result();
                                 </button>
                             </div>
                         <?php else: ?>
-                            <a href="../auth/dangNhap.php" class="btn-book">Đăng nhập để đặt tour</a>
+                            <a href="../auth/dangNhap.php?redirect=<?= urlencode('pages/khachHang/tour_ChiTiet.php?maTour=' . $tour['maTour']) ?>" class="btn-book" style='text-decoration: none;'>
+                                Đăng nhập để đặt tour
+                            </a>
                         <?php endif; ?>
                     </div>
                 </div>

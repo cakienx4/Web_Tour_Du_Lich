@@ -103,9 +103,10 @@ $tours = $stmt->get_result();
                         <label class="form-label">Trạng thái</label>
                         <select name="trangThai" class="form-select">
                             <option value="">Tất cả</option>
-                            <option value="Chờ duyệt" <?= $trangThai === 'Chờ duyệt'  ? 'selected' : '' ?>>Chờ duyệt</option>
-                            <option value="Đang bán" <?= $trangThai === 'Đang bán'   ? 'selected' : '' ?>>Đang bán</option>
-                            <option value="Tạm dừng" <?= $trangThai === 'Tạm dừng'   ? 'selected' : '' ?>>Tạm dừng</option>
+                            <option value="Chờ duyệt" <?= $trangThai === 'Chờ duyệt' ? 'selected' : '' ?>>Chờ duyệt</option>
+                            <option value="Đang bán" <?= $trangThai === 'Đang bán'  ? 'selected' : '' ?>>Đang bán</option>
+                            <option value="Tạm dừng" <?= $trangThai === 'Tạm dừng'  ? 'selected' : '' ?>>Tạm dừng</option>
+                            <option value="Đã kết thúc" <?= $trangThai === 'Đã kết thúc' ? 'selected' : '' ?>>Đã kết thúc</option>
                         </select>
                     </div>
                     <div class="col-md-3 d-flex align-items-end">
@@ -125,7 +126,7 @@ $tours = $stmt->get_result();
                         <th>Điểm đến</th>
                         <th>Giá</th>
                         <th>Ngày khởi hành</th>
-                        <th>Chỗ còn</th>
+                        <th>Số chỗ</th>
                         <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
@@ -144,8 +145,12 @@ $tours = $stmt->get_result();
                                     <span class="badge bg-warning text-dark">Chờ duyệt</span>
                                 <?php elseif ($tour['trangThai'] === 'Đang bán'): ?>
                                     <span class="badge bg-success">Đang bán</span>
-                                <?php else: ?>
-                                    <span class="badge bg-secondary">Tạm dừng</span>
+                                <?php elseif ($tour['trangThai'] === 'Tạm dừng'): ?>
+                                    <span class="badge bg-danger">Tạm dừng</span>
+                                <?php elseif ($tour['trangThai'] === 'Từ chối'): ?>
+                                    <span class="badge bg-secondary">Từ chối</span>
+                                <?php elseif ($tour['trangThai'] === 'Đã kết thúc'): ?>
+                                    <span class="badge bg-dark">Đã kết thúc</span>
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -153,9 +158,9 @@ $tours = $stmt->get_result();
                                     class="btn btn-info btn-sm">Xem</a>
 
                                 <?php if ($tour['trangThai'] === 'Chờ duyệt'): ?>
-                                    <a href="../../actions/tour/deleteTour.php?maTour=<?= $tour['maTour'] ?>"
-                                        class="btn btn-secondary btn-sm"
-                                        onclick="return confirm('Hủy tour này?')">Hủy</a>
+                                    <a href="../../actions/tour/deleteTour_npp.php?maTour=<?= $tour['maTour'] ?>"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Xóa tour này?')">Xóa</a>
 
                                 <?php elseif ($tour['trangThai'] === 'Đang bán'): ?>
                                     <a href="../../actions/tour/changeStatus_npp.php?maTour=<?= $tour['maTour'] ?>"
@@ -166,9 +171,12 @@ $tours = $stmt->get_result();
                                     <a href="../../actions/tour/changeStatus_npp.php?maTour=<?= $tour['maTour'] ?>"
                                         class="btn btn-success btn-sm"
                                         onclick="return confirm('Mở bán lại tour này?')">Mở bán</a>
-                                    <a href="../../actions/tour/deleteTour.php?maTour=<?= $tour['maTour'] ?>"
+                                    <a href="../../actions/tour/deleteTour_npp.php?maTour=<?= $tour['maTour'] ?>"
                                         class="btn btn-danger btn-sm"
                                         onclick="return confirm('Xóa tour này?')">Xóa</a>
+
+                                <?php elseif ($tour['trangThai'] === 'Đã kết thúc'): ?>
+                                    <span class="text-muted fst-italic">—</span>
                                 <?php endif; ?>
                             </td>
                         </tr>

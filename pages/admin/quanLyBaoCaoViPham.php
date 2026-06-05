@@ -31,7 +31,7 @@ if ($trangThai && in_array($trangThai, ['choPhanHoi', 'daXuLy'])) {
     $types   .= 's';
 }
 
-$sql .= " ORDER BY bc.ngayGui DESC";
+$sql .= " ORDER BY FIELD(bc.trangThaiXuLy, 'choPhanHoi', 'daXuLy'), bc.ngayGui DESC";
 $stmt = $mysqli->prepare($sql);
 if ($params) $stmt->bind_param($types, ...$params);
 $stmt->execute();

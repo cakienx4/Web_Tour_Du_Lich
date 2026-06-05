@@ -34,15 +34,46 @@ if ($action === 'xu_ly') {
     $stmt->bind_param("i", $baoCao['maTour']);
     $stmt->execute();
 
-    // Gửi phản hồi kèm theo nếu có
-    $noiDungPhanHoi = trim($_POST['noiDungPhanHoi'] ?? '');
-    if (!empty($noiDungPhanHoi)) {
-        $maND = intval($_SESSION['maND']);
-        $stmt = $mysqli->prepare("INSERT INTO phanhoi (maND, maBaoCao, noiDung, ngayGui, trangThai) VALUES (?, ?, ?, NOW(), 'chuaXem')");
-        $stmt->bind_param("iis", $maND, $id, $noiDungPhanHoi);
-        $stmt->execute();
-    }
+    // Gửi phản hồi cho nhà phân phối sở hữu tour
+    $lyDo = trim($_POST['noiDungPhanHoi'] ?? '');
 
+    if (!empty($lyDo)) {
+
+        // Lấy thông tin tour
+        $stmt = $mysqli->prepare("
+        SELECT maND, tenTour
+        FROM tour
+        WHERE maTour = ?
+    ");
+        $stmt->bind_param("i", $baoCao['maTour']);
+        $stmt->execute();
+        $tour = $stmt->get_result()->fetch_assoc();
+
+        if ($tour) {
+
+            $maNPP = $tour['maND'];
+
+            $noiDungPhanHoi =
+                'Tour "' . $tour['tenTour'] .
+                '" đã bị báo cáo và tạm dừng. Lý do: ' .
+                $lyDo;
+
+            $stmt = $mysqli->prepare("
+            INSERT INTO phanhoi
+            (maND, maBaoCao, noiDung, ngayGui, trangThai)
+            VALUES (?, ?, ?, NOW(), 'chuaXem')
+        ");
+
+            $stmt->bind_param(
+                "iis",
+                $maNPP,
+                $id,
+                $noiDungPhanHoi
+            );
+
+            $stmt->execute();
+        }
+    }
     header('Location: ../../pages/admin/quanLyBaoCaoViPham.php?success=da_xu_ly');
     exit();
 } elseif ($action === 'xoa') {

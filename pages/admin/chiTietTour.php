@@ -53,6 +53,7 @@ $images = $stmtImg->get_result();
     <title>Chi tiết tour</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../../assets/css/QTV.css">
 </head>
 
@@ -147,7 +148,18 @@ $images = $stmtImg->get_result();
             <!-- ACTION -->
             <div class="d-flex justify-content-between mb-3">
 
-                <a href="quanLyTours.php" class="btn btn-secondary">← Quay lại</a>
+                <?php
+                // Nhận tham số 'from' từ URL để biết trang trước đó là trang nào
+                $fromPage = $_GET['from'] ?? '';
+
+                // Mặc định nếu không có tham số thì quay về trang quản lý tour tổng quát
+                $backUrl = 'quanLyTours.php';
+
+                if ($fromPage === 'duyetTour') {
+                    $backUrl = 'duyetTour.php'; // Đường dẫn đến trang duyệt tour của admin
+                }
+                ?>
+                <a href="<?= $backUrl ?>" class="btn btn-secondary">← Quay lại</a>
 
                 <?php if ($tour['trangThai'] === 'Chờ duyệt'): ?>
                     <div>
@@ -155,10 +167,9 @@ $images = $stmtImg->get_result();
                             class="btn btn-success" onclick="return confirm('Duyệt tour này?')">
                             Duyệt
                         </a>
-                        <a href="../../actions/tour/rejectTour.php?id=<?= $tour['maTour'] ?>" class="btn btn-danger"
-                            onclick="return confirm('Từ chối tour này?')">
-                            Từ chối
-                        </a>
+                        <button type="button" class="btn btn-danger"
+                            onclick="moModalTuChoi(<?= $tour['maTour'] ?>)">Từ chối
+                        </button>
                     </div>
                 <?php endif; ?>
             </div>
@@ -166,7 +177,39 @@ $images = $stmtImg->get_result();
         </div>
 
     </div>
+    <!-- MODAL TỪ CHỐI -->
+    <div class="modal fade" id="modalTuChoi" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="../../actions/tour/rejectTour.php" method="POST">
+                    <input type="hidden" name="id" id="tuChoiId">
 
+                    <div class="modal-header">
+                        <h5 class="modal-title">Từ chối tour</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Lý do từ chối <span class="text-danger">*</span></strong></label>
+                            <textarea name="lyDo" class="form-control" rows="4"
+                                placeholder="Nhập lý do từ chối để thông báo cho nhà phân phối..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-danger">Xác nhận từ chối</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function moModalTuChoi(maTour) {
+            document.getElementById('tuChoiId').value = maTour;
+            new bootstrap.Modal(document.getElementById('modalTuChoi')).show();
+        }
+    </script>
 </body>
 
 </html>

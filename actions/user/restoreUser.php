@@ -14,12 +14,7 @@ if ($maND <= 0) {
     exit();
 }
 
-if ($maND === intval($_SESSION['maND'])) {
-    header('Location: ../../pages/admin/quanLyUsers.php?error=self');
-    exit();
-}
-
-$stmt = $mysqli->prepare("UPDATE user SET trangThai = 'Vô hiệu hóa' WHERE maND = ?");
+$stmt = $mysqli->prepare("UPDATE user SET trangThai = 'Hoạt động' WHERE maND = ? AND trangThai = 'Vô hiệu hóa'");
 $stmt->bind_param('i', $maND);
 $stmt->execute();
 
@@ -28,12 +23,5 @@ if ($stmt->affected_rows === 0) {
     exit();
 }
 
-$stmt = $mysqli->prepare("
-    UPDATE tour SET trangThai = 'Tạm dừng' 
-    WHERE maND = ? AND trangThai = 'Đang bán'
-");
-$stmt->bind_param('i', $maND);
-$stmt->execute();
-
-header('Location: ../../pages/admin/quanLyUsers.php?success=disabled');
+header('Location: ../../pages/admin/quanLyUsers.php?success=restored');
 exit();

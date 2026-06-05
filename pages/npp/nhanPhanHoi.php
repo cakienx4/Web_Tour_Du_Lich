@@ -9,17 +9,32 @@ if (!isset($_SESSION['maND']) || $_SESSION['vaiTro'] !== 'Nhà phân phối tour
 
 $maND = intval($_SESSION['maND']);
 
+// Đánh dấu đã xem
+if (isset($_GET['daXem'])) {
+    $maPhanHoi = intval($_GET['daXem']);
+    $stmt = $mysqli->prepare("
+        UPDATE phanhoi
+        SET trangThai = 'daXem'
+        WHERE maPhanHoi = ? AND maND = ?
+    ");
+    $stmt->bind_param("ii", $maPhanHoi, $maND);
+    $stmt->execute();
+    header("Location: nhanPhanHoi.php");
+    exit();
+}
+
 $timKiem   = trim($_GET['timKiem'] ?? '');
 $trangThai = trim($_GET['trangThai'] ?? '');
 
 $sql = "
     SELECT ph.maPhanHoi, ph.noiDung, ph.ngayGui, ph.trangThai,
-           bc.maBaoCao, bc.maTour,
+           bc.maBaoCao,
+           IFNULL(bc.maTour, 0) as maTour,
            t.tenTour
     FROM phanhoi ph
-    JOIN baocao bc ON ph.maBaoCao = bc.maBaoCao
-    JOIN tour t ON bc.maTour = t.maTour
-    WHERE t.maND = ?
+    LEFT JOIN baocao bc ON ph.maBaoCao = bc.maBaoCao
+    LEFT JOIN tour t ON bc.maTour = t.maTour
+    WHERE ph.maND = ?
 ";
 $params = [$maND];
 $types  = 'i';
@@ -36,7 +51,11 @@ if (!empty($trangThai)) {
     $types .= 's';
 }
 
-$sql .= " ORDER BY ph.ngayGui DESC";
+$sql .= "
+    ORDER BY
+        (ph.trangThai = 'daXem'),
+        ph.maPhanHoi DESC
+";
 
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param($types, ...$params);
@@ -106,13 +125,25 @@ $phanHois = $stmt->get_result();
                     <?php while ($ph = $phanHois->fetch_assoc()): ?>
                         <tr>
                             <td><?= $ph['maPhanHoi'] ?></td>
+
                             <td>
-                                <a href="chiTietTour.php?maTour=<?= $ph['maTour'] ?>">
-                                    <?= htmlspecialchars($ph['tenTour']) ?>
-                                </a>
+                                <?php if (!empty($ph['tenTour'])): ?>
+                                    <a href="chiTietTour.php?maTour=<?= $ph['maTour'] ?>"
+                                        class="fw-bold text-decoration-none text-primary">
+                                        <?= htmlspecialchars($ph['tenTour']) ?>
+                                    </a>
+                                <?php else: ?>
+                                    <?php if (preg_match('/"([^"]+)"/', $ph['noiDung'], $matches)): ?>
+                                        <span class="text-secondary fst-italic"><?= htmlspecialchars($matches[1]) ?></span>
+                                    <?php else: ?>
+                                        <span class="text-muted fst-italic">—</span>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                             </td>
+
                             <td><?= htmlspecialchars(mb_substr($ph['noiDung'], 0, 60)) ?>...</td>
                             <td><?= date('d/m/Y', strtotime($ph['ngayGui'])) ?></td>
+
                             <td>
                                 <?php if ($ph['trangThai'] === 'chuaXem'): ?>
                                     <span class="badge bg-warning text-dark">Chưa xem</span>
@@ -120,9 +151,24 @@ $phanHois = $stmt->get_result();
                                     <span class="badge bg-success">Đã xem</span>
                                 <?php endif; ?>
                             </td>
+
                             <td>
-                                <a href="chiTietPhanHoi.php?maPhanHoi=<?= $ph['maPhanHoi'] ?>"
-                                    class="btn btn-info btn-sm">Xem</a>
+                                <?php if (!empty($ph['maBaoCao'])): ?>
+                                    <!-- Phản hồi từ báo cáo vi phạm — có trang chi tiết -->
+                                    <a href="chiTietPhanHoi.php?maPhanHoi=<?= $ph['maPhanHoi'] ?>"
+                                        class="btn btn-info btn-sm">Xem</a>
+                                <?php else: ?>
+                                    <!-- Phản hồi trực tiếp từ admin (duyệt/từ chối/tạm dừng/mở bán) -->
+                                    <?php if ($ph['trangThai'] === 'chuaXem'): ?>
+                                        <a href="?daXem=<?= $ph['maPhanHoi'] ?>"
+                                            class="btn btn-success btn-sm"
+                                            onclick="return confirm('Đánh dấu phản hồi này là đã xem?')">
+                                            Đánh dấu đã xem
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="text-muted fst-italic">—</span>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endwhile; ?>

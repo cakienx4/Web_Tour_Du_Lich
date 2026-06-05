@@ -25,6 +25,7 @@
                 </div>
 
                 <form action="../../actions/login.php" method="post">
+                    <input type="hidden" name="redirect" value="<?= htmlspecialchars($_GET['redirect'] ?? '') ?>">
 
                     <div class="mb-3">
                         <label class="form-label">Email</label>

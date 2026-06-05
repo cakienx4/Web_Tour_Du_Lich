@@ -182,12 +182,12 @@ $diemDenList = $mysqli->query("SELECT maDiemDen, tenDiemDen FROM diemden ORDER B
                     <?php endwhile; ?>
 
                     <?php if ($tourTrung->num_rows === 0): ?>
-                        <a href="tour.php?vung=Trung">Xem thêm tour</a>
+                        <p>Chưa có tour nào.</p>
                     <?php endif; ?>
                 </div>
 
                 <div class="view-more">
-                    <a href="#">Xem thêm tour</a>
+                    <a href="tour.php?vung=Trung">Xem thêm tour</a>
                 </div>
             </div>
 

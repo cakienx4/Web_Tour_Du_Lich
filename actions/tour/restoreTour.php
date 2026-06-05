@@ -34,9 +34,36 @@ if (!$stmt->execute()) {
 
 // Gửi phản hồi nếu có
 if ($maBaoCao && !empty($noiDungPhanHoi)) {
-    $maND = intval($_SESSION['maND']);
-    $stmt = $mysqli->prepare("INSERT INTO phanhoi (maND, maBaoCao, noiDung, ngayGui, trangThai) VALUES (?, ?, ?, NOW(), 'chuaXem')");
-    $stmt->bind_param("iis", $maND, $maBaoCao, $noiDungPhanHoi);
+
+    $stmt = $mysqli->prepare("
+        SELECT t.tenTour, t.maND
+        FROM tour t
+        WHERE t.maTour = ?
+    ");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $tour = $stmt->get_result()->fetch_assoc();
+
+    $maNPP = $tour['maND'];
+
+    $noiDung =
+        'Tour "' . $tour['tenTour'] .
+        '" đã được khôi phục. ' .
+        $noiDungPhanHoi;
+
+    $stmt = $mysqli->prepare("
+        INSERT INTO phanhoi
+        (maND, maBaoCao, noiDung, ngayGui, trangThai)
+        VALUES (?, ?, ?, NOW(), 'chuaXem')
+    ");
+
+    $stmt->bind_param(
+        "iis",
+        $maNPP,
+        $maBaoCao,
+        $noiDung
+    );
+
     $stmt->execute();
 }
 
